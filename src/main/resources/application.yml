@@ -1,0 +1,15 @@
+# server port config
+server:
+  port: 8888
+
+# oracle driver config
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@oracle.team-greedy.com:1521:xe
+    username: C##BUILDUP
+    password: BUILDUP
+
+# mybatis config
+mybatis:
+  mapper-locations: mappers/**/*.xml
