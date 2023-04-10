@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warmmingup.buildup.admin.dao.AdminMapper">
+
+    <resultMap id="userResultMap" type="com.warmmingup.buildup.admin.dto.UserDTO">
+        <id property="no" column="EMPLOYEE_NO"/>
+        <result property="name" column="EMPLOYEE_NAME"/>
+        <result property="email" column="EMPLOYEE_EMAIL"/>
+        <result property="authority" column="ROLE_NAME"/>
+    </resultMap>
+
+
+    <select id="selectAllUsers" parameterType="hashmap" resultMap="userResultMap">
+        SELECT E.EMPLOYEE_NO
+             , E.EMPLOYEE_NAME
+             , E.EMPLOYEE_EMAIL
+             , E.ROLE_NAME
+        FROM (
+                 SELECT ROWNUM R
+                      , D.*
+                 FROM (
+                          SELECT A.EMPLOYEE_NO
+                               , A.EMPLOYEE_NAME
+                               , A.EMPLOYEE_EMAIL
+                               , C.ROLE_NAME
+                          FROM EMPLOYEE        A
+                                   LEFT JOIN CREATED_PROJECT B ON ( A.EMPLOYEE_NO = B.EMPLOYEE_NO )
+                                   LEFT JOIN ROLE            C ON ( B.ROLE_NO = C.ROLE_NO )
+                          ORDER BY A.EMPLOYEE_NO
+                      ) D
+             ) E
+        WHERE E.R BETWEEN #{start} AND #{end}
+    </select>
+</mapper>
