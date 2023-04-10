@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warmminup.buildup.model.dao.MemberMapper">
+    <resultMap id="memberResultMap" type="com.warmminup.buildup.model.dto.MemberDTO">
+        <id property="employeeNo" column="EMPLOYEE_NO"/>
+        <result property="employeePassword" column="EMPLOYEE_PASSWORD"/>
+        <result property="employeeEmail" column="EMPLOYEE_EMAIL"/>
+        <result property="employeeName" column="EMPLOYEE_NAME"/>
+    </resultMap>
 
-</beans>
+    <select id="findAllMemebers" resultMap="memberResultMap">
+        SELECT
+              A.*
+          FROM EMPLOYEE A
+    </select>
+
+</mapper>
