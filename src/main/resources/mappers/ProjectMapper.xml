@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.warmminup.buildup.model.dao.ProjectMapper">
+<mapper namespace="com.warmmingup.buildup.project.dao.ProjectMapper">
 
-    <resultMap id="ProjectResultMap" type="com.warmminup.buildup.model.dto.ProjectDTO">
+    <resultMap id="ProjectResultMap" type="com.warmmingup.buildup.project.dto.ProjectDTO">
         <id property="projectNo" column="PROJECT_NO"/>
         <result property="projectTitle" column="PROJECT_TITLE"/>
     </resultMap>

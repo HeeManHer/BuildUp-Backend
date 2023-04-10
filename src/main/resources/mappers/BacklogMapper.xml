@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.warmminup.buildup.backlog.dao.BacklogMapper">
+<mapper namespace="com.warmmingup.buildup.backlog.dao.BacklogMapper">
 
 
-    <resultMap id="BacklogResultMap" type="com.warmminup.buildup.backlog.dto.BacklogDTO">
+    <resultMap id="BacklogResultMap" type="com.warmmingup.buildup.backlog.dto.BacklogDTO">
         <id property="backlog_No" column="BACKLOG_NO"/>
         <result property="backlog_Name" column="BACKLOG_NAME"/>
         <result property="backlog_Content" column="BACKLOG_CONTENT"/>

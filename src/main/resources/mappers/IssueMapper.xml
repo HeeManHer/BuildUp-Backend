@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.warmminup.buildup.model.dao.IssueMapper">
+<mapper namespace="com.warmmingup.buildup.issue.dao.IssueMapper">
 
-    <resultMap id="IssueResultMap" type="com.warmminup.buildup.model.dto.IssueDTO">
+    <resultMap id="IssueResultMap" type="com.warmmingup.buildup.issue.dto.IssueDTO">
         <id property="issue_No" column="ISSUE_NO"/>
         <result property="issue_Name" column="ISSUE_NAME"/>
         <result property="issue_Content" column="ISSUE_CONTENT"/>
