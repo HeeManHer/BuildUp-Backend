@@ -32,10 +32,10 @@ public class ProjectController {
         return ResponseEntity.ok().body(project);
 
     }
-
-    @PostMapping("projects")
-    public ResponseEntity<?> registProject(@RequestBody ProjectDTO newProject) {
-
-        int lastProjectNo = projects.get(projects.size)
-    }
+//
+//    @PostMapping("projects")
+//    public ResponseEntity<?> registProject(@RequestBody ProjectDTO newProject) {
+//
+//        int lastProjectNo = projects.get(projects.size)
+//    }
 }
