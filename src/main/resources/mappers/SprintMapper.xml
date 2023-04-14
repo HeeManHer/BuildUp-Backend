@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warmmingup.buildup.sprint.dao.SprintMapper">
+
+    <resultMap id="SprintResultMap" type="com.warmmingup.buildup.sprint.dto.SprintDTO">
+        <id property="sprintNo" column="SPRINT_NO"/>
+        <result property="sprintName" column="SPRINT_NAME"/>
+        <result property="sprintStartday" column="SPRINT_STARTDAY"/>
+        <result property="sprintEndday" column="SPRINT_ENDDAY"/>
+        <result property="sprintState" column="SPRINT_STATE"/>
+        <result property="projectNo" column="PROJECT_NO"/>
+    </resultMap>
+
+    <select id="selectAllSprints" resultMap="SprintResultMap">
+        SELECT A.*
+        FROM SPRINT A
+
+    </select>
+
+    <insert id="insertSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
+        INSERT INTO SPRINT
+        (
+        SPRINT_NO
+        , SPRINT_NAME
+        , SPRINT_STARTDAY
+        , SPRINT_ENDDAY
+        , SPRINT_STATE
+        , PROJECT_NO
+        )
+        VALUES
+        (
+        SEQ_SPRINT_NO.NEXTVAL
+        , #{sprintName}
+        , #{sprintStartday}
+        , #{sprintEndday}
+        , #{sprintState}
+        , #{projectNo}
+        )
+    </insert>
+
+    <update id="updateSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
+        UPDATE SPRINT
+        SET
+        SPRINT_NAME = #{sprintName},
+        SPRINT_STATE = #{sprintState},
+        SPRINT_ENDDAY = #{sprintEndday}
+        WHERE SPRINT_NO = #{sprintNo}
+    </update>
+
+    <update id="patchSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
+        UPDATE SPRINT
+        <set>
+            <if test="sprintName != null">
+                SPRINT_NAME = #{sprintName},
+            </if>
+            <if test="sprintState != null">
+                SPRINT_STATE = #{sprintState},
+            </if>
+            <if test="sprintEndday != null">
+                SPRINT_ENDDAY = #{sprintEndday}
+            </if>
+        </set>
+        WHERE SPRINT_NO = #{sprintNo}
+    </update>
+
+    <delete id="deleteSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
+            DELETE FROM SPRINT
+    WHERE SPRINT_NO = #{sprintNo}
+    </delete>
+</mapper>

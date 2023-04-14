@@ -97,5 +97,4 @@ public class ProjectController {
                 .created(URI.create("api/v1/projects/" + modifyTitle.getProjectNo() + "/manager"))
                 .build();
     }
-
 }
