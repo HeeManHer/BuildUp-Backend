@@ -1,19 +1,21 @@
 package com.warmmingup.buildup.admin.dto;
 
-public class UserDTO {
+public class NewUserDTO {
 
     private int no;
     private String name;
     private String email;
-    private String authority;
+    private String pwd;
+    private boolean authority;
 
-    public UserDTO () {
+    public NewUserDTO () {
     }
 
-    public UserDTO (int no, String name, String email, String authority) {
+    public NewUserDTO (int no, String name, String email, String pwd, boolean authority) {
         this.no = no;
         this.name = name;
         this.email = email;
+        this.pwd = pwd;
         this.authority = authority;
     }
 
@@ -41,16 +43,24 @@ public class UserDTO {
         this.email = email;
     }
 
-    public String getAuthority () {
+    public String getPwd () {
+        return pwd;
+    }
+
+    public void setPwd (String pwd) {
+        this.pwd = pwd;
+    }
+
+    public boolean isAuthority () {
         return authority;
     }
 
-    public void setAuthority (String authority) {
+    public void setAuthority (boolean authority) {
         this.authority = authority;
     }
 
     @Override
     public String toString () {
-        return "UserDTO{" + "no=" + no + ", name='" + name + '\'' + ", email='" + email + '\'' + ", authority='" + authority + '\'' + '}';
+        return "NewUserDTO{" + "no='" + no + '\'' + ", name='" + name + '\'' + ", email='" + email + '\'' + ", pwd='" + pwd + '\'' + ", authority=" + authority + '}';
     }
 }
