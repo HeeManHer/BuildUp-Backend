@@ -39,6 +39,7 @@ public class ProjectController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", projectService.findAllProjects(projectCnt)));
     }
 
+
     @PostMapping("/projects")
     public ResponseEntity<?> registProject(@RequestBody ProjectDTO newProject) {
 

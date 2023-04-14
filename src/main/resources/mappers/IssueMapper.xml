@@ -5,19 +5,84 @@
 <mapper namespace="com.warmmingup.buildup.issue.dao.IssueMapper">
 
     <resultMap id="IssueResultMap" type="com.warmmingup.buildup.issue.dto.IssueDTO">
-        <id property="issue_No" column="ISSUE_NO"/>
-        <result property="issue_Name" column="ISSUE_NAME"/>
-        <result property="issue_Content" column="ISSUE_CONTENT"/>
-        <result property="issue_Priority" column="ISSUE_PRIORITY"/>
-        <result property="issue_Status" column="ISSUE_STATUS"/>
-        <result property="backlog_No" column="BACKLOG_NO"/>
-        <result property="project_No" column="PROJECT_NO"/>
+        <id property="issueNo" column="ISSUE_NO"/>
+        <result property="issueName" column="ISSUE_NAME"/>
+        <result property="issueContent" column="ISSUE_CONTENT"/>
+        <result property="issuePriority" column="ISSUE_PRIORITY"/>
+        <result property="issueStatus" column="ISSUE_STATUS"/>
+        <result property="backlogNo" column="BACKLOG_NO"/>
+        <result property="projectNo" column="PROJECT_NO"/>
+    </resultMap>
+
+    <resultMap id="BacklogResultMap" type="com.warmmingup.buildup.issue.dto.ISSUEBDTO">
+        <id property="backlogNo" column="BACKLOG_NO"/>
+        <result property="backlogName" column="BACKLOG_NAME"/>
     </resultMap>
 
     <select id="findAllIssues" resultMap="IssueResultMap">
         SELECT A.*
         FROM ISSUE A
-        
+    </select>
+
+    <select id="findIssuesByNo" resultType="_int">
+        SELECT SEQ_ISSUE_NO.CURRVAL
+        FROM DUAL
+    </select>
+    <insert id="addIssues" parameterType="com.warmmingup.buildup.issue.dto.IssueDTO">
+        INSERT INTO ISSUE
+        (
+            ISSUE_NO
+          , ISSUE_NAME
+          , ISSUE_CONTENT
+          , ISSUE_PRIORITY
+          , ISSUE_STATUS
+          , BACKLOG_NO
+          , PROJECT_NO
+        )
+        VALUES
+        (
+            SEQ_ISSUE_NO.NEXTVAL,
+            #{issueName},
+            #{issueContent},
+            #{issuePriority},
+            #{issueStatus},
+            #{backlogNo},
+            #{projectNo}
+        )
+
+    </insert>
+    <update id="updateIssues" parameterType="com.warmmingup.buildup.issue.dto.IssueDTO">
+        UPDATE ISSUE
+        SET
+            ISSUE_NAME = #{issueName},
+            ISSUE_CONTENT = #{issueContent},
+            ISSUE_PRIORITY = #{issuePriority},
+            ISSUE_STATUS = #{issueStatus},
+            BACKLOG_NO = #{backlogNo},
+            PROJECT_NO = #{projectNo}
+        WHERE ISSUE_NO = #{issueNo}
+    </update>
+
+    <delete id="deleteIssues" parameterType="_int">
+        DELETE FROM ISSUE
+        WHERE
+            ISSUE_NO = #{issueNo}
+    </delete>
+    <select id="selectbackloglist" resultMap="BacklogResultMap">
+        SELECT
+            BACKLOG_NO,
+            BACKLOG_NAME
+        FROM
+            BACKLOG
+    </select>
+    <select id="searchIssue" parameterType="hashmap" resultMap="IssueResultMap">
+        SELECT
+                *
+        FROM ISSUE
+        WHERE ISSUE_NAME LIKE #{search}
+        OR ISSUE_NO LIKE #{search}
+        OR ISSUE_CONTENT LIKE #{search}
+
     </select>
 
 </mapper>
