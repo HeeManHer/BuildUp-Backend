@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warmmingup.buildup.admin.dao.ProjectManageMapper">
+
+    <resultMap id="projectResultMap" type="com.warmmingup.buildup.admin.dto.ProjectManageDTO">
+        <id property="no" column="NO"/>
+        <result property="title" column="PROJECT_TITLE"/>
+        <result property="manager" column="EMPLOYEE_NAME"/>
+        <result property="startDate" column="CHANGE_TIME"/>
+    </resultMap>
+
+    <select id="selectProject" parameterType="hashmap" resultMap="projectResultMap">
+        SELECT
+               ROWNUM NO
+             , B.PROJECT_TITLE
+             , B.EMPLOYEE_NAME
+             , B.CHANGE_TIME
+        FROM ( SELECT *
+                 FROM ( SELECT P.PROJECT_TITLE
+                             , E.EMPLOYEE_NAME
+                             , PR.CHANGE_TIME
+                          FROM PROJECT P
+                          LEFT JOIN PROJECT_RECORD PR ON (P.PROJECT_NO = PR.PROJECT_NO)
+                          LEFT JOIN PROJECT_EMPLOYEE PE ON (P.PROJECT_NO = PE.PROJECT_NO)
+                          LEFT JOIN EMPLOYEE E ON (PE.EMPLOYEE_NO = E.EMPLOYEE_NO)
+<!--                         WHERE PR.STATE = 'C'-->
+                        <if test="search != null">
+                            WHERE P.PROJECT_TITLE LIKE #{search} OR E.EMPLOYEE_NAME LIKE #{search}
+                        </if>
+                         ORDER BY P.PROJECT_NO
+                      )A
+                WHERE ROWNUM BETWEEN #{start} AND #{end}
+             )B
+    </select>
+
+</mapper>
