@@ -8,6 +8,8 @@ public class ResponseDTO {
     private String message;
     private Object data;
 
+    public ResponseDTO () {}
+    
     public ResponseDTO(HttpStatus status, String message, Object data) {
         this.status = status.value();
         this.message = message;

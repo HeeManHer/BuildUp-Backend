@@ -4,92 +4,92 @@ import org.springframework.http.HttpStatus;
 
 public class IssueDTO {
 
-    private int issue_No;
-    private String issue_Name;
-    private String issue_Content;
-    private String issue_Priority;
-    private String issue_Status;
-    private int backlog_No;
-    private int project_No;
+    private int issueNo;
+    private String issueName;
+    private String issueContent;
+    private String issuePriority;
+    private String issueStatus;
+    private int backlogNo;
+    private int projectNo;
 
-    public IssueDTO(HttpStatus ok, String 조회_성공) {}
+    public IssueDTO() {}
 
-    public IssueDTO(int issue_No, String issue_Name, String issue_Content, String issue_Priority, String issue_Status, int backlog_No, int project_No) {
-        this.issue_No = issue_No;
-        this.issue_Name = issue_Name;
-        this.issue_Content = issue_Content;
-        this.issue_Priority = issue_Priority;
-        this.issue_Status = issue_Status;
-        this.backlog_No = backlog_No;
-        this.project_No = project_No;
+    public IssueDTO(int issueNo, String issueName, String issueContent, String issuePriority, String issueStatus, int backlogNo, int projectNo) {
+        this.issueNo = issueNo;
+        this.issueName = issueName;
+        this.issueContent = issueContent;
+        this.issuePriority = issuePriority;
+        this.issueStatus = issueStatus;
+        this.backlogNo = backlogNo;
+        this.projectNo = projectNo;
     }
 
-    public int getIssue_No() {
-        return issue_No;
+    public int getIssueNo() {
+        return issueNo;
     }
 
-    public void setIssue_No(int issue_No) {
-        this.issue_No = issue_No;
+    public void setIssueNo(int issueNo) {
+        this.issueNo = issueNo;
     }
 
-    public String getIssue_Name() {
-        return issue_Name;
+    public String getIssueName() {
+        return issueName;
     }
 
-    public void setIssue_Name(String issue_Name) {
-        this.issue_Name = issue_Name;
+    public void setIssueName(String issueName) {
+        this.issueName = issueName;
     }
 
-    public String getIssue_Content() {
-        return issue_Content;
+    public String getIssueContent() {
+        return issueContent;
     }
 
-    public void setIssue_Content(String issue_Content) {
-        this.issue_Content = issue_Content;
+    public void setIssueContent(String issueContent) {
+        this.issueContent = issueContent;
     }
 
-    public String getIssue_Priority() {
-        return issue_Priority;
+    public String getIssuePriority() {
+        return issuePriority;
     }
 
-    public void setIssue_Priority(String issue_Priority) {
-        this.issue_Priority = issue_Priority;
+    public void setIssuePriority(String issuePriority) {
+        this.issuePriority = issuePriority;
     }
 
-    public String getIssue_Status() {
-        return issue_Status;
+    public String getIssueStatus() {
+        return issueStatus;
     }
 
-    public void setIssue_Status(String issue_Status) {
-        this.issue_Status = issue_Status;
+    public void setIssueStatus(String issueStatus) {
+        this.issueStatus = issueStatus;
     }
 
-    public int getBacklog_No() {
-        return backlog_No;
+    public int getBacklogNo() {
+        return backlogNo;
     }
 
-    public void setBacklog_No(int backlog_No) {
-        this.backlog_No = backlog_No;
+    public void setBacklogNo(int backlogNo) {
+        this.backlogNo = backlogNo;
     }
 
-    public int getProject_No() {
-        return project_No;
+    public int getProjectNo() {
+        return projectNo;
     }
 
-    public void setProject_No(int project_No) {
-        this.project_No = project_No;
+    public void setProjectNo(int projectNo) {
+        this.projectNo = projectNo;
     }
 
     @Override
     public String toString() {
         return "IssueDTO{" +
-                "issue_No=" + issue_No +
-                ", issue_Name='" + issue_Name + '\'' +
-                ", issue_Content='" + issue_Content + '\'' +
-                ", issue_Priority='" + issue_Priority + '\'' +
-                ", issue_Status='" + issue_Status + '\'' +
-                ", backlog_No=" + backlog_No +
-                ", project_No=" + project_No +
+                "issueNo=" + issueNo +
+                ", issueName='" + issueName + '\'' +
+                ", issueContent='" + issueContent + '\'' +
+                ", issuePriority='" + issuePriority + '\'' +
+                ", issueStatus='" + issueStatus + '\'' +
+                ", backlogNo=" + backlogNo +
+                ", projectNo=" + projectNo +
                 '}';
     }
 }
