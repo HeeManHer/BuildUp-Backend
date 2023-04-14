@@ -6,16 +6,77 @@
 
 
     <resultMap id="BacklogResultMap" type="com.warmmingup.buildup.backlog.dto.BacklogDTO">
-        <id property="backlog_No" column="BACKLOG_NO"/>
-        <result property="backlog_Name" column="BACKLOG_NAME"/>
-        <result property="backlog_Content" column="BACKLOG_CONTENT"/>
-        <result property="backlog_Status" column="BACKLOG_STATUS"/>
-        <result property="backlog_Priority" column="BACKLOG_PRIORITY"/>
-        <result property="project_No" column="PROJECT_NO"/>
+        <id property="backlogNo" column="BACKLOG_NO"/>
+        <result property="backlogName" column="BACKLOG_NAME"/>
+        <result property="backlogContent" column="BACKLOG_CONTENT"/>
+        <result property="backlogStatus" column="BACKLOG_STATUS"/>
+        <result property="backlogPriority" column="BACKLOG_PRIORITY"/>
+        <result property="projectNo" column="PROJECT_NO"/>
     </resultMap>
 
     <select id="findAllBacklogs" resultMap="BacklogResultMap">
         SELECT A.*
         FROM BACKLOG A
+    </select>
+
+    <select id="findBacklog" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
+        SELECT
+        BACKLOG_CONTENT FROM BACKLOG
+        WHERE
+        BACKLOG_CONTENT = #{backlogContent}
+
+    </select>
+
+    <select id="findBacklogsByNo" resultType="_int">
+        SELECT SEQ_BACKLOG_NO.CURRVAL
+        FROM DUAL
+
+    </select>
+
+    <insert id="addBacklogs" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
+        INSERT INTO BACKLOG
+        (
+        BACKLOG_NO
+       ,BACKLOG_NAME
+       ,BACKLOG_CONTENT
+       ,BACKLOG_STATUS
+       ,BACKLOG_PRIORITY
+       ,PROJECT_NO
+        )
+        VALUES
+        (
+        SEQ_BACKLOG_NO.NEXTVAL,
+        #{backlogName},
+        #{backlogContent},
+        #{backlogStatus},
+        #{backlogPriority},
+        #{projectNo}
+        )
+
+    </insert>
+    <update id="updateBacklogs" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
+        UPDATE BACKLOG
+        SET
+        BACKLOG_NAME = #{backlogName}
+        ,BACKLOG_CONTENT = #{backlogContent}
+        ,BACKLOG_STATUS = #{backlogStatus}
+       , BACKLOG_PRIORITY = #{backlogPriority}
+        ,PROJECT_NO = #{projectNo}
+        WHERE BACKLOG_NO = #{backlogNo}
+    </update>
+
+    <delete id="deleteBacklog" parameterType="_int">
+       DELETE FROM BACKLOG
+        WHERE
+            BACKLOG_NO = #{backlogNo}
+    </delete>
+
+    <select id="searchbacklog" resultMap="BacklogResultMap" parameterType="hashmap">
+        SELECT *
+            FROM BACKLOG
+        WHERE
+            BACKLOG_CONTENT LIKE #{search}
+        OR  BACKLOG_NAME LIKE #{search}
+        OR  BACKLOG_NO LIKE #{search}
     </select>
 </mapper>

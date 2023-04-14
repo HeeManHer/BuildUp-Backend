@@ -7,11 +7,112 @@
     <resultMap id="ProjectResultMap" type="com.warmmingup.buildup.project.dto.ProjectDTO">
         <id property="projectNo" column="PROJECT_NO"/>
         <result property="projectTitle" column="PROJECT_TITLE"/>
+        <result property="employeeNo" column="EMPLOYEE_NO"/>
+        <result property="employeeName" column="EMPLOYEE_NAME"/>
+        <result property="employeeEmail" column="EMPLOYEE_EMAIL"/>
+        <result property="roleNo" column="ROLE_NO"/>
+        <result property="roleName" column="ROLE_NAME"/>
     </resultMap>
 
     <select id="findAllProjects" resultMap="ProjectResultMap">
-        SELECT A.*
-        FROM PROJECT A
+        SELECT
+               P.PROJECT_NO
+             , P.PROJECT_TITLE
+             , E.EMPLOYEE_NAME
+             , R.ROLE_NAME
+          FROM PROJECT P
+          JOIN PROJECT_EMPLOYEE O ON(O.PROJECT_NO = P.PROJECT_NO)
+          JOIN EMPLOYEE E ON(E.EMPLOYEE_NO = O.EMPLOYEE_NO)
+          JOIN ROLE R ON(R.ROLE_NO = O.ROLE_NO)
+         ORDER BY P.PROJECT_NO
+    </select>
 
-        </select>
+    <select id="findProjectsByNo" parameterType="com.warmmingup.buildup.project.dto.ProjectDTO" resultType="_int">
+        SELECT SEQ_PROJECT_NO.CURRVAL
+        FROM DUAL
+    </select>
+
+    <insert id="insertProject" parameterType="com.warmmingup.buildup.project.dto.ProjectDTO">
+        INSERT INTO PROJECT
+        (
+        PROJECT_NO,
+        PROJECT_TITLE
+        )
+        VALUES
+        (
+        SEQ_PROJECT_NO.NEXTVAL,
+        #{projectTitle}
+        )
+    </insert>
+
+    <insert id="insertProjectEmployee" parameterType="com.warmmingup.buildup.project.dto.ProjectDTO">
+        <selectKey keyProperty="projectNo" order="BEFORE" resultType="_int">
+            SELECT
+            SEQ_PROJECT_NO.CURRVAL
+            FROM DUAL
+        </selectKey>
+
+        INSERT INTO PROJECT_EMPLOYEE
+        (
+        EMPLOYEE_NO,
+        PROJECT_NO,
+        ROLE_NO
+        )
+        VALUES
+        (
+        #{employeeNo},
+        #{projectNo}
+        <if test="roleNo != 0">
+           , #{roleNo}
+        </if>
+        <if test="roleNo == 0">
+            , 2
+        </if>
+        )
+    </insert>
+    <select id="selectEmployeeNo" parameterType="com.warmmingup.buildup.project.dto.ProjectDTO" resultType="_int">
+        SELECT
+               B.ROLE_NO
+          FROM ROLE B
+          JOIN CREATED_PROJECT A ON(A.ROLE_NO = B.ROLE_NO)
+         WHERE A.EMPLOYEE_NO = #{employeeNo}
+    </select>
+
+    <update id="modifyProjectTitle" parameterType="com.warmmingup.buildup.project.dto.ProjectDTO">
+        UPDATE
+               PROJECT
+           SET PROJECT_TITLE = #{projectTitle}
+         WHERE PROJECT_NO = #{projectNo}
+    </update>
+
+    <select id="findAllProjectMembers" parameterType="hashmap" resultMap="ProjectResultMap">
+        SELECT
+               P.PROJECT_NO
+             , P.PROJECT_TITLE
+             , R.ROLE_NO
+             , R.ROLE_NAME
+             , O.EMPLOYEE_NO
+             , E.EMPLOYEE_NAME
+             , E.EMPLOYEE_EMAIL
+          FROM PROJECT P
+          JOIN PROJECT_EMPLOYEE O ON(O.PROJECT_NO = P.PROJECT_NO)
+          JOIN EMPLOYEE E ON(E.EMPLOYEE_NO = O.EMPLOYEE_NO)
+          JOIN ROLE R ON(R.ROLE_NO = O.ROLE_NO)
+         WHERE P.PROJECT_NO = #{projectNo}
+    </select>
+
+    <select id="selectProjectTitle" resultMap="ProjectResultMap">
+        SELECT
+               PROJECT_TITLE
+          FROM PROJECT
+         WHERE PROJECT_NO = #{projectNo}
+    </select>
+
+    <update id="modifyProjectManagerTitle" parameterType="com.warmmingup.buildup.project.dto.ProjectDTO">
+        UPDATE
+               PROJECT
+           SET PROJECT_TITLE = #{projectTitle}
+         WHERE PROJECT_NO = #{projectNo}
+    </update>
 </mapper>
+

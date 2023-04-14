@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warmmingup.buildup.admin.dao.DashboardMapper">
+
+
+    <resultMap id="dashboardResultMap" type="com.warmmingup.buildup.admin.dto.DashboardDTO">
+        <id property="name" column="NAME"/>
+        <result property="state" column="STATE"/>
+        <result property="count" column="COUNT"/>
+    </resultMap>
+
+    <select id="selectDashIssue" resultMap="dashboardResultMap">
+        SELECT '이슈' AS NAME
+             , A.ISSUE_STATUS AS STATE
+             , COUNT(ISSUE_STATUS) AS COUNT
+          FROM ISSUE A
+         GROUP BY A.ISSUE_STATUS
+    </select>
+
+    <select id="selectDashBacklog" resultMap="dashboardResultMap">
+        SELECT '백로그' AS NAME
+             , A.BACKLOG_STATUS AS STATE
+             , COUNT(BACKLOG_STATUS) AS COUNT
+          FROM BACKLOG A
+         GROUP BY A.BACKLOG_STATUS
+    </select>
+
+    <select id="selectDashSprint" resultMap="dashboardResultMap">
+        SELECT '스프린트' AS NAME
+             , A.SPRINT_STATE AS STATE
+             , COUNT(SPRINT_STATE) AS COUNT
+          FROM SPRINT A
+         GROUP BY A.SPRINT_STATE
+    </select>
+
+    <resultMap id="projectResultMap" type="com.warmmingup.buildup.admin.dto.DashProjectDTO">
+        <id property="name" column="PROJECT_TITLE"/>
+        <result property="startDate" column="CHANGE_TIME"/>
+    </resultMap>
+
+    <select id="selectDashProject" resultMap="projectResultMap">
+        SELECT *
+          FROM ( SELECT A.PROJECT_TITLE
+                      , B.CHANGE_TIME
+                   FROM PROJECT A
+                   LEFT JOIN PROJECT_RECORD B ON (A.PROJECT_NO = B.PROJECT_NO)
+<!--                  WHERE B.STATE = 'C'-->
+                  ORDER BY B.CHANGE_TIME DESC, A.PROJECT_NO DESC
+               )
+         WHERE ROWNUM &lt; 6
+    </select>
+
+    <select id="selectChartAuth" resultMap="dashboardResultMap">
+        SELECT B.ROLE_NAME NAME
+             , COUNT(ROLE_NAME) as COUNT
+          FROM PROJECT_EMPLOYEE A
+          JOIN ROLE B ON (A.ROLE_NO=B.ROLE_NO)
+         GROUP BY B.ROLE_NAME
+    </select>
+
+</mapper>
