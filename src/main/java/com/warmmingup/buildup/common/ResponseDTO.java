@@ -13,7 +13,7 @@ public class ResponseDTO {
         this.message = message;
         this.data = data;
     }
-
+    public ResponseDTO () {}
     public int getStatus() {
         return status;
     }
