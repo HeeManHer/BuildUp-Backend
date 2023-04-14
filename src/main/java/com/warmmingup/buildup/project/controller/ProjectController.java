@@ -36,6 +36,6 @@ public class ProjectController {
 //    @PostMapping("projects")
 //    public ResponseEntity<?> registProject(@RequestBody ProjectDTO newProject) {
 //
-//        int lastProjectNo = projects.get(projects.size)
+//    int lastProjectNo = projects.get(projects.size)
 //    }
 }
