@@ -1,0 +1,22 @@
+package com.warmmingup.buildup.comment.dao;
+
+import com.warmmingup.buildup.comment.dto.CommentDTO;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
+
+@Mapper
+public interface CommentMapper {
+
+    List<CommentDTO> findAllComments();
+
+
+    int insertComment(CommentDTO newComment);
+
+    int updateComment(CommentDTO newComment);
+
+
+    int patchComment(CommentDTO newComment);
+
+    int deleteComment(CommentDTO newComment);
+}

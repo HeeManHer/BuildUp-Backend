@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.warmmingup.buildup.comment.dao.CommentMapper">
+
+
+    <resultMap id="CommentResultMap" type="com.warmmingup.buildup.comment.dto.CommentDTO">
+        <id property="issueNo" column="ISSUE_NO"/>
+        <result property="employeeNo" column="EMPLOYEE_NO"/>
+        <result property="replyContent" column="REPLY_CONTENT"/>
+        <result property="replyDate" column="REPLY_DATE"/>
+    </resultMap>
+
+    <select id="findAllComments" resultMap="CommentResultMap">
+        SELECT
+            A.ISSUE_NO
+           ,A.EMPLOYEE_NO
+           ,A.REPLY_CONTENT
+           ,A.REPLY_DATE
+        FROM REPLY A
+    </select>
+
+
+    <insert id="insertComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
+        INSERT
+        INTO REPLY
+        (
+        ISSUE_NO
+        , EMPLOYEE_NO
+        , REPLY_CONTENT
+        , REPLY_DATE
+        )
+        VALUES
+        (
+        SEQ_REPLY_NO.NEXTVAL
+        , #{ employeeNo }
+        , #{ replyContent }
+        , #{ replyDate }
+        )
+    </insert>
+
+    <update id="updateComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
+        UPDATE REPLY
+        SET
+        EMPLOYEE_NO = #{ employeeNo },
+        REPLY_CONTENT = #{ replyContent },
+        REPLY_DATE = #{ replyDate }
+        WHERE ISSUE_NO = #{ issueNo }
+    </update>
+
+    <update id="patchComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
+        UPDATE REPLY
+        <set>
+            <if test="employeeNo != null">
+                EMPLOYEE_NO = #{employeeNo},
+            </if>
+            <if test="replyContent != null">
+                REPLY_CONTENT = #{replyContent},
+            </if>
+            <if test="replyDate != null">
+                REPLY_DATE = #{replyDate}
+            </if>
+        </set>
+        WHERE ISSUE_NO = #{issueNo}
+    </update>
+
+    <delete id="deleteComment">
+
+        DELETE FROM REPLY
+        WHERE ISSUE_NO = #{issueNo}
+
+    </delete>
+
+
+</mapper>
