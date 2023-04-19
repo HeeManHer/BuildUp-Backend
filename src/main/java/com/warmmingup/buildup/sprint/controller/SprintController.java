@@ -1,6 +1,9 @@
 package com.warmmingup.buildup.sprint.controller;
 
 import com.warmmingup.buildup.common.ResponseDTO;
+import com.warmmingup.buildup.common.paging.Pagenation;
+import com.warmmingup.buildup.common.paging.ResponseDtoWithPaging;
+import com.warmmingup.buildup.common.paging.SelectCriteria;
 import com.warmmingup.buildup.sprint.dto.SprintDTO;
 import com.warmmingup.buildup.sprint.service.SprintService;
 import org.springframework.http.HttpStatus;
@@ -19,20 +22,27 @@ public class SprintController {
         this.sprintService = sprintService;
     }
 
-    @GetMapping("/sprints")
-    public ResponseEntity<ResponseDTO> getSprint(@RequestParam(name="offset",defaultValue="0") String offset) {
+    @GetMapping("{projectNo}/sprints")
+    public ResponseEntity<ResponseDTO> getSprint(@PathVariable int projectNo,@RequestParam(name="offset",defaultValue="1") int offset) {
+
+        Map<String,Object> sprintMap=new HashMap<>();
+        sprintMap.put("projectNo",projectNo);
 
         int limit = 10;
+        int buttonAmount=5;
+        int totalCount=sprintService.findSprintTotalCount(sprintMap);
 
-        int startSprint = Integer.parseInt(offset) + 1;
-        int endSprint = startSprint + limit;
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(offset,totalCount,limit,buttonAmount);
+sprintMap.put("pageInfo",selectCriteria);
+
+        ResponseDtoWithPaging responseDtoWithPaging=new ResponseDtoWithPaging();
+        responseDtoWithPaging.setPageInfo(selectCriteria);
+        responseDtoWithPaging.setData(sprintService.findAllSprints(sprintMap));
 
 
-        Map<String, Integer> sprintCnt = new HashMap<>();
-        sprintCnt.put("start", startSprint);
-        sprintCnt.put("end", endSprint);
 
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", sprintService.findAllSprints(sprintCnt)));
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 
     }
 
