@@ -19,9 +19,49 @@
         <result property="backlogName" column="BACKLOG_NAME"/>
     </resultMap>
 
-    <select id="findAllIssues" resultMap="IssueResultMap">
-        SELECT A.*
-        FROM ISSUE A
+    <select id="findAllIssues" resultMap="IssueResultMap" parameterType="hashmap">
+        SELECT
+            b.ISSUE_NO
+        , b.ISSUE_NAME
+        , b.ISSUE_CONTENT
+        , b.ISSUE_PRIORITY
+        , b.ISSUE_STATUS
+        , b.BACKLOG_NO
+        , b.PROJECT_NO
+        FROM
+            (
+                    SELECT
+                            a.*,
+                            ROWNUM R
+                    FROM
+                    (
+                                SELECT
+                                        *
+                                FROM
+                                        ISSUE
+                                WHERE
+                                        PROJECT_NO = #{projectNo}
+                                <if test="search != null">
+                                    AND (ISSUE_NAME LIKE #{search}
+                                    OR ISSUE_NO LIKE #{search}
+                                    OR ISSUE_CONTENT LIKE  #{search}
+                                    OR ISSUE_PRIORITY LIKE #{search}
+                                    OR ISSUE_STATUS LIKE #{search})
+                                </if>
+                    ) a
+        ) b
+        WHERE
+                b.R BETWEEN #{PageInfo.startRow} AND #{PageInfo.endRow}
+    </select>
+
+
+    <select id="selectIssueTotalCount" parameterType="_int" resultType="_int">
+        SELECT
+                COUNT(*)
+        FROM
+                ISSUE
+        WHERE
+                PROJECT_NO = #{projectNo}
     </select>
 
     <select id="findIssuesByNo" resultType="_int">
@@ -61,6 +101,7 @@
             BACKLOG_NO = #{backlogNo},
             PROJECT_NO = #{projectNo}
         WHERE ISSUE_NO = #{issueNo}
+          AND PROJECT_NO = #{projectNo}
     </update>
 
     <delete id="deleteIssues" parameterType="_int">
@@ -68,21 +109,23 @@
         WHERE
             ISSUE_NO = #{issueNo}
     </delete>
-    <select id="selectbackloglist" resultMap="BacklogResultMap">
+    <select id="selectbackloglist" resultMap="BacklogResultMap" parameterType="_int">
         SELECT
             BACKLOG_NO,
             BACKLOG_NAME
         FROM
             BACKLOG
+        WHERE
+            PROJECT_NO = #{projectNo}
     </select>
-    <select id="searchIssue" parameterType="hashmap" resultMap="IssueResultMap">
-        SELECT
-                *
-        FROM ISSUE
-        WHERE ISSUE_NAME LIKE #{search}
-        OR ISSUE_NO LIKE #{search}
-        OR ISSUE_CONTENT LIKE #{search}
+<!--    <select id="searchIssue" parameterType="hashmap" resultMap="IssueResultMap">-->
+<!--        SELECT-->
+<!--                *-->
+<!--        FROM ISSUE-->
+<!--        WHERE ISSUE_NAME LIKE #{search}-->
+<!--        OR ISSUE_NO LIKE #{search}-->
+<!--        OR ISSUE_CONTENT LIKE #{search}-->
 
-    </select>
+<!--    </select>-->
 
 </mapper>

@@ -84,6 +84,7 @@ public class BacklogController {
 
     @PutMapping("/backlogs")
     public ResponseEntity<ResponseDTO> updateBacklog(@RequestBody BacklogDTO updateBacklog) {
+        System.out.println(updateBacklog);
         backlogService.updateBacklogs(updateBacklog);
         return ResponseEntity.created(URI.create("/api/v1/backlgs/" + updateBacklog.getBacklogNo())).build();
 
