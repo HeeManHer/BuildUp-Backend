@@ -11,13 +11,28 @@
         <result property="startDate" column="CHANGE_TIME"/>
     </resultMap>
 
+    <select id="selectProjectTotalCount" parameterType="hashmap" resultType="_int">
+        SELECT COUNT(*)
+          FROM PROJECT P
+          LEFT JOIN PROJECT_RECORD PR ON (P.PROJECT_NO = PR.PROJECT_NO)
+          LEFT JOIN PROJECT_EMPLOYEE PE ON (P.PROJECT_NO = PE.PROJECT_NO)
+          LEFT JOIN EMPLOYEE E ON (PE.EMPLOYEE_NO = E.EMPLOYEE_NO)
+        <!--                         WHERE PR.STATE = 'C'-->
+         WHERE PE.ROLE_NO = 1
+        <if test="search != null">
+            AND P.PROJECT_TITLE LIKE #{search} OR E.EMPLOYEE_NAME LIKE #{search}
+        </if>
+        ORDER BY P.PROJECT_NO
+    </select>
+
     <select id="selectProject" parameterType="hashmap" resultMap="projectResultMap">
         SELECT
-               ROWNUM NO
+               B.NO
              , B.PROJECT_TITLE
              , B.EMPLOYEE_NAME
              , B.CHANGE_TIME
-        FROM ( SELECT *
+        FROM ( SELECT A.*
+                    , ROWNUM NO
                  FROM ( SELECT P.PROJECT_TITLE
                              , E.EMPLOYEE_NAME
                              , PR.CHANGE_TIME
@@ -26,13 +41,14 @@
                           LEFT JOIN PROJECT_EMPLOYEE PE ON (P.PROJECT_NO = PE.PROJECT_NO)
                           LEFT JOIN EMPLOYEE E ON (PE.EMPLOYEE_NO = E.EMPLOYEE_NO)
 <!--                         WHERE PR.STATE = 'C'-->
+                         WHERE PE.ROLE_NO = 1
                         <if test="search != null">
-                            WHERE P.PROJECT_TITLE LIKE #{search} OR E.EMPLOYEE_NAME LIKE #{search}
+                           AND (P.PROJECT_TITLE LIKE #{search} OR E.EMPLOYEE_NAME LIKE #{search})
                         </if>
                          ORDER BY P.PROJECT_NO
                       )A
-                WHERE ROWNUM BETWEEN #{start} AND #{end}
              )B
+        WHERE B.NO BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
     </select>
 
 </mapper>

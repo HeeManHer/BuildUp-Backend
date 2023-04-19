@@ -3,6 +3,7 @@ package com.warmmingup.buildup.admin.service;
 import com.warmmingup.buildup.admin.dao.AuthorityManageMapper;
 import com.warmmingup.buildup.admin.dto.AuthTypeDTO;
 import com.warmmingup.buildup.admin.dto.AuthorityDTO;
+import com.warmmingup.buildup.common.paging.SelectCriteria;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,42 +22,64 @@ public class AuthorityManageServiceImpl implements AuthorityManageService {
     }
 
     @Override
-    public List<AuthorityDTO> findAuthority () {
-
-        return authorityManageMapper.selectAuthority();
+    public int findAuthorityTotalCount () {
+        return authorityManageMapper.selectAuthorityTotalCount();
     }
 
     @Override
-    public int selectAuthNo () {
-        return authorityManageMapper.selectAuthNo();
+    public List<AuthorityDTO> findAllAuthority (SelectCriteria selectCriteria) {
+        return authorityManageMapper.selectAllAuthority(selectCriteria);
+    }
+
+    @Override
+    public List<AuthorityDTO> findAuthorityDetail (int authNo) {
+        List<AuthorityDTO> temp = authorityManageMapper.selectAuthorityByNo(authNo);
+        System.out.println(temp);
+
+        return temp;
+    }
+
+    @Override
+    public List<AuthTypeDTO> findAuthType () {
+
+        return authorityManageMapper.selectAllAuthTypes();
     }
 
     @Override
     @Transactional
-    public void registAuthority (AuthorityDTO auth) {
-        int roleNo = authorityManageMapper.selectRoleName(auth);
+    public int registAuthority (AuthorityDTO auth) {
+        authorityManageMapper.insertNewRole(auth);
+        auth.setRoleNo(authorityManageMapper.selectAuthNo());
 
-        if (roleNo > 0) {
-            return;
-        } else {
-            auth.setRoleNo(selectAuthNo());
-            authorityManageMapper.insertNewRole(auth);
+        insertAuthorityType(auth);
+
+        return auth.getRoleNo();
+    }
+
+    @Transactional
+    public void insertAuthorityType (AuthorityDTO auth) {
+        Map<String, Object> authority = new HashMap<>();
+        authority.put("roleNo", auth.getRoleNo());
+
+        for (AuthTypeDTO type : auth.getType()) {
+            if (type.getState().size() == 0)
+                continue;
+            authority.put("typeNo", type.getTypeNo());
+            for (String state : type.getState()) {
+                authority.put("state", state);
+                authorityManageMapper.insertAuthority(authority);
+            }
         }
-
-        insertAuthority(auth);
     }
 
     @Override
     @Transactional
-    public void updateAuthority (List<AuthorityDTO> auth) {
+    public void updateAuthority (AuthorityDTO auth) {
 
-        for (AuthorityDTO role : auth) {
+        authorityManageMapper.updateRole(auth);
+        authorityManageMapper.deleteAuthority(auth.getRoleNo());
 
-            authorityManageMapper.updateRole(role);
-            authorityManageMapper.deleteAuthority(role.getRoleNo());
-
-            insertAuthority(role);
-        }
+        insertAuthorityType(auth);
     }
 
     @Override
@@ -66,26 +89,23 @@ public class AuthorityManageServiceImpl implements AuthorityManageService {
     }
 
     @Override
-    public List<AuthorityDTO> findAuthRole () {
+    @Transactional
+    public int addNewAuthType (AuthTypeDTO type) {
 
-        return authorityManageMapper.selectAllAuthRoles();
+        authorityManageMapper.insertNewType(type);
+
+        authorityManageMapper.insertNewAuthorityState(type);
+
+        authorityManageMapper.insertNewAuthority(type);
+
+        return authorityManageMapper.selectNewTypeNo(type);
     }
 
     @Override
-    public List<AuthTypeDTO> findAuthType () {
-
-        return authorityManageMapper.selectAllAuthTypes();
-    }
-
     @Transactional
-    public void insertAuthority (AuthorityDTO auth) {
+    public void deleteAuthType (String typeName) {
+        authorityManageMapper.deleteType(typeName);
 
-        Map<String, Object> roleInfo = new HashMap<>();
-        roleInfo.put("roleNo", auth.getRoleNo());
-        roleInfo.put("typeName", auth.getTypeName());
-        roleInfo.put("state", auth.getState());
-
-        authorityManageMapper.insertAuthority(roleInfo);
-
+        authorityManageMapper.deleteAuthorityType(typeName);
     }
 }

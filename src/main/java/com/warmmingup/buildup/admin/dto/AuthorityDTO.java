@@ -1,66 +1,52 @@
 package com.warmmingup.buildup.admin.dto;
 
+import java.util.List;
+
 public class AuthorityDTO {
 
     private int roleNo;
     private String roleName;
-    private int typeNo;
-    private String typeName;
-    private String state;
+    private List<AuthTypeDTO> type;
 
-    public AuthorityDTO () {
+    public AuthorityDTO() {
     }
 
-    public AuthorityDTO (int roleNo, String roleName, int typeNo, String typeName, String state) {
+    public AuthorityDTO(int roleNo, String roleName, List<AuthTypeDTO> type) {
         this.roleNo = roleNo;
         this.roleName = roleName;
-        this.typeNo = typeNo;
-        this.typeName = typeName;
-        this.state = state;
+        this.type = type;
     }
 
-    public int getRoleNo () {
+    public int getRoleNo() {
         return roleNo;
     }
 
-    public void setRoleNo (int roleNo) {
+    public void setRoleNo(int roleNo) {
         this.roleNo = roleNo;
     }
 
-    public String getRoleName () {
+    public String getRoleName() {
         return roleName;
     }
 
-    public void setRoleName (String roleName) {
+    public void setRoleName(String roleName) {
         this.roleName = roleName;
     }
 
-    public int getTypeNo () {
-        return typeNo;
+    public List<AuthTypeDTO> getType() {
+        return type;
     }
 
-    public void setTypeNo (int typeNo) {
-        this.typeNo = typeNo;
-    }
-
-    public String getTypeName () {
-        return typeName;
-    }
-
-    public void setTypeName (String typeName) {
-        this.typeName = typeName;
-    }
-
-    public String getState () {
-        return state;
-    }
-
-    public void setState (String state) {
-        this.state = state;
+    public void setType(List<AuthTypeDTO> type) {
+        this.type = type;
     }
 
     @Override
-    public String toString () {
-        return "AuthorityDTO{" + "roleNo=" + roleNo + ", roleName='" + roleName + '\'' + ", typeNo=" + typeNo + ", typeName='" + typeName + '\'' + ", state='" + state + '\'' + '}';
+    public String toString() {
+        return "AuthorityDTO{" +
+                "roleNo=" + roleNo +
+                ", roleName='" + roleName + '\'' +
+                ", type=" + type +
+                '}';
     }
 }
