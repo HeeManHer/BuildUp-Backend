@@ -14,19 +14,30 @@ public class UserManageServiceImpl implements UserManagerService {
 
     private final UserManageMapper userManageMapper;
 
-    public UserManageServiceImpl (UserManageMapper userManageMapper) {
+    public UserManageServiceImpl(UserManageMapper userManageMapper) {
         this.userManageMapper = userManageMapper;
     }
 
     @Override
-    public List<UserDTO> findAllUsers (Map<String, String> userCnt) {
+    public int findUserTotalCount(Map<String, Object> userManage) {
+        return userManageMapper.selectUserTotalCount(userManage);
+    }
+
+    @Override
+    public List<UserDTO> findAllUsers(Map<String, Object> userCnt) {
 
         return userManageMapper.selectAllUsers(userCnt);
     }
 
     @Override
+    public List<UserDTO> findUserInfo(int userNo) {
+
+        return userManageMapper.selectUserByNo(userNo);
+    }
+
+    @Override
     @Transactional
-    public void insertUser (NewUserDTO newUser) {
+    public void insertUser(NewUserDTO newUser) {
 
         userManageMapper.insertNewUser(newUser);
 
@@ -37,7 +48,7 @@ public class UserManageServiceImpl implements UserManagerService {
 
     @Override
     @Transactional
-    public void deleteUser (int userNo) {
+    public void deleteUser(int userNo) {
 
         userManageMapper.deleteUser(userNo);
         userManageMapper.deleteAuthority(userNo);
@@ -45,11 +56,14 @@ public class UserManageServiceImpl implements UserManagerService {
 
     @Override
     @Transactional
-    public void updateUser (List<Integer> userNoList) {
+    public void updateUser(Map<String, Object> modifyUser) {
 
-        for (int userNo : userNoList) {
-            userManageMapper.deleteAuthority(userNo);
-            userManageMapper.insertNewCreatedProject(userNo);
+        userManageMapper.updateUser(modifyUser);
+
+        userManageMapper.deleteAuthority((int) modifyUser.get("oldNo"));
+
+        if ("PM".equals(modifyUser.get("authority"))) {
+            userManageMapper.insertNewCreatedProject((int) modifyUser.get("no"));
         }
     }
 }

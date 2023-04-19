@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface SprintMapper {
 
-    List<SprintDTO> selectAllSprints(Map<String, Integer> sprintCnt);
+    List<SprintDTO> selectAllSprints(Map<String, Object> sprintCnt);
 
     int insertSprint(SprintDTO sprintNew);
 
@@ -20,5 +20,5 @@ public interface SprintMapper {
 
     int deleteSprint(SprintDTO sprintDel);
 
-
+    int selectSprintTotalCount(Map<String, Object> sprintMap);
 }

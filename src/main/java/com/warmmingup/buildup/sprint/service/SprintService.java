@@ -9,7 +9,7 @@ import java.util.Map;
 
 public interface SprintService {
 
-    Object findAllSprints(Map<String, Integer> sprintCnt);
+    List<SprintDTO> findAllSprints(Map<String, Object> sprintCnt);
 
    Object insertSprint(SprintDTO sprintNew);
 
@@ -18,4 +18,6 @@ public interface SprintService {
    Object patchSprint(SprintDTO sprintPth);
 
     Object deleteSprint(SprintDTO sprintDel);
+
+    int findSprintTotalCount(Map<String, Object> sprintMap);
 }

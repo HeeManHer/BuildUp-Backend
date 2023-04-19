@@ -1,6 +1,8 @@
 package com.warmmingup.buildup.project.dao;
 
+import com.warmmingup.buildup.project.dto.BringProjectDTO;
 import com.warmmingup.buildup.project.dto.ProjectDTO;
+import com.warmmingup.buildup.project.dto.projectEmployeeDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -10,20 +12,30 @@ import java.util.Map;
 public interface ProjectMapper {
 
     List<ProjectDTO> findAllProjects(Map<String, Integer> projectCnt);
-    int findProjectsByNo(ProjectDTO newProject);
+    int findProjectsByNo(BringProjectDTO newProject);
 
-    int insertProject(ProjectDTO newProject);
+    int insertProject(BringProjectDTO newProject);
 
-    void insertProjectEmployee(ProjectDTO newProject);
+    void insertProjectEmployee(projectEmployeeDTO newProject);
 
-    ProjectDTO selectEmployeeNo(ProjectDTO newProject);
+    BringProjectDTO selectEmployeeNo(BringProjectDTO newProject);
 
-    void modifyProjectTitle(ProjectDTO updateTitle);
+//    void modifyProjectTitle(ProjectDTO updateTitle);
 
     List<ProjectDTO> findAllProjectMembers(Map<String, Integer> projectMemberCnt);
 
     Object selectProjectTitle(int projectNo);
 
     void modifyProjectManagerTitle(ProjectDTO modifyTitle);
+
+    void removeProject(int projectNo);
+
+    void inviteTeamMember(BringProjectDTO projectNo);
+
+    void removeTeamMember(Map<String, Object> removeMember);
+
+    void modifyMemberAuthority(Map<String, Object> memberAuthorityMap);
+
+//    List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers);
 }
 

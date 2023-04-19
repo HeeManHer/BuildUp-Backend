@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserManagerService {
-    List<UserDTO> findAllUsers (Map<String, String> userCnt);
+    int findUserTotalCount(Map<String, Object> userManage);
 
-    void insertUser (NewUserDTO newUser);
+    List<UserDTO> findAllUsers(Map<String, Object> userCnt);
 
-    void deleteUser (int userNo);
+    List<UserDTO> findUserInfo(int userNo);
 
-    void updateUser (List<Integer> userNo);
+    void insertUser(NewUserDTO newUser);
+
+    void deleteUser(int userNo);
+
+    void updateUser(Map<String, Object> userNo);
 }

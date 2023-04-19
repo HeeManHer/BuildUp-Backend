@@ -8,5 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface ProjectManageMapper {
-    List<ProjectManageDTO> selectProject (Map<String, String> projectManage);
+    List<ProjectManageDTO> selectProject(Map<String, Object> projectManage);
+
+    int selectProjectTotalCount(Map<String, Object> projectManage);
 }

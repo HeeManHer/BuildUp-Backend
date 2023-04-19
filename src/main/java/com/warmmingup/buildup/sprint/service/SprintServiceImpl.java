@@ -15,10 +15,9 @@ public class SprintServiceImpl implements SprintService {
     public SprintServiceImpl(SprintMapper sprintMapper) { this.sprintMapper = sprintMapper; }
 
     @Override
-    public Object findAllSprints(Map<String, Integer> sprintCnt) {
-        List<SprintDTO> sprintList =  sprintMapper.selectAllSprints(sprintCnt);
+    public List<SprintDTO> findAllSprints(Map<String, Object> sprintCnt) {
 
-        return sprintList;
+        return sprintMapper.selectAllSprints(sprintCnt);
     }
     @Override
     public Object insertSprint(SprintDTO sprintNew) {
@@ -52,6 +51,11 @@ public class SprintServiceImpl implements SprintService {
         int result = sprintMapper.deleteSprint(sprintDel);
 
         return (result > 0) ? "삭제 성공" : "삭제 실패";
+    }
+
+    @Override
+    public int findSprintTotalCount(Map<String, Object> sprintMap) {
+        return sprintMapper.selectSprintTotalCount(sprintMap);
     }
 
 

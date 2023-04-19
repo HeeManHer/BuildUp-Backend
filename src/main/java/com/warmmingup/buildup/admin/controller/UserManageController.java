@@ -1,8 +1,12 @@
 package com.warmmingup.buildup.admin.controller;
 
 import com.warmmingup.buildup.admin.dto.NewUserDTO;
+import com.warmmingup.buildup.admin.dto.UserDTO;
 import com.warmmingup.buildup.admin.service.UserManagerService;
 import com.warmmingup.buildup.common.ResponseDTO;
+import com.warmmingup.buildup.common.paging.Pagenation;
+import com.warmmingup.buildup.common.paging.ResponseDtoWithPaging;
+import com.warmmingup.buildup.common.paging.SelectCriteria;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -26,25 +29,39 @@ public class UserManageController {
     }
 
     @GetMapping("/manage-users")
-    public ResponseEntity<ResponseDTO> findAllUsers (@RequestParam(name = "offset", defaultValue = "0") int offset, @RequestParam(name = "search", defaultValue = "") String search) {
+    public ResponseEntity<ResponseDTO> findAllUsers (@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "search", defaultValue = "") String search) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
-        int limit = 10;
+        Map<String, Object> userManage = new HashMap<>();
 
-        String startUser = offset * limit + 1 + "";
-        String endUser = (offset + 1) * limit + "";
-
-        Map<String, String> userManage = new HashMap<>();
-        userManage.put("start", startUser);
-        userManage.put("end", endUser);
         if (!"".equals(search)) {
-            System.out.println("%" + search + "%");
             userManage.put("search", "%" + search + "%");
         }
 
-        return ResponseEntity.ok().headers(headers).body(new ResponseDTO(HttpStatus.OK, "조회 성공", userManagerService.findAllUsers(userManage)));
+        int totalCount = userManagerService.findUserTotalCount(userManage);
+        int limit = 10;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(page, totalCount, limit, buttonAmount);
+
+        userManage.put("pageInfo", selectCriteria);
+
+        ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+        responseDtoWithPaging.setPageInfo(selectCriteria);
+        responseDtoWithPaging.setData(userManagerService.findAllUsers(userManage));
+
+        return ResponseEntity.ok().headers(headers).body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
+    }
+
+    @GetMapping("/manage-users/{userNo}")
+    public ResponseEntity<ResponseDTO> findUserInfo (@PathVariable int userNo) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return ResponseEntity.ok().headers(headers).body(new ResponseDTO(HttpStatus.OK, "조회 성공", userManagerService.findUserInfo(userNo)));
     }
 
     @PostMapping("/manage-users")
@@ -57,12 +74,19 @@ public class UserManageController {
         return ResponseEntity.created(URI.create("/api/v1/manage-users/" + newUser.getNo())).build();
     }
 
-    @PutMapping("/manage-users")
-    public ResponseEntity<?> updateUser (@RequestBody List<Integer> userNoList) {
+    @PutMapping("/manage-users/{userNo}")
+    public ResponseEntity<?> updateUser (@RequestBody UserDTO modifyUser, @PathVariable int userNo) {
 
-        userManagerService.updateUser(userNoList);
+        Map<String, Object> modifyUserInfo = new HashMap<>();
+        modifyUserInfo.put("oldNo", userNo);
+        modifyUserInfo.put("no", modifyUser.getNo());
+        modifyUserInfo.put("name", modifyUser.getName());
+        modifyUserInfo.put("email", modifyUser.getEmail());
+        modifyUserInfo.put("authority", modifyUser.getAuthority());
 
-        return ResponseEntity.created(URI.create("/api/v1/manage-users")).build();
+        userManagerService.updateUser(modifyUserInfo);
+
+        return ResponseEntity.created(URI.create("/api/v1/manage-users/" + userNo)).build();
     }
 
     @DeleteMapping("/manage-users/{userNo}")

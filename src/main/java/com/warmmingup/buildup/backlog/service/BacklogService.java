@@ -7,19 +7,15 @@ import java.util.Map;
 
 public interface BacklogService {
 
-    void updateBacklogs(BacklogDTO updateBacklog);
+    void updateBacklogs(int projectNo, BacklogDTO updateBacklog);
 
-    int registBacklog(BacklogDTO newBacklog);
-
-
-    List<BacklogDTO> findAllBacklogs();
+    int registBacklog(int projectNo, BacklogDTO newBacklog);
 
 
     void deleteBacklog(int backlogNo);
 
 
-    List<BacklogDTO> searchBacklogs(Map<String, Object> searchbacklog);
+    int selectBacklogTotal(Map<String, Object> backlogConnect);
+
+    List<BacklogDTO> selectBacklogListWithPaging(Map<String, Object> selectCriteria);
 }
-
-
-

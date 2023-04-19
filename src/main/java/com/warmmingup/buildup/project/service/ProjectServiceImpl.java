@@ -1,11 +1,15 @@
 package com.warmmingup.buildup.project.service;
 
 import com.warmmingup.buildup.project.dao.ProjectMapper;
+import com.warmmingup.buildup.project.dto.BringProjectDTO;
 import com.warmmingup.buildup.project.dto.ProjectDTO;
+import com.warmmingup.buildup.project.dto.projectEmployeeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,21 +31,24 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public int registProject(ProjectDTO newProject) {
+    public int registProject(BringProjectDTO newProject) {
 
         projectMapper.insertProject(newProject);
-        ProjectDTO project = projectMapper.selectEmployeeNo(newProject);
+        for(projectEmployeeDTO employee : newProject.getEmployeeName()) {
+            if(employee == null) {
+                continue;
 
-        projectMapper.insertProjectEmployee(project);
-
+            }
+            projectMapper.insertProjectEmployee(employee);
+        }
         return projectMapper.findProjectsByNo(newProject);
     }
 
-    @Override
-    public void modifyProjectTitle(ProjectDTO updateTitle) {
-
-        projectMapper.modifyProjectTitle(updateTitle);
-    }
+//    @Override
+//    public void modifyProjectTitle(ProjectDTO updateTitle) {
+//
+//        projectMapper.modifyProjectTitle(updateTitle);
+//    }
 
     @Override
     public List<ProjectDTO> findAllProjectMembers(Map<String, Integer> projectMemberCnt) {
@@ -60,6 +67,39 @@ public class ProjectServiceImpl implements ProjectService {
 
         projectMapper.modifyProjectManagerTitle(modifyTitle);
     }
+
+    @Override
+    public void removeProject(int projectNo) {
+
+        projectMapper.removeProject(projectNo);
+    }
+
+    @Override
+    @Transactional
+    public void inviteTeamMember(BringProjectDTO inviteMember) {
+
+        projectMapper.inviteTeamMember(inviteMember);
+
+    }
+
+    @Override
+    public void removeTeamMember(Map<String, Object> removeMember) {
+
+        projectMapper.removeTeamMember(removeMember);
+    }
+
+    @Override
+    public void modifyMemberAuthority(Map<String, Object> map) {
+
+        projectMapper.modifyMemberAuthority(map);
+    }
+
+
+//    @Override
+//    public List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers) {
+//
+//        return projectMapper.searchMembers(searchMembers);
+//    }
 
 
 }

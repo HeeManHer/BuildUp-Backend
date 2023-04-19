@@ -4,11 +4,6 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.warmmingup.buildup.admin.dao.AuthorityManageMapper">
 
-    <resultMap id="authRole" type="com.warmmingup.buildup.admin.dto.AuthRoleDTO">
-        <id property="roleNo" column="ROLE_NO"/>
-        <result property="roleName" column="ROLE_NAME"/>
-    </resultMap>
-
     <resultMap id="authType" type="com.warmmingup.buildup.admin.dto.AuthTypeDTO">
         <id property="typeNo" column="TYPE_NO"/>
         <result property="typeName" column="TYPE_NAME"/>
@@ -17,31 +12,56 @@
     <resultMap id="authority" type="com.warmmingup.buildup.admin.dto.AuthorityDTO">
         <id property="roleNo" column="ROLE_NO"/>
         <result property="roleName" column="ROLE_NAME"/>
-        <result property="typeNo" column="TYPE_NO"/>
-        <result property="typeName" column="TYPE_NAME"/>
-        <result property="state" column="AUTHORITY_STATE"/>
+        <collection property="type" ofType="com.warmmingup.buildup.admin.dto.AuthTypeDTO">
+            <id property="typeNo" column="TYPE_NO"/>
+            <result property="typeName" column="TYPE_NAME"/>
+            <collection property="state" ofType="String" column="AUTHORITY_STATE"/>
+        </collection>
     </resultMap>
 
-    <select id="selectAuthority" resultMap="authority">
+    <select id="selectAuthorityTotalCount" resultType="_int">
         SELECT
-               A.ROLE_NO
+               COUNT(*)
+          FROM ROLE A
+    </select>
+
+    <select id="selectAllAuthority" parameterType="com.warmmingup.buildup.common.paging.SelectCriteria" resultMap="authority">
+        SELECT
+               F.AUTHORITY_STATE
+             , F.ROLE_NO
+             , F.ROLE_NAME
+             , F.TYPE_NO
+             , F.TYPE_NAME
+          FROM ( SELECT DENSE_RANK() OVER (ORDER BY ROLE_NO) RN
+                      , E.*
+                   FROM ( SELECT C.AUTHORITY_STATE
+                               , A.ROLE_NO
+                               , A.ROLE_NAME
+                               , D.TYPE_NO
+                               , D.TYPE_NAME
+                            FROM ROLE A
+                            LEFT JOIN ROLE_AUTHORITY_TYPE B ON ( A.ROLE_NO = B.ROLE_NO )
+                            LEFT JOIN AUTHORITY C ON ( B.AUTHORITY_NO = C.AUTHORITY_NO )
+                            LEFT JOIN AUTHORITY_TYPE D ON ( C.TYPE_NO = D.TYPE_NO )
+                           ORDER BY A.ROLE_NO, D.TYPE_NO, C.AUTHORITY_NO
+                        ) E
+               ) F
+         WHERE F.RN BETWEEN #{startRow} AND #{endRow}
+    </select>
+
+    <select id="selectAuthorityByNo" parameterType="_int" resultMap="authority">
+        SELECT
+               C.AUTHORITY_STATE
+             , A.ROLE_NO
              , A.ROLE_NAME
              , D.TYPE_NO
              , D.TYPE_NAME
-             , C.AUTHORITY_STATE
           FROM ROLE A
-          JOIN ROLE_AUTHORITY_TYPE B ON ( A.ROLE_NO = B.ROLE_NO )
-          JOIN AUTHORITY C ON ( B.AUTHORITY_NO = C.AUTHORITY_NO )
-          JOIN AUTHORITY_TYPE D ON ( C.TYPE_NO = D.TYPE_NO )
-         ORDER BY A.ROLE_NO, D.TYPE_NO, C.AUTHORITY_NO
-    </select>
-
-    <select id="selectAllAuthRoles" resultMap="authRole">
-        SELECT
-               ROLE_NO
-             , ROLE_NAME
-          FROM ROLE
-         ORDER BY ROLE_NO
+          LEFT JOIN ROLE_AUTHORITY_TYPE B ON ( A.ROLE_NO = B.ROLE_NO )
+          LEFT JOIN AUTHORITY C ON ( B.AUTHORITY_NO = C.AUTHORITY_NO )
+          LEFT JOIN AUTHORITY_TYPE D ON ( C.TYPE_NO = D.TYPE_NO )
+         WHERE A.ROLE_NO=#{roleNo}
+         ORDER BY D.TYPE_NO, C.AUTHORITY_NO
     </select>
 
     <select id="selectAllAuthTypes" resultMap="authType">
@@ -52,60 +72,44 @@
          ORDER BY TYPE_NO
     </select>
 
-    <select id="selectAuthNo" resultType="_int">
-        SELECT MAX(ROLE_NO)+1
-          FROM ROLE
-    </select>
-
-    <select id="selectRoleName" parameterType="com.warmmingup.buildup.admin.dto.AuthorityDTO" resultType="_int">
-        SELECT ROLE_NO
-          FROM ROLE
-         WHERE ROLE_NAME = #{roleName}
-    </select>
-
     <insert id="insertNewRole" parameterType="com.warmmingup.buildup.admin.dto.AuthorityDTO">
         INSERT
-          INTO ROLE A
+          INTO ROLE
         (
           ROLE_NO
         , ROLE_NAME
         )
         VALUES
         (
-          #{roleNo}
+          SEQ_AUTHORITY_NO.NEXTVAL
         , #{roleName}
         )
     </insert>
 
     <insert id="insertAuthority" parameterType="hashmap">
-        <selectKey keyProperty="typeNo" order="BEFORE" resultType="_int">
-            SELECT TYPE_NO
-              FROM AUTHORITY_TYPE
-             WHERE TYPE_NAME = #{typeName}
-        </selectKey>
-
         INSERT
           INTO ROLE_AUTHORITY_TYPE
         (
           ROLE_NO
         , AUTHORITY_NO
         )
-        VALUES
         (
-          #{roleNo},
-        (
-          SELECT AUTHORITY_NO
-            FROM AUTHORITY
-           WHERE AUTHORITY_STATE = #{state}
-             AND TYPE_NO=#{typeNo}
-        )
+        SELECT #{roleNo}
+             , AUTHORITY_NO
+          FROM AUTHORITY
+         WHERE AUTHORITY_STATE =#{state}
+           AND TYPE_NO = #{typeNo}
         )
     </insert>
 
+    <select id="selectAuthNo" resultType="_int">
+        SELECT SEQ_AUTHORITY_NO.CURRVAL
+          FROM DUAL
+    </select>
+
     <update id="updateRole" parameterType="com.warmmingup.buildup.admin.dto.AuthorityDTO">
         UPDATE ROLE
-           SET
-               ROLE_NAME = #{roleName}
+           SET ROLE_NAME = #{roleName}
          WHERE ROLE_NO = #{roleNo}
     </update>
 
@@ -121,5 +125,81 @@
          WHERE ROLE_NO = #{roleNo}
     </delete>
 
+    <insert id="insertNewType" parameterType="com.warmmingup.buildup.admin.dto.AuthTypeDTO">
+        INSERT
+          INTO AUTHORITY_TYPE
+        (
+          TYPE_NO
+        , TYPE_NAME
+        )
+        VALUES
+        (
+          ( SELECT MAX(TYPE_NO)+1 TYPE_NO
+              FROM AUTHORITY_TYPE
+          )
+        , #{typeName}
+        )
+    </insert>
+    
+    <insert id="insertNewAuthorityState" parameterType="com.warmmingup.buildup.admin.dto.AuthTypeDTO">
+        INSERT
+          INTO AUTHORITY
+        (
+          AUTHORITY_NO
+        , AUTHORITY_STATE
+        , TYPE_NO
+        )
+        (
+        SELECT ( SELECT MAX(AUTHORITY_NO)
+                   FROM AUTHORITY
+               ) + AUTHORITY_NO AUTHORITY_NO
+             , AUTHORITY_STATE
+             , ( SELECT TYPE_NO
+                   FROM AUTHORITY_TYPE
+                  WHERE TYPE_NAME = #{typeName}
+               ) TYPE_NO
+          FROM AUTHORITY
+         WHERE ROWNUM &lt; 5
+        )
+    </insert>
 
+    <insert id="insertNewAuthority" parameterType="com.warmmingup.buildup.admin.dto.AuthTypeDTO">
+        INSERT
+          INTO ROLE_AUTHORITY_TYPE
+        (
+          ROLE_NO
+        , AUTHORITY_NO
+        )
+        (
+        SELECT R.ROLE_NO
+             , A.AUTHORITY_NO
+          FROM AUTHORITY A, ROLE R
+         WHERE A.AUTHORITY_STATE = 'R'
+           AND A.TYPE_NO = ( SELECT T.TYPE_NO
+                               FROM AUTHORITY_TYPE T
+                              WHERE T.TYPE_NAME = #{typeName}
+                           )
+        )
+    </insert>
+
+    <select id="selectNewTypeNo" parameterType="com.warmmingup.buildup.admin.dto.AuthTypeDTO" resultType="_int">
+        SELECT TYPE_NO
+          FROM AUTHORITY_TYPE
+         WHERE TYPE_NAME = #{typeName}
+    </select>
+
+    <delete id="deleteType" parameterType="String">
+        DELETE
+        FROM AUTHORITY_TYPE
+        WHERE TYPE_NAME = #{typeName}
+    </delete>
+
+    <delete id="deleteAuthorityType" parameterType="String">
+        DELETE
+        FROM AUTHORITY
+        WHERE TYPE_NO = ( SELECT TYPE_NO
+                            FROM AUTHORITY_TYPE
+                           WHERE TYPE_NAME = #{typeName}
+                        )
+    </delete>
 </mapper>

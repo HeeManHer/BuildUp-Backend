@@ -13,3 +13,7 @@ spring:
 # mybatis config
 mybatis:
   mapper-locations: mappers/**/*.xml
+
+
+jwt:
+  secret: appleasdasdasdaskjdhkjsahfkjhaljkhaslkdjalkshfljkahslkdfhasdasdasdasdasdasdasddajkshdkjahsdkjahsdjhasdkjhakjsdh
