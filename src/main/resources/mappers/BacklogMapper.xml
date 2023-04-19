@@ -12,19 +12,82 @@
         <result property="backlogStatus" column="BACKLOG_STATUS"/>
         <result property="backlogPriority" column="BACKLOG_PRIORITY"/>
         <result property="projectNo" column="PROJECT_NO"/>
+
     </resultMap>
 
-    <select id="findAllBacklogs" resultMap="BacklogResultMap">
-        SELECT A.*
-        FROM BACKLOG A
+    <select id="selectBacklogListWithPaging" parameterType="hashmap" resultMap="BacklogResultMap">
+        SELECT
+                b.BACKLOG_NO
+                , b.BACKLOG_NAME
+                , b.BACKLOG_CONTENT
+                , b.BACKLOG_PRIORITY
+                , b.BACKLOG_STATUS
+                , b.PROJECT_NO
+        FROM
+        (
+                SELECT
+                        a.*,
+                        ROWNUM R
+                FROM
+                (
+                        SELECT
+                                *
+                          FROM
+                                BACKLOG
+                         WHERE
+                                PROJECT_NO = #{projectNo}
+                        <if test="searchValue != null">
+                            and(
+                                BACKLOG_NAME
+                            LIKE #{searchValue}
+                            OR BACKLOG_CONTENT
+                            LIKE #{searchValue}
+                            OR BACKLOG_PRIORITY
+                            LIKE #{searchValue}
+                            OR BACKLOG_STATUS
+                            LIKE #{searchValue}
+                            )
+                        </if>
+                ) a
+        ) b
+        WHERE
+                b.R BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
+        ORDER BY BACKLOG_NO ASC
     </select>
+
+    <select id="selectBacklogTotal" resultType="_int" parameterType="hashmap">
+
+        SELECT
+                COUNT(*)
+        FROM
+                BACKLOG
+        WHERE
+                PROJECT_NO = ${projectNo}
+        <if test="searchValue != null">
+            and(
+            BACKLOG_NAME
+            LIKE #{searchValue}
+            OR BACKLOG_CONTENT
+            LIKE #{searchValue}
+            OR BACKLOG_PRIORITY
+            LIKE #{searchValue}
+            OR BACKLOG_STATUS
+            LIKE #{searchValue}
+            )
+        </if>
+        ORDER BY BACKLOG_NO ASC
+
+
+    </select>
+
+
 
     <select id="findBacklog" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
         SELECT
         BACKLOG_CONTENT FROM BACKLOG
         WHERE
         BACKLOG_CONTENT = #{backlogContent}
-
+        ORDER BY BACKLOG_NO ASC
     </select>
 
     <select id="findBacklogsByNo" resultType="_int">
@@ -71,12 +134,5 @@
             BACKLOG_NO = #{backlogNo}
     </delete>
 
-    <select id="searchbacklog" resultMap="BacklogResultMap" parameterType="hashmap">
-        SELECT *
-            FROM BACKLOG
-        WHERE
-            BACKLOG_CONTENT LIKE #{search}
-        OR  BACKLOG_NAME LIKE #{search}
-        OR  BACKLOG_NO LIKE #{search}
-    </select>
+
 </mapper>

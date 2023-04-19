@@ -2,6 +2,9 @@ package com.warmmingup.buildup.backlog.controller;
 import com.warmmingup.buildup.backlog.dto.BacklogDTO;
 import com.warmmingup.buildup.backlog.service.BacklogService;
 import com.warmmingup.buildup.common.ResponseDTO;
+import com.warmmingup.buildup.common.paging.Pagenation;
+import com.warmmingup.buildup.common.paging.ResponseDtoWithPaging;
+import com.warmmingup.buildup.common.paging.SelectCriteria;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,57 +27,47 @@ public class BacklogController {
         this.backlogService = backlogService;
     }
 
-    @GetMapping("/backlogs")
-    public ResponseEntity<ResponseDTO> getBacklog(@RequestParam(name = "offset", defaultValue = "0") int offSet) {
+
+    @GetMapping("/{projectNo}/backlogs")
+    public ResponseEntity<ResponseDTO> findAllBacklogs(@RequestParam(name = "offset", defaultValue = "1") int offSet
+                                                      ,@PathVariable(name = "projectNo") int projectNo
+                                                      ,@RequestParam(name = "search", defaultValue="" )String searchValue) {
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(
-                new MediaType("application", "json", Charset.forName("UTF-8")));
+                new MediaType("application", "json",Charset.forName("UTF-8")));
+
+        Map<String, Object> BacklogConnect = new HashMap<>();
+
+        BacklogConnect.put("projectNo",projectNo);
+        if(! "".equals(searchValue)){
+            BacklogConnect.put("searchValue","%"+searchValue+"%");
+        }
+
+        int totalCount = backlogService.selectBacklogTotal(BacklogConnect);
         int limit = 5;
-        int startBacklog = offSet + 1;
-        int endBacklog = startBacklog + limit;
+        int buttonAmount = 10;
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(offSet, totalCount, limit, buttonAmount);
+        BacklogConnect.put("pageInfo",selectCriteria);
 
-        Map<String, Integer> BacklogConnect = new HashMap<>();
-        BacklogConnect.put("start", startBacklog);
-        BacklogConnect.put("end", endBacklog);
-        List<BacklogDTO> backlogs = backlogService.findAllBacklogs();
-        return ResponseEntity.ok().headers(headers).body(new ResponseDTO(HttpStatus.OK, "조회 성공", backlogService.findAllBacklogs()));
+        ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+        responseDtoWithPaging.setPageInfo(selectCriteria);
+        responseDtoWithPaging.setData(backlogService.selectBacklogListWithPaging(BacklogConnect));
 
-    }
+        System.out.println(responseDtoWithPaging);
 
-    @GetMapping("/backlogs/search")
-    public ResponseEntity<ResponseDTO> getBacklogs(@RequestParam(name = "search") String searchValue,
-                                                 @RequestParam(name = "offset", defaultValue = "0") int offset) {
+        return ResponseEntity.ok().headers(headers).body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        int limit = 5;
-        int startBacklog = offset;
-        int endBacklog = startBacklog + limit;
-
-        Map<String, Object> searchbacklog = new HashMap<>();
-        searchbacklog.put("start",startBacklog);
-        searchbacklog.put("search",'%' + searchValue + '%');
-        searchbacklog.put("end",endBacklog);
-        List<BacklogDTO> backlogs = backlogService.searchBacklogs(searchbacklog);
-
-        ResponseDTO responseDTO = new ResponseDTO();
-        responseDTO.setData(backlogs);
-
-        return new ResponseEntity<>(responseDTO, headers, HttpStatus.OK);
     }
 
 
 
+    @PostMapping("/project/{projectNo}/backlogs")
+    public ResponseEntity<?> registBacklog(@RequestBody BacklogDTO newBacklog
+                                          ,@PathVariable(name = "projectNo") int projectNo) {
+        int backlogNo = backlogService.registBacklog(projectNo,newBacklog);
 
-
-
-
-
-    @PostMapping("/backlogs")
-    public ResponseEntity<?> registBacklog(@RequestBody BacklogDTO newBacklog) {
-        System.out.println(newBacklog);
-        int backlogNo = backlogService.registBacklog(newBacklog);
 
         return ResponseEntity
                 .created(URI.create("/backlogs/" + backlogNo)).build();
@@ -82,9 +75,10 @@ public class BacklogController {
 
     }
 
-    @PutMapping("/backlogs")
-    public ResponseEntity<ResponseDTO> updateBacklog(@RequestBody BacklogDTO updateBacklog) {
-        backlogService.updateBacklogs(updateBacklog);
+    @PutMapping("/project/{projectNo}/backlogs")
+    public ResponseEntity<ResponseDTO> updateBacklog(@RequestBody BacklogDTO updateBacklog
+                                                    ,@PathVariable(name = "projectNo") int projectNo) {
+        backlogService.updateBacklogs(projectNo,updateBacklog);
         return ResponseEntity.created(URI.create("/api/v1/backlgs/" + updateBacklog.getBacklogNo())).build();
 
     }
@@ -94,6 +88,7 @@ public class BacklogController {
         backlogService.deleteBacklog(backlogNo);
         return ResponseEntity.noContent().build();
     }
+
 
 
 
