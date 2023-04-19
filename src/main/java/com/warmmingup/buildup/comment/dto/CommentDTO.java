@@ -2,7 +2,7 @@ package com.warmmingup.buildup.comment.dto;
 
 
 import org.apache.ibatis.type.Alias;
-import org.springframework.http.HttpStatus;
+
 
 
 import java.util.Date;
@@ -15,15 +15,19 @@ public class CommentDTO {
 
     private int employeeNo;
 
+    private int replyNo;
+
     private String replyContent;
 
     private Date replyDate;
 
     public CommentDTO() {}
 
-    public CommentDTO(int issueNo, int employeeNo, String replyContent, Date replyDate) {
+
+    public CommentDTO(int issueNo, int employeeNo, int replyNo, String replyContent, Date replyDate) {
         this.issueNo = issueNo;
         this.employeeNo = employeeNo;
+        this.replyNo = replyNo;
         this.replyContent = replyContent;
         this.replyDate = replyDate;
     }
@@ -42,6 +46,14 @@ public class CommentDTO {
 
     public void setEmployeeNo(int employeeNo) {
         this.employeeNo = employeeNo;
+    }
+
+    public int getReplyNo() {
+        return replyNo;
+    }
+
+    public void setReplyNo(int replyNo) {
+        this.replyNo = replyNo;
     }
 
     public String getReplyContent() {
@@ -65,9 +77,9 @@ public class CommentDTO {
         return "CommentDTO{" +
                 "issueNo=" + issueNo +
                 ", employeeNo=" + employeeNo +
+                ", replyNo=" + replyNo +
                 ", replyContent='" + replyContent + '\'' +
                 ", replyDate=" + replyDate +
                 '}';
     }
 }
-

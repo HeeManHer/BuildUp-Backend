@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface CommentMapper {
 
-    List<CommentDTO> findAllComments();
+    List<CommentDTO> findAllComments(int commentConnect);
 
 
     int insertComment(CommentDTO newComment);
@@ -18,5 +18,7 @@ public interface CommentMapper {
 
     int patchComment(CommentDTO newComment);
 
-    int deleteComment(CommentDTO newComment);
+    int deleteComment(int replyNo);
+
+    int selectCommentNo();
 }

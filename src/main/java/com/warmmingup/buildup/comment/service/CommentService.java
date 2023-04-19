@@ -7,13 +7,13 @@ import java.util.List;
 
 public interface CommentService {
 
-    List<CommentDTO> findAllComments();
+    List<CommentDTO> findAllComments(int commentConnect);
 
-   Object insertComment(CommentDTO newComment);
+   int insertComment(CommentDTO newComment);
 
-    Object updateComment(CommentDTO newComment);
+    void updateComment(CommentDTO newComment);
 
     Object patchComment(CommentDTO newComment);
 
-    Object deleteComment(CommentDTO newComment);
+    void deleteComment(int replyNo);
 }
