@@ -11,12 +11,18 @@ import java.util.Map;
 public class ProjectManageServiceImpl implements ProjectManageService {
     private final ProjectManageMapper projectManageMapper;
 
-    public ProjectManageServiceImpl (ProjectManageMapper projectManageMapper) {
+    public ProjectManageServiceImpl(ProjectManageMapper projectManageMapper) {
         this.projectManageMapper = projectManageMapper;
     }
 
     @Override
-    public List<ProjectManageDTO> findProjectManage (Map<String, String> projectManage) {
+    public int findProjectTotalCount(Map<String, Object> projectManage) {
+
+        return projectManageMapper.selectProjectTotalCount(projectManage);
+    }
+
+    @Override
+    public List<ProjectManageDTO> findProjectManage(Map<String, Object> projectManage) {
 
         return projectManageMapper.selectProject(projectManage);
     }

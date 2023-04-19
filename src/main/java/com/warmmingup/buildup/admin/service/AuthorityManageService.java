@@ -2,21 +2,26 @@ package com.warmmingup.buildup.admin.service;
 
 import com.warmmingup.buildup.admin.dto.AuthTypeDTO;
 import com.warmmingup.buildup.admin.dto.AuthorityDTO;
+import com.warmmingup.buildup.common.paging.SelectCriteria;
 
 import java.util.List;
 
 public interface AuthorityManageService {
-    List<AuthorityDTO> findAuthority ();
+    int findAuthorityTotalCount ();
 
-    int selectAuthNo ();
+    List<AuthorityDTO> findAllAuthority (SelectCriteria selectCriteria);
 
-    void registAuthority (AuthorityDTO role);
+    List<AuthorityDTO> findAuthorityDetail (int authNo);
 
-    void updateAuthority (List<AuthorityDTO> role);
+    List<AuthTypeDTO> findAuthType ();
+
+    int registAuthority (AuthorityDTO role);
+
+    void updateAuthority (AuthorityDTO role);
 
     void deleteAuthority (int roleNo);
 
-    List<AuthorityDTO> findAuthRole ();
+    int addNewAuthType (AuthTypeDTO type);
 
-    List<AuthTypeDTO> findAuthType ();
+    void deleteAuthType (String typeNo);
 }

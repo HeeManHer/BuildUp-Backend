@@ -10,6 +10,19 @@
         <result property="authority" column="ROLE_NAME"/>
     </resultMap>
 
+    <select id="selectUserTotalCount" parameterType="hashmap" resultType="_int">
+        SELECT COUNT(*)
+          FROM EMPLOYEE A
+          LEFT JOIN CREATED_PROJECT B ON ( A.EMPLOYEE_NO = B.EMPLOYEE_NO )
+          LEFT JOIN ROLE C ON ( B.ROLE_NO = C.ROLE_NO )
+        <if test="search != null">
+            WHERE A.EMPLOYEE_NO LIKE #{search}
+            OR A.EMPLOYEE_NAME LIKE #{search}
+            OR A.EMPLOYEE_EMAIL LIKE #{search}
+            OR C.ROLE_NAME LIKE #{search}
+        </if>
+         ORDER BY A.EMPLOYEE_NO
+    </select>
 
     <select id="selectAllUsers" parameterType="hashmap" resultMap="userResultMap">
         SELECT
@@ -35,7 +48,18 @@
                            ORDER BY A.EMPLOYEE_NO
                         ) D
                ) E
-          WHERE E.R BETWEEN #{start} AND #{end}
+          WHERE E.R BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
+    </select>
+
+    <select id="selectUserByNo" parameterType="_int" resultMap="userResultMap">
+        SELECT A.EMPLOYEE_NO
+             , A.EMPLOYEE_NAME
+             , A.EMPLOYEE_EMAIL
+             , C.ROLE_NAME
+          FROM EMPLOYEE A
+          LEFT JOIN CREATED_PROJECT B ON ( A.EMPLOYEE_NO = B.EMPLOYEE_NO )
+          LEFT JOIN ROLE C ON ( B.ROLE_NO = C.ROLE_NO )
+         WHERE A.EMPLOYEE_NO = #{userNo}
     </select>
 
 
@@ -68,6 +92,15 @@
         , 1
         )
     </insert>
+
+    <update id="updateUser" parameterType="hashmap">
+        UPDATE EMPLOYEE
+           SET
+                EMPLOYEE_NO = #{no}
+              , EMPLOYEE_NAME = #{name}
+              , EMPLOYEE_EMAIL = #{email}
+        WHERE EMPLOYEE_NO = #{oldNo}
+    </update>
 
     <delete id="deleteUser" parameterType="_int">
         DELETE

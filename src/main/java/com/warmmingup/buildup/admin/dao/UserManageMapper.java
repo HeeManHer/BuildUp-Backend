@@ -9,15 +9,19 @@ import java.util.Map;
 
 @Mapper
 public interface UserManageMapper {
-    List<UserDTO> selectAllUsers (Map<String, String> userCnt);
+    int selectUserTotalCount(Map<String, Object> userManage);
 
-    void insertNewUser (NewUserDTO newUser);
+    List<UserDTO> selectAllUsers(Map<String, Object> userCnt);
 
-    void insertNewCreatedProject (int newUser);
+    List<UserDTO> selectUserByNo(int userNo);
 
-    void deleteUser (int userNo);
+    void insertNewUser(NewUserDTO newUser);
 
-    void updateUser (int userNo);
+    void insertNewCreatedProject(int newUser);
 
-    void deleteAuthority (int userNo);
+    void deleteUser(int userNo);
+
+    void updateUser(Map<String, Object> userNo);
+
+    void deleteAuthority(int userNo);
 }

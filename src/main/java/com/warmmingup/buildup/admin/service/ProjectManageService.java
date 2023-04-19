@@ -6,5 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProjectManageService {
-    List<ProjectManageDTO> findProjectManage (Map<String, String> projectManage);
+    int findProjectTotalCount(Map<String, Object> projectManage);
+
+    List<ProjectManageDTO> findProjectManage(Map<String, Object> projectManage);
 }
