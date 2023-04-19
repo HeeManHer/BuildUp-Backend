@@ -10,13 +10,17 @@ public interface IssueService {
 
     int registIssue(IssueDTO newIssue);
 
-    List<IssueDTO> findAllIssues();
+//    List<IssueDTO> findAllIssues();
 
     void updateIssues(IssueDTO updateIssue);
 
     void removeIssues(int removeIssue);
 
-    List<ISSUEBDTO> getBacklogByNo();
+    List<ISSUEBDTO> getBacklogByNo(int projectNo);
 
     List<IssueDTO> searchIssues(Map<String, Object> searchissue);
+
+    List<IssueDTO> findAllIssues(Map<String, Object> issueConnect);
+
+    int selectIssueTotal(int projectNo);
 }

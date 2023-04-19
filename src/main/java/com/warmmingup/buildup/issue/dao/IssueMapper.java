@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface IssueMapper {
 
-    List<IssueDTO> findAllIssues();
+    List<IssueDTO> findAllIssues(Map<String, Object> issueConnect);
 
     int addIssues(IssueDTO newIssue);
 
@@ -20,7 +20,13 @@ public interface IssueMapper {
 
     void deleteIssues(int deleteIssue);
 
-    List<ISSUEBDTO> selectbackloglist();
+//    List<ISSUEBDTO> selectbackloglist();
 
     List<IssueDTO> searchIssue(Map<String, Object> searchissue);
+
+
+    List<ISSUEBDTO> selectbackloglist(int projectNo);
+
+
+    int selectIssueTotalCount(int projectNo);
 }
