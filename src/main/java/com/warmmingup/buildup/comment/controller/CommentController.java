@@ -3,11 +3,12 @@ package com.warmmingup.buildup.comment.controller;
 import com.warmmingup.buildup.comment.dto.CommentDTO;
 import com.warmmingup.buildup.comment.service.CommentService;
 import com.warmmingup.buildup.common.ResponseDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,19 +23,10 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @GetMapping("/comments")
-    public ResponseEntity<ResponseDTO> getComment(@RequestParam(name = "offset", defaultValue = "1") int offset) {
+    @GetMapping("/issue/{issueNo}/comments")
+    public ResponseEntity<ResponseDTO> getComment(@RequestParam(name = "offset", defaultValue = "1") int offset, @PathVariable int issueNo) {
 
-        int limit = 10;
-
-        int startComment = offset + 1;
-        int endComment = startComment + limit;
-
-        Map<String, Integer> CommentConnect = new HashMap<>();
-        CommentConnect.put("start", startComment);
-        CommentConnect.put("end", endComment);
-
-        List<CommentDTO> reply = commentService.findAllComments();
+        List<CommentDTO> reply = commentService.findAllComments(issueNo);
         System.out.println(reply);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공!", reply));
@@ -42,16 +34,22 @@ public class CommentController {
 
     @PostMapping(value = "/comments")
     public ResponseEntity<ResponseDTO> insertComment(@RequestBody CommentDTO newComment) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK,
-                "상품 입력 성공",
-                commentService.insertComment(newComment)));
+
+        newComment.setReplyDate(new Date());
+        System.out.println(newComment);
+        int replyNo= commentService.insertComment(newComment);
+
+        return ResponseEntity.created(URI.create("/api/v1/comments/"+replyNo)).build();
     }
 
     @PutMapping(value = "/comments")
     public ResponseEntity<ResponseDTO> updateComment(@RequestBody CommentDTO newComment) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK,
-                "상품 입력 성공",
-                commentService.updateComment(newComment)));
+
+        newComment.setReplyDate(new Date());
+        System.out.println(newComment);
+        commentService.updateComment(newComment);
+
+        return ResponseEntity.created(URI.create("/api/v1/comments/"+newComment.getReplyNo())).build();
     }
     @PatchMapping(value = "/comments")
     public ResponseEntity<ResponseDTO> patchComment(@RequestBody CommentDTO newComment) {
@@ -60,10 +58,10 @@ public class CommentController {
                 commentService.patchComment(newComment)));
     }
 
-    @DeleteMapping(value = "/comments")
-    public ResponseEntity<ResponseDTO> deleteComment(@RequestBody CommentDTO newComment) {
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK,
-                "상품 입력 성공",
-                commentService.deleteComment(newComment)));
+    @DeleteMapping(value = "/comments/{replyNo}")
+    public ResponseEntity<ResponseDTO> deleteComment(@PathVariable int replyNo) {
+
+        commentService.deleteComment(replyNo);
+        return ResponseEntity.created(URI.create("/api/v1/comments/"+replyNo)).build();
     }
 }
