@@ -56,6 +56,13 @@ public class ProjectController {
                 .created(URI.create("/projects/" + projectNo)).build();
     }
 
+    @GetMapping("/projects/authority")
+    public ResponseEntity<ResponseDTO> getAuthority() {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", projectService.findAuthority()));
+    }
+
+
 //    /* 프로젝트 조회 페이지 프로젝트 명 수정 */
 //    @PutMapping("/projects")
 //    public ResponseEntity<ResponseDTO> modifyProjectTitle(@RequestBody ProjectDTO updateTitle) {

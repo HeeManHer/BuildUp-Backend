@@ -1,6 +1,7 @@
 package com.warmmingup.buildup.project.service;
 
 import com.warmmingup.buildup.project.dao.ProjectMapper;
+import com.warmmingup.buildup.project.dto.AuthorityDTO;
 import com.warmmingup.buildup.project.dto.BringProjectDTO;
 import com.warmmingup.buildup.project.dto.ProjectDTO;
 import com.warmmingup.buildup.project.dto.projectEmployeeDTO;
@@ -92,6 +93,12 @@ public class ProjectServiceImpl implements ProjectService {
     public void modifyMemberAuthority(Map<String, Object> map) {
 
         projectMapper.modifyMemberAuthority(map);
+    }
+
+    @Override
+    public List<AuthorityDTO> findAuthority() {
+
+        return projectMapper.findAuthority();
     }
 
 

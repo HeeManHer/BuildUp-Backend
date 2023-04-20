@@ -21,6 +21,11 @@
         <result property="employeeEmail" column="EMPLOYEE_EMAIL"/>
     </resultMap>
 
+    <resultMap id="AuthorityMap" type="com.warmmingup.buildup.project.dto.AuthorityDTO">
+        <id property="roleNo" column="ROLE_NO"/>
+        <result property="roleName" column="ROLE_NAME"/>
+    </resultMap>
+
     <select id="findAllProjects" resultMap="ProjectResultMap">
         SELECT
                P.PROJECT_NO
@@ -175,6 +180,17 @@
          WHERE PROJECT_NO = #{projectNo}
            AND EMPLOYEE_NO = #{employeeNo}
     </update>
+
+    <select id="findAuthority" resultMap="AuthorityMap">
+        SELECT
+               ROLE_NO
+             , ROLE_NAME
+          FROM ROLE
+    </select>
+
+
+
+
 
 <!--    <select id="searchMembers" parameterType="hashmap" resultMap="ProjectEmployeeMap">-->
 <!--        SELECT-->
