@@ -182,24 +182,30 @@
         )
     </insert>
 
-    <select id="selectNewTypeNo" parameterType="com.warmmingup.buildup.admin.dto.AuthTypeDTO" resultType="_int">
+    <select id="selectTypeNo" parameterType="String" resultType="_int">
         SELECT TYPE_NO
           FROM AUTHORITY_TYPE
          WHERE TYPE_NAME = #{typeName}
     </select>
 
-    <delete id="deleteType" parameterType="String">
+    <delete id="deleteType" parameterType="_int">
         DELETE
-        FROM AUTHORITY_TYPE
-        WHERE TYPE_NAME = #{typeName}
+          FROM AUTHORITY_TYPE
+         WHERE TYPE_NO = #{typeNo}
     </delete>
 
-    <delete id="deleteAuthorityType" parameterType="String">
+    <delete id="deleteAuthorityType" parameterType="_int">
         DELETE
-        FROM AUTHORITY
-        WHERE TYPE_NO = ( SELECT TYPE_NO
-                            FROM AUTHORITY_TYPE
-                           WHERE TYPE_NAME = #{typeName}
-                        )
+          FROM AUTHORITY
+         WHERE TYPE_NO = #{typeNo}
+    </delete>
+
+    <delete id="deleteRoleAuthorityType" parameterType="_int">
+        DELETE
+          FROM ROLE_AUTHORITY_TYPE
+         WHERE AUTHORITY_NO IN ( SELECT TYPE_NO
+                                   FROM AUTHORITY
+                                  WHERE TYPE_NO = #{typeNo}
+                               )
     </delete>
 </mapper>

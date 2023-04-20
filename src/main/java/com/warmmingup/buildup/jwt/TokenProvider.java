@@ -7,6 +7,8 @@ package com.warmmingup.buildup.jwt;
 //import io.jsonwebtoken.*;
 //import io.jsonwebtoken.io.Decoders;
 //import io.jsonwebtoken.security.Keys;
+
+import com.warmmingup.buildup.admin.dto.AdminLoginDTO;
 import com.warmmingup.buildup.exception.TokenException;
 import com.warmmingup.buildup.login.dto.MemberDTO;
 import com.warmmingup.buildup.login.dto.TokenDTO;
@@ -40,49 +42,57 @@ public class TokenProvider {
 
     private final Key key;
 
-    public TokenProvider(@Value("${jwt.secret}") String secretKey, UserDetailsService userDetailsService) {
+    public TokenProvider (@Value("${jwt.secret}") String secretKey, UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDTO generateTokenDto(MemberDTO member) {
+    public TokenDTO generateTokenDto (MemberDTO member) {
         log.info("[TokenProvider] generateTokenDto Start ===================================");
         log.info("[TokenProvider] {}", member.getEmployeeRole());
 
         // 권한들 가져오기
-        List<String> roles =  Collections.singletonList(member.getEmployeeRole());
+        List<String> roles = Collections.singletonList(member.getEmployeeRole());
 
-        Claims claims = Jwts
-                .claims()
-                .setSubject(member.getEmployeeNo());
-                //.setSubject(String.valueOf(member.getMemberCode()));
+        Claims claims = Jwts.claims().setSubject(member.getEmployeeNo());
+        //.setSubject(String.valueOf(member.getMemberCode()));
         claims.put(AUTHORITIES_KEY, roles);
 
         long now = (new Date()).getTime();
 
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-        String accessToken = Jwts.builder()
-                .setClaims(claims)
-                .claim(AUTHORITIES_KEY, roles)
-                .setExpiration(accessTokenExpiresIn)
-                .signWith(key, SignatureAlgorithm.HS512)
-                .compact();
+        String accessToken = Jwts.builder().setClaims(claims).claim(AUTHORITIES_KEY, roles).setExpiration(accessTokenExpiresIn).signWith(key, SignatureAlgorithm.HS512).compact();
 
         return new TokenDTO(BEARER_TYPE, member.getEmployeeName(), accessToken, accessTokenExpiresIn.getTime());
     }
 
-    public String getUserId(String accessToken) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(accessToken)
-                .getBody()
-                .getSubject();
+    public TokenDTO generateTokenDto (AdminLoginDTO admin) {
+        log.info("[TokenProvider] generateTokenDto Start ===================================");
+        log.info("[TokenProvider] {}", "ROLE_ADMIN");
+
+        // 권한들 가져오기
+        List<String> roles = Collections.singletonList("ROLE_ADMIN");
+
+        Claims claims = Jwts.claims().setSubject(admin.getAdminId());
+        //.setSubject(String.valueOf(member.getMemberCode()));
+        claims.put(AUTHORITIES_KEY, roles);
+
+        long now = (new Date()).getTime();
+
+        // Access Token 생성
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        String accessToken = Jwts.builder().setClaims(claims).claim(AUTHORITIES_KEY, roles).setExpiration(accessTokenExpiresIn).signWith(key, SignatureAlgorithm.HS512).compact();
+
+        return new TokenDTO(BEARER_TYPE, "관리자", accessToken, accessTokenExpiresIn.getTime());
     }
-    public Authentication getAuthentication(String accessToken) {
+
+    public String getUserId (String accessToken) {
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getSubject();
+    }
+
+    public Authentication getAuthentication (String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
@@ -91,10 +101,7 @@ public class TokenProvider {
         }
 
         // 클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         log.info("[TokenProvider] authorities : {}", authorities);
         // UserDetails 객체를 만들어서 Authentication 리턴
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(accessToken));
@@ -102,7 +109,7 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken (String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -122,11 +129,13 @@ public class TokenProvider {
 
     }
 
-    private Claims parseClaims(String accessToken) {
+    private Claims parseClaims (String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
     }
+
+
 }

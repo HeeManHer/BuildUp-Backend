@@ -37,9 +37,11 @@ public interface AuthorityManageMapper {
 
     void insertNewAuthority (AuthTypeDTO type);
 
-    int selectNewTypeNo (AuthTypeDTO type);
+    void deleteType (int typeNo);
 
-    void deleteType (String typeNo);
+    void deleteAuthorityType (int typeNo);
 
-    void deleteAuthorityType (String typeNo);
+    void deleteRoleAuthorityType (int typeNo);
+
+    int selectTypeNo (String typeName);
 }
