@@ -1,19 +1,49 @@
 package com.warmmingup.buildup.admin.service;
 
+import com.warmmingup.buildup.admin.dao.DashboardMapper;
 import com.warmmingup.buildup.admin.dto.DashProjectDTO;
 import com.warmmingup.buildup.admin.dto.DashboardDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface DashboardService {
+@Service
+public class DashboardService {
 
-    List<DashboardDTO> findDashIssue ();
+    private final DashboardMapper dashboardMapper;
 
-    List<DashboardDTO> findDashBacklog ();
+    public DashboardService (DashboardMapper dashboardMapper) {
+        this.dashboardMapper = dashboardMapper;
+    }
 
-    List<DashboardDTO> findDashSprint ();
 
-    List<DashProjectDTO> findDashProject ();
+    public List<DashboardDTO> findDashIssue () {
 
-    List<DashboardDTO> findChartAuth ();
+        return dashboardMapper.selectDashIssue();
+    }
+
+
+    public List<DashboardDTO> findDashBacklog () {
+
+        return dashboardMapper.selectDashBacklog();
+    }
+
+
+    public List<DashboardDTO> findDashSprint () {
+
+        return dashboardMapper.selectDashSprint();
+    }
+
+
+    public List<DashProjectDTO> findDashProject () {
+
+        return dashboardMapper.selectDashProject();
+    }
+
+
+    public List<DashboardDTO> findChartAuth () {
+
+        return dashboardMapper.selectChartAuth();
+    }
+
 }
