@@ -3,6 +3,7 @@ package com.warmmingup.buildup.login.controller;
 
 import com.warmmingup.buildup.common.ResponseDTO;
 import com.warmmingup.buildup.login.dto.MemberDTO;
+import com.warmmingup.buildup.login.dto.TokenDTO;
 import com.warmmingup.buildup.login.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,9 @@ public class AuthController {
 //        System.out.println("memberDTO = " + memberDTO);
 
 //        MemberDTO member = authService.login(memberDTO);
-//        TokenDTO accessToken = authService.login(memberDTO);
+
+        System.out.println("12312312300000000000");
+        TokenDTO accessToken = authService.login(memberDTO);
 
 //        System.out.println("member = " + member);
 
