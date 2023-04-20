@@ -36,7 +36,8 @@ public class AuthService {
         log.info("[AuthService] {}", memberDTO);
 
         // 1. 아이디 조회
-        MemberDTO member = memberMapper.findByMemberId(memberDTO.getEmployeeNo());
+        MemberDTO member = memberMapper.findByMemberId(memberDTO.getEmployeeNo())
+                .orElseThrow(()-> new LoginFailedException("잘못된 아이디 또는 비밀번호입니다"));
 //                .orElseThrow(() -> new LoginFailedException("잘못된 아이디 또는 비밀번호입니다"));
 
 //        System.out.println(passwordEncoder.encode("0401"));

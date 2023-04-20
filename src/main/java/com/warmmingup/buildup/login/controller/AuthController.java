@@ -3,6 +3,7 @@ package com.warmmingup.buildup.login.controller;
 
 import com.warmmingup.buildup.common.ResponseDTO;
 import com.warmmingup.buildup.login.dto.MemberDTO;
+import com.warmmingup.buildup.login.dto.TokenDTO;
 import com.warmmingup.buildup.login.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,6 @@ public class AuthController {
 
         //        MemberDTO member = authService.login(memberDTO);
         //        TokenDTO accessToken = authService.login(memberDTO);
-
         //        System.out.println("member = " + member);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "로그인 성공", authService.login(memberDTO)));
