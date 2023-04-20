@@ -2,7 +2,7 @@ package com.warmmingup.buildup.admin.controller;
 
 import com.warmmingup.buildup.admin.dto.NewUserDTO;
 import com.warmmingup.buildup.admin.dto.UserDTO;
-import com.warmmingup.buildup.admin.service.UserManagerService;
+import com.warmmingup.buildup.admin.service.UserManageService;
 import com.warmmingup.buildup.common.ResponseDTO;
 import com.warmmingup.buildup.common.paging.Pagenation;
 import com.warmmingup.buildup.common.paging.ResponseDtoWithPaging;
@@ -22,9 +22,9 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class UserManageController {
 
-    private final UserManagerService userManagerService;
+    private final UserManageService userManagerService;
 
-    public UserManageController (UserManagerService userManagerService) {
+    public UserManageController (UserManageService userManagerService) {
         this.userManagerService = userManagerService;
     }
 
@@ -67,7 +67,7 @@ public class UserManageController {
     @PostMapping("/manage-users")
     public ResponseEntity<?> insertUser (@RequestBody NewUserDTO newUser) {
 
-        newUser.setPwd((newUser.getNo() + "").substring(4));
+        newUser.setPwd(newUser.getNo() + "");
 
         userManagerService.insertUser(newUser);
 

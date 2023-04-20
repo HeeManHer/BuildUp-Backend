@@ -18,21 +18,20 @@ public class AuthController {
 
     private final AuthService authService;
 
-    public AuthController(AuthService authService) {
+    public AuthController (AuthService authService) {
         this.authService = authService;
     }
 
 
-
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO> login(@RequestBody MemberDTO memberDTO) {
+    public ResponseEntity<ResponseDTO> login (@RequestBody MemberDTO memberDTO) {
 
-//        System.out.println("memberDTO = " + memberDTO);
+        //        System.out.println("memberDTO = " + memberDTO);
 
-//        MemberDTO member = authService.login(memberDTO);
-//        TokenDTO accessToken = authService.login(memberDTO);
+        //        MemberDTO member = authService.login(memberDTO);
+        //        TokenDTO accessToken = authService.login(memberDTO);
 
-//        System.out.println("member = " + member);
+        //        System.out.println("member = " + member);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "로그인 성공", authService.login(memberDTO)));
     }
