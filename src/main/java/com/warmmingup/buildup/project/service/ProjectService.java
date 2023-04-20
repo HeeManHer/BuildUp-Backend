@@ -1,5 +1,6 @@
 package com.warmmingup.buildup.project.service;
 
+import com.warmmingup.buildup.project.dto.AuthorityDTO;
 import com.warmmingup.buildup.project.dto.BringProjectDTO;
 import com.warmmingup.buildup.project.dto.ProjectDTO;
 import com.warmmingup.buildup.project.dto.projectEmployeeDTO;
@@ -29,5 +30,6 @@ public interface ProjectService {
     void removeTeamMember(Map<String, Object> removeMember);
 
     void modifyMemberAuthority(Map<String, Object> map);
+    List<AuthorityDTO> findAuthority();
 //    List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers);
 }
