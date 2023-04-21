@@ -11,12 +11,38 @@
         <result property="sprintEndday" column="SPRINT_ENDDAY"/>
         <result property="sprintState" column="SPRINT_STATE"/>
         <result property="projectNo" column="PROJECT_NO"/>
+        <collection property="sprintIssue" ofType="com.warmmingup.buildup.sprint.dto.SprintIssueDTO">
+            <id property="issueNo" column="ISSUE_NO"/>
+            <result property="issueName" column="ISSUE_NAME"/>
+            <result property="employeeName" column="EMPLOYEE_NAME"/>
+        </collection>
     </resultMap>
 
-    <select id="selectAllSprints" resultMap="SprintResultMap">
-        SELECT A.*
-        FROM SPRINT A
+    <select id="selectSprintTotalCount" parameterType="hashmap" resultType="_int">
+        SELECT COUNT(*)
+          FROM SPRINT
+         WHERE PROJECT_NO=#{projectNo}
+    </select>
 
+    <select id="selectAllSprints" parameterType="hashmap" resultMap="SprintResultMap">
+        SELECT B.*
+          FROM ( SELECT A.*
+                      , ROWNUM R
+                   FROM ( SELECT
+                                 I.ISSUE_NO
+                               , I.ISSUE_NAME
+                               , E.EMPLOYEE_NAME
+                               , S.*
+                            FROM SPRINT S
+                            LEFT JOIN SPRINT_ISSUE SI ON(S.SPRINT_NO=SI.SPRINT_NO)
+                            LEFT JOIN ISSUE I ON(SI.ISSUE_NO=I.ISSUE_NO)
+                            LEFT JOIN EMPLOYEE E ON(SI.EMPLOYEE_NO=E.EMPLOYEE_NO)
+                           WHERE S.PROJECT_NO=#{projectNo}
+                           ORDER BY S.SPRINT_NO
+                        ) A
+               ) B
+         WHERE B.R BETWEEN #{pageInfo.startRow}
+           AND #{pageInfo.endRow}
     </select>
 
     <insert id="insertSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">

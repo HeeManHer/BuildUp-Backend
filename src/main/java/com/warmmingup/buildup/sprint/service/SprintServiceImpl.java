@@ -2,6 +2,7 @@ package com.warmmingup.buildup.sprint.service;
 
 import com.warmmingup.buildup.sprint.dto.SprintDTO;
 import com.warmmingup.buildup.sprint.dao.SprintMapper;
+import com.warmmingup.buildup.sprint.dto.SprintIssueDTO;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
@@ -15,10 +16,15 @@ public class SprintServiceImpl implements SprintService {
     public SprintServiceImpl(SprintMapper sprintMapper) { this.sprintMapper = sprintMapper; }
 
     @Override
+    public List<SprintIssueDTO> findSprintIssue(int projectNo) {
+        return sprintMapper.selectSprintIssue(projectNo);
+    }
+    @Override
     public List<SprintDTO> findAllSprints(Map<String, Object> sprintCnt) {
 
         return sprintMapper.selectAllSprints(sprintCnt);
     }
+
     @Override
     public Object insertSprint(SprintDTO sprintNew) {
 
