@@ -56,6 +56,7 @@ public class ProjectController {
                 .created(URI.create("/projects/" + projectNo)).build();
     }
 
+    /* 프로젝트 관리 페이지 권한 조회 */
     @GetMapping("/projects/authority")
     public ResponseEntity<ResponseDTO> getAuthority() {
 
@@ -136,14 +137,14 @@ public class ProjectController {
     }
 
     /* 프로젝트 관리 페이지에서 팀원 삭제 */
-   @DeleteMapping("/projects/{projectNo}/manager/member")
+    @DeleteMapping("/projects/{projectNo}/manager/member")
     public ResponseEntity<ResponseDTO> removeMember(@PathVariable int projectNo, @RequestBody List<String> employeeNo) {
 
-       Map<String, Object> removeMember = new HashMap<>();
-       removeMember.put("projectNo", projectNo);
-       removeMember.put("employeeNo", employeeNo);
+        Map<String, Object> removeMember = new HashMap<>();
+        removeMember.put("projectNo", projectNo);
+        removeMember.put("employeeNo", employeeNo);
 
-       projectService.removeTeamMember(removeMember);
+        projectService.removeTeamMember(removeMember);
 
         return ResponseEntity.noContent().build();
     }
@@ -153,16 +154,25 @@ public class ProjectController {
     public ResponseEntity<ResponseDTO> modifyMemberAuthority(@PathVariable int projectNo, @RequestBody projectEmployeeDTO modifyAuthority) {
 
         Map<String, Object> map = new HashMap<>();
-            map.put("projectNo", projectNo);
-            map.put("roleNo", modifyAuthority.getRoleNo());
-            map.put("employeeNo", modifyAuthority.getEmployeeNo());
+        map.put("projectNo", projectNo);
+        map.put("roleNo", modifyAuthority.getRoleNo());
+        map.put("employeeNo", modifyAuthority.getEmployeeNo());
 
-       projectService.modifyMemberAuthority(map);
+        projectService.modifyMemberAuthority(map);
 
         return ResponseEntity
                 .created(URI.create("api/v1/projects/" + projectNo + "/manager/member"))
                 .build();
     }
+
+    /* 프로젝트 이력 조회 */
+    @GetMapping("/projects/record")
+    public ResponseEntity<ResponseDTO> getProjectRecord(@RequestParam(name = "projectNo")int projectNo) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", projectService.findAllProjectRecords(projectNo)));
 
 //    /* 프로젝트 조회 페이지 -> 생성 버튼 -> 팀원 추가 시 검색 기능 */
 //    @GetMapping("/projects/search")
@@ -188,5 +198,6 @@ public class ProjectController {
 //        return new ResponseEntity<>(responseDTO, headers, HttpStatus.OK);
 //    }
 
+    }
 }
 
