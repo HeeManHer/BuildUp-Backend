@@ -3,6 +3,7 @@ package com.warmmingup.buildup.sprint.dto;
 import org.apache.ibatis.type.Alias;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @Alias("SprintDTO")
@@ -15,15 +16,19 @@ public class SprintDTO {
     private String sprintState;
     private int projectNo;
 
+    private List<SprintIssueDTO> sprintIssue;
+
+
     public SprintDTO() {}
 
-    public SprintDTO(int sprintNo, String sprintName, Date sprintStartday, Date sprintEndday, String sprintState, int projectNo) {
-        this.sprintNo = sprintNo;
-        this.sprintName = sprintName;
-        this.sprintStartday = sprintStartday;
-        this.sprintEndday = sprintEndday;
+    public SprintDTO(int sprintNo, String sprintName, Date sprintStartday, Date sprintEndday, String sprintState, int projectNo, List<SprintIssueDTO> sprintIssue) {
+            this.sprintNo = sprintNo;
+            this.sprintName = sprintName;
+            this.sprintStartday = sprintStartday;
+            this.sprintEndday = sprintEndday;
         this.sprintState = sprintState;
         this.projectNo = projectNo;
+        this.sprintIssue = sprintIssue;
     }
 
     public int getSprintNo() {
@@ -74,6 +79,14 @@ public class SprintDTO {
         this.projectNo = projectNo;
     }
 
+    public List<SprintIssueDTO> getSprintIssue() {
+        return sprintIssue;
+    }
+
+    public void setSprintIssue(List<SprintIssueDTO> sprintIssue) {
+        this.sprintIssue = sprintIssue;
+    }
+
     @Override
     public String toString() {
         return "SprintDTO{" +
@@ -83,6 +96,7 @@ public class SprintDTO {
                 ", sprintEndday=" + sprintEndday +
                 ", sprintState='" + sprintState + '\'' +
                 ", projectNo=" + projectNo +
+                ", sprintIssue=" + sprintIssue +
                 '}';
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service("commentService")
 public class CommentServiceImpl implements CommentService {
@@ -36,7 +37,6 @@ public class CommentServiceImpl implements CommentService {
 
         commentMapper.updateComment(newComment);
 
-
     }
 
     @Override
@@ -53,5 +53,6 @@ public class CommentServiceImpl implements CommentService {
         commentMapper.deleteComment(replyNo);
 
     }
+
 
 }
