@@ -30,6 +30,9 @@ public interface ProjectService {
     void removeTeamMember(Map<String, Object> removeMember);
 
     void modifyMemberAuthority(Map<String, Object> map);
+
     List<AuthorityDTO> findAuthority();
+
+    Object findAllProjectRecords(int projectNo);
 //    List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers);
 }

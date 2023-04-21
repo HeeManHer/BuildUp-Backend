@@ -26,6 +26,14 @@
         <result property="roleName" column="ROLE_NAME"/>
     </resultMap>
 
+    <resultMap id="ProjectRecordMap" type="com.warmmingup.buildup.project.dto.ProjectRecordDTO">
+        <id property="recordNo" column="RECORD_NO"/>
+        <result property="editor" column="EDITOR"/>
+        <result property="state" column="STATE"/>
+        <result property="changeTime" column="CHANGE_TIME"/>
+        <result property="projectNo" column="PROJECT_NO"/>
+    </resultMap>
+
     <select id="findAllProjects" resultMap="ProjectResultMap">
         SELECT
                P.PROJECT_NO
@@ -186,6 +194,16 @@
                ROLE_NO
              , ROLE_NAME
           FROM ROLE
+    </select>
+
+    <select id="findAllProjectRecords" resultMap="ProjectRecordMap">
+        SELECT
+               EDITOR
+             , STATE
+             , CHANGE_TIME
+             , PROJECT_NO
+             , RECORD_NO
+          FROM PROJECT_RECORD
     </select>
 
 

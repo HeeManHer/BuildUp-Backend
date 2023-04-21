@@ -101,6 +101,12 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.findAuthority();
     }
 
+    @Override
+    public Object findAllProjectRecords(int projectNo) {
+
+        return projectMapper.findAllProjectRecords(projectNo);
+    }
+
 
 //    @Override
 //    public List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers) {

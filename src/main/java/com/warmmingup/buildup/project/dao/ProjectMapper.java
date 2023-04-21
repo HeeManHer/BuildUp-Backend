@@ -39,6 +39,8 @@ public interface ProjectMapper {
 
     List<AuthorityDTO> findAuthority();
 
+    Object findAllProjectRecords(int projectNo);
+
 //    List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers);
 }
 
