@@ -1,5 +1,6 @@
 package com.warmmingup.buildup.login.service;
 
+import com.warmmingup.buildup.exception.UserNotFoundException;
 import com.warmmingup.buildup.login.dao.MemberMapper;
 import com.warmmingup.buildup.login.dto.MemberDTO;
 import org.slf4j.Logger;
@@ -27,11 +28,11 @@ public class CustomUserDetailsService  implements UserDetailsService {
         log.info("[CustomUserDetailsService] ===================================");
         log.info("[CustomUserDetailsService] loadUserByUsername {}",  employeeNo);
 
-//        return mapper.findByMemberId( employeeNo)
-//                .map(user -> addAuthorities(user))
-//                .orElseThrow(() -> new UserNotFoundException( employeeNo + "> 찾을 수 없습니다."));
+        return mapper.findByMemberId( employeeNo)
+                .map(user -> addAuthorities(user))
+                .orElseThrow(() -> new UserNotFoundException( employeeNo + "> 찾을 수 없습니다."));
 
-        return null;
+
     }
 
     private MemberDTO addAuthorities(MemberDTO memberDTO) {
