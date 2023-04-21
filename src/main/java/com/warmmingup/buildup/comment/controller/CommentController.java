@@ -3,11 +3,17 @@ package com.warmmingup.buildup.comment.controller;
 import com.warmmingup.buildup.comment.dto.CommentDTO;
 import com.warmmingup.buildup.comment.service.CommentService;
 import com.warmmingup.buildup.common.ResponseDTO;
+import com.warmmingup.buildup.common.paging.Pagenation;
+import com.warmmingup.buildup.common.paging.ResponseDtoWithPaging;
+import com.warmmingup.buildup.common.paging.SelectCriteria;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +37,7 @@ public class CommentController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회성공!", reply));
     }
+
 
     @PostMapping(value = "/comments")
     public ResponseEntity<ResponseDTO> insertComment(@RequestBody CommentDTO newComment) {
@@ -64,4 +71,5 @@ public class CommentController {
         commentService.deleteComment(replyNo);
         return ResponseEntity.created(URI.create("/api/v1/comments/"+replyNo)).build();
     }
+
 }

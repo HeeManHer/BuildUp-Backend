@@ -49,7 +49,7 @@ public class IssueController {
             IssueConnect.put("search",'%' + searchValue + '%');
         }
 
-            ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
+        ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
         responseDtoWithPaging.setPageInfo(selectCriteria);
         responseDtoWithPaging.setData(issueService.findAllIssues(IssueConnect));
 
