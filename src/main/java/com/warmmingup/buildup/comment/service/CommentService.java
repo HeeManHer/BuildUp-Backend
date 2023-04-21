@@ -12,13 +12,13 @@ public interface CommentService {
 
     List<CommentDTO> findAllComments(int commentConnect);
 
-   int insertComment(CommentDTO newComment);
+    int insertComment(CommentDTO newComment);
 
     void updateComment(CommentDTO newComment);
 
     Object patchComment(CommentDTO newComment);
 
     void deleteComment(int replyNo);
-
-
+    
 }
+

@@ -3,11 +3,14 @@ package com.warmmingup.buildup.sprint.service;
 
 
 import com.warmmingup.buildup.sprint.dto.SprintDTO;
+import com.warmmingup.buildup.sprint.dto.SprintIssueDTO;
 
 import java.util.List;
 import java.util.Map;
 
 public interface SprintService {
+
+    int findSprintTotalCount(Map<String, Object> sprintMap);
 
     List<SprintDTO> findAllSprints(Map<String, Object> sprintCnt);
 
@@ -19,5 +22,5 @@ public interface SprintService {
 
     Object deleteSprint(SprintDTO sprintDel);
 
-    int findSprintTotalCount(Map<String, Object> sprintMap);
+    List<SprintIssueDTO> findSprintIssue(int projectNo);
 }

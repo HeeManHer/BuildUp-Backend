@@ -22,7 +22,7 @@ public class SprintController {
         this.sprintService = sprintService;
     }
 
-    @GetMapping("{projectNo}/sprints")
+    @GetMapping("/{projectNo}/sprints")
     public ResponseEntity<ResponseDTO> getSprint(@PathVariable int projectNo,@RequestParam(name="offset",defaultValue="1") int offset) {
 
         Map<String,Object> sprintMap=new HashMap<>();
@@ -39,10 +39,13 @@ sprintMap.put("pageInfo",selectCriteria);
         responseDtoWithPaging.setPageInfo(selectCriteria);
         responseDtoWithPaging.setData(sprintService.findAllSprints(sprintMap));
 
-
-
-
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
+
+    }
+    @GetMapping("/{projectNo}/sprints/issue")
+    public ResponseEntity<ResponseDTO> getSprintIssue(@PathVariable int projectNo) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", sprintService.findSprintIssue(projectNo)));
 
     }
 

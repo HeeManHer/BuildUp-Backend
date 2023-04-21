@@ -2,6 +2,7 @@ package com.warmmingup.buildup.sprint.dao;
 
 
 import com.warmmingup.buildup.sprint.dto.SprintDTO;
+import com.warmmingup.buildup.sprint.dto.SprintIssueDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface SprintMapper {
 
     List<SprintDTO> selectAllSprints(Map<String, Object> sprintCnt);
 
+
+
     int insertSprint(SprintDTO sprintNew);
 
     int updateSprint(SprintDTO sprintUpd);
@@ -21,4 +24,6 @@ public interface SprintMapper {
     int deleteSprint(SprintDTO sprintDel);
 
     int selectSprintTotalCount(Map<String, Object> sprintMap);
+
+    List<SprintIssueDTO> selectSprintIssue(int projectNo);
 }
