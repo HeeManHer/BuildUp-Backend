@@ -42,7 +42,7 @@ public class TokenProvider {
 
     private final Key key;
 
-    public TokenProvider (@Value("${jwt.secret}") String secretKey, UserDetailsService userDetailsService) {
+    public TokenProvider (@Value("appleasdasdasdaskjdhkjsahfkjhaljkhaslkdjalkshfljkahslkdfhasdasdasdasdasdasdasddajkshdkjahsdkjahsdjhasdkjhakjsdh") String secretKey, UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);

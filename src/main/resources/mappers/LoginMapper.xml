@@ -53,16 +53,44 @@
         , A.EMPLOYEE_NAME
         FROM EMPLOYEE A
         WHERE A.EMPLOYEE_NO = #{employeeNo}
+<!--        SELECT-->
+<!--              A.EMPLOYEE_NO-->
+<!--            , A.EMPLOYEE_PASSWORD-->
+<!--            , A.EMPLOYEE_EMAIL-->
+<!--            , A.EMPLOYEE_NAME-->
+<!--            , C.ROLE_NO-->
+<!--            , C.ROLE_NAME-->
+<!--         FROM EMPLOYEE A-->
+<!--           , CREATED_PROJECT B-->
+<!--           , ROLE C-->
+<!--         WHERE A.EMPLOYEE_NO = B.EMPLOYEE_NO-->
+<!--           AND B.ROLE_NO = C.ROLE_NO-->
+<!--           AND A.EMPLOYEE_NO = #{employeeNo}-->
+<!--        SELECT-->
+<!--        A.EMPLOYEE_NO-->
+<!--        , A.EMPLOYEE_PASSWORD-->
+<!--        , A.EMPLOYEE_EMAIL-->
+<!--        , A.EMPLOYEE_NAME-->
+<!--        , C.ROLE_NO-->
+<!--        , C.ROLE_NAME-->
+<!--        FROM EMPLOYEE A-->
+<!--        JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)-->
+<!--        JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)-->
+<!--        WHERE A.EMPLOYEE_NO = #{employeeNo}-->
 
     </select>
     <select id="selectByMemberId" resultMap="memberResultMap">
         SELECT
-               EMPLOYEE_NO
-        ,      EMPLOYEE_NAME
-        ,      EMPLOYEE_PASSWORD
-        ,      EMPLOYEE_EMAIL
-          FROM EMPLOYEE
-        WHERE EMPLOYEE_NO = #{employeeNo}
+        A.EMPLOYEE_NO
+        , A.EMPLOYEE_PASSWORD
+        , A.EMPLOYEE_EMAIL
+        , A.EMPLOYEE_NAME
+        , C.ROLE_NO
+        , C.ROLE_NAME
+        FROM EMPLOYEE A
+        JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)
+        JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
+        WHERE A.EMPLOYEE_NO = #{employeeNo}
     </select>
 
 </mapper>

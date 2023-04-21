@@ -14,20 +14,99 @@ public class MemberDTO implements UserDetails {
     private String employeeName;
     private String employeeRole;
 
+    private String roleName;
+
 
 
     public MemberDTO() {}
 
-    @Override
-    public String toString() {
-        return "MemberDTO{" +
-                "employeeNo='" + employeeNo + '\'' +
-                ", employeePassword='" + employeePassword + '\'' +
-                ", employeeEmail='" + employeeEmail + '\'' +
-                ", employeeName='" + employeeName + '\'' +
-                ", employeeRole='" + employeeRole + '\'' +
-                ", authorities=" + authorities +
-                '}';
+//    public MemberDTO(String roleName) {
+//        this.roleName = roleName;
+//    }
+//
+//    public String getRoleName() {
+//        return roleName;
+//    }
+//
+//    public void setRoleName(String roleName) {
+//        this.roleName = roleName;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        return "MemberDTO{" +
+//                "employeeNo='" + employeeNo + '\'' +
+//                ", employeePassword='" + employeePassword + '\'' +
+//                ", employeeEmail='" + employeeEmail + '\'' +
+//                ", employeeName='" + employeeName + '\'' +
+//                ", employeeRole='" + employeeRole + '\'' +
+//                ", authorities=" + authorities +
+//                ", roleName=" + roleName +
+//                '}';
+//    }
+//
+//    public String getEmployeeNo() {
+//        return employeeNo;
+//    }
+//
+//    public void setEmployeeNo(String employeeNo) {
+//        this.employeeNo = employeeNo;
+//    }
+//
+//    public String getEmployeePassword() {
+//        return employeePassword;
+//    }
+//
+//    public void setEmployeePassword(String employeePassword) {
+//        this.employeePassword = employeePassword;
+//    }
+//
+//    public String getEmployeeEmail() {
+//        return employeeEmail;
+//    }
+//
+//    public void setEmployeeEmail(String employeeEmail) {
+//        this.employeeEmail = employeeEmail;
+//    }
+//
+//    public String getEmployeeName() {
+//        return employeeName;
+//    }
+//
+//    public void setEmployeeName(String employeeName) {
+//        this.employeeName = employeeName;
+//    }
+//
+//    public String getEmployeeRole() {
+//        return employeeRole;
+//    }
+//
+//    public void setEmployeeRole(String employeeRole) {
+//        this.employeeRole = employeeRole;
+//    }
+//
+//    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+//        this.authorities = authorities;
+//    }
+//
+//    public MemberDTO(String employeeNo, String employeePassword, String employeeEmail, String employeeName, String employeeRole, Collection<? extends GrantedAuthority> authorities) {
+//        this.employeeNo = employeeNo;
+//        this.employeePassword = employeePassword;
+//        this.employeeEmail = employeeEmail;
+//        this.employeeName = employeeName;
+//        this.employeeRole = employeeRole;
+//        this.authorities = authorities;
+//    }
+
+
+    public MemberDTO(String employeeNo, String employeePassword, String employeeEmail, String employeeName, String employeeRole, String roleName, Collection<? extends GrantedAuthority> authorities) {
+        this.employeeNo = employeeNo;
+        this.employeePassword = employeePassword;
+        this.employeeEmail = employeeEmail;
+        this.employeeName = employeeName;
+        this.employeeRole = employeeRole;
+        this.roleName = roleName;
+        this.authorities = authorities;
     }
 
     public String getEmployeeNo() {
@@ -70,17 +149,29 @@ public class MemberDTO implements UserDetails {
         this.employeeRole = employeeRole;
     }
 
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
     }
 
-    public MemberDTO(String employeeNo, String employeePassword, String employeeEmail, String employeeName, String employeeRole, Collection<? extends GrantedAuthority> authorities) {
-        this.employeeNo = employeeNo;
-        this.employeePassword = employeePassword;
-        this.employeeEmail = employeeEmail;
-        this.employeeName = employeeName;
-        this.employeeRole = employeeRole;
-        this.authorities = authorities;
+    @Override
+    public String toString() {
+        return "MemberDTO{" +
+                "employeeNo='" + employeeNo + '\'' +
+                ", employeePassword='" + employeePassword + '\'' +
+                ", employeeEmail='" + employeeEmail + '\'' +
+                ", employeeName='" + employeeName + '\'' +
+                ", employeeRole='" + employeeRole + '\'' +
+                ", roleName='" + roleName + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
 
     private Collection<? extends GrantedAuthority> authorities;
