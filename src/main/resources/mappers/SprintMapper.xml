@@ -14,7 +14,22 @@
         <collection property="sprintIssue" ofType="com.warmmingup.buildup.sprint.dto.SprintIssueDTO">
             <id property="issueNo" column="ISSUE_NO"/>
             <result property="issueName" column="ISSUE_NAME"/>
+            <result property="employeeNo" column="EMPLOYEE_NO"/>
             <result property="employeeName" column="EMPLOYEE_NAME"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="sprintDetailResultMap" type="com.warmmingup.buildup.sprint.dto.BoardDTO">
+        <id property="sprintNo" column="SPRINT_NO"/>
+        <result property="sprintName" column="SPRINT_NAME"/>
+        <collection property="boardIssue" ofType="com.warmmingup.buildup.sprint.dto.IssueBoardDTO">
+            <id property="boardName" column="BOARD_NAME"/>
+            <collection property="sprintIssue" ofType="com.warmmingup.buildup.sprint.dto.SprintIssueDTO">
+                <id property="issueNo" column="ISSUE_NO"/>
+                <result property="issueName" column="ISSUE_NAME"/>
+                <result property="employeeNo" column="EMPLOYEE_NO"/>
+                <result property="employeeName" column="EMPLOYEE_NAME"/>
+            </collection>
         </collection>
     </resultMap>
 
@@ -45,6 +60,24 @@
            AND #{pageInfo.endRow}
     </select>
 
+<select id="selectBoard" parameterType="_int" resultMap="sprintDetailResultMap">
+    SELECT
+           B.BOARD_NAME
+         , I.ISSUE_NO
+         , I.ISSUE_NAME
+         , E.EMPLOYEE_NAME
+         , S.SPRINT_NO
+         , S.SPRINT_NAME
+      FROM SPRINT S
+      LEFT JOIN BOARD B ON ( S.SPRINT_NO = B.SPRINT_NO )
+      LEFT JOIN SPRINT_ISSUE SI ON ( S.SPRINT_NO = SI.SPRINT_NO )
+      LEFT JOIN ISSUE I ON ( SI.ISSUE_NO = I.ISSUE_NO AND I.ISSUE_STATUS = B.BOARD_NAME )
+      LEFT JOIN EMPLOYEE E ON ( SI.EMPLOYEE_NO = E.EMPLOYEE_NO )
+     WHERE S.SPRINT_NO = #{sprintNo}
+</select>
+
+
+
     <insert id="insertSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
         INSERT INTO SPRINT
         (
@@ -61,9 +94,26 @@
         , #{sprintName}
         , #{sprintStartday}
         , #{sprintEndday}
-        , #{sprintState}
+        , '진행 중'
         , #{projectNo}
         )
+    </insert>
+
+    <insert id="insertSprintIssue" parameterType="com.warmmingup.buildup.sprint.dto.SprintIssueDTO">
+        INSERT
+          INTO SPRINT_ISSUE
+        (
+        SPRINT_NO
+        ,  ISSUE_NO
+        , EMPLOYEE_NO
+        )
+        VALUES
+        (
+        SEQ_SPRINT_NO.CURRVAL
+        , #{issueNo}
+        , #{employeeNo}
+        )
+
     </insert>
 
     <update id="updateSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
@@ -75,23 +125,23 @@
         WHERE SPRINT_NO = #{sprintNo}
     </update>
 
-    <update id="patchSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
-        UPDATE SPRINT
-        <set>
-            <if test="sprintName != null">
-                SPRINT_NAME = #{sprintName},
-            </if>
-            <if test="sprintState != null">
-                SPRINT_STATE = #{sprintState},
-            </if>
-            <if test="sprintEndday != null">
-                SPRINT_ENDDAY = #{sprintEndday}
-            </if>
-        </set>
-        WHERE SPRINT_NO = #{sprintNo}
-    </update>
+<!--    <update id="patchSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">-->
+<!--        UPDATE SPRINT-->
+<!--        <set>-->
+<!--            <if test="sprintName != null">-->
+<!--                SPRINT_NAME = #{sprintName},-->
+<!--            </if>-->
+<!--            <if test="sprintState != null">-->
+<!--                SPRINT_STATE = #{sprintState},-->
+<!--            </if>-->
+<!--            <if test="sprintEndday != null">-->
+<!--                SPRINT_ENDDAY = #{sprintEndday}-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        WHERE SPRINT_NO = #{sprintNo}-->
+<!--    </update>-->
 
-    <delete id="deleteSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
+    <delete id="deleteSprint" parameterType="_int">
             DELETE FROM SPRINT
     WHERE SPRINT_NO = #{sprintNo}
     </delete>
