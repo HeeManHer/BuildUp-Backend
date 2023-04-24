@@ -29,4 +29,8 @@ public interface SprintMapper {
     void insertSprintIssue(SprintIssueDTO sprintIssueDTO);
 
     BoardDTO selectBoard(int boardCnt);
+
+    int deleteBoard(int boardDel);
+
+    void insertBoard(SprintDTO sprintDTO);
 }

@@ -23,7 +23,7 @@
         <id property="sprintNo" column="SPRINT_NO"/>
         <result property="sprintName" column="SPRINT_NAME"/>
         <collection property="boardIssue" ofType="com.warmmingup.buildup.sprint.dto.IssueBoardDTO">
-            <id property="boardName" column="BOARD_NAME"/>
+            <id property="issueState" column="ISSUE_STATUS"/>
             <collection property="sprintIssue" ofType="com.warmmingup.buildup.sprint.dto.SprintIssueDTO">
                 <id property="issueNo" column="ISSUE_NO"/>
                 <result property="issueName" column="ISSUE_NAME"/>
@@ -62,16 +62,15 @@
 
 <select id="selectBoard" parameterType="_int" resultMap="sprintDetailResultMap">
     SELECT
-           B.BOARD_NAME
+           I.ISSUE_STATUS
          , I.ISSUE_NO
          , I.ISSUE_NAME
          , E.EMPLOYEE_NAME
          , S.SPRINT_NO
          , S.SPRINT_NAME
-      FROM SPRINT S
-      LEFT JOIN BOARD B ON ( S.SPRINT_NO = B.SPRINT_NO )
-      LEFT JOIN SPRINT_ISSUE SI ON ( S.SPRINT_NO = SI.SPRINT_NO )
-      LEFT JOIN ISSUE I ON ( SI.ISSUE_NO = I.ISSUE_NO AND I.ISSUE_STATUS = B.BOARD_NAME )
+      FROM SPRINT_ISSUE SI
+      LEFT JOIN SPRINT S ON ( S.SPRINT_NO = SI.SPRINT_NO )
+      LEFT JOIN ISSUE I ON ( SI.ISSUE_NO = I.ISSUE_NO)
       LEFT JOIN EMPLOYEE E ON ( SI.EMPLOYEE_NO = E.EMPLOYEE_NO )
      WHERE S.SPRINT_NO = #{sprintNo}
 </select>
@@ -94,7 +93,7 @@
         , #{sprintName}
         , #{sprintStartday}
         , #{sprintEndday}
-        , '진행 중'
+        , '진행중'
         , #{projectNo}
         )
     </insert>
@@ -144,5 +143,10 @@
     <delete id="deleteSprint" parameterType="_int">
             DELETE FROM SPRINT
     WHERE SPRINT_NO = #{sprintNo}
+    </delete>
+
+    <delete id="deleteBoard" parameterType="_int">
+        DELETE FROM BOARD
+        WHERE SPRINT_NO = #{sprintNo}
     </delete>
 </mapper>
