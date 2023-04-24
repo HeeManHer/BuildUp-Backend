@@ -103,4 +103,12 @@
          WHERE EMPLOYEE_NO = #{employeeNo}
     </update>
 
+    <select id="selectMember" parameterType="com.warmmingup.buildup.login.dto.MemberDTO" resultType="_int">
+        SELECT COUNT(*)
+        FROM EMPLOYEE
+        WHERE EMPLOYEE_NO = #{employeeNo}
+        AND EMPLOYEE_NAME  = #{employeeName}
+        AND EMPLOYEE_EMAIL = #{employeeEmail}
+    </select>
+
 </mapper>
