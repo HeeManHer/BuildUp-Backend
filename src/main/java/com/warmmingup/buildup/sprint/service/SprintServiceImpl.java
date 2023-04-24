@@ -1,9 +1,12 @@
 package com.warmmingup.buildup.sprint.service;
 
+import com.warmmingup.buildup.sprint.dto.BoardDTO;
 import com.warmmingup.buildup.sprint.dto.SprintDTO;
 import com.warmmingup.buildup.sprint.dao.SprintMapper;
 import com.warmmingup.buildup.sprint.dto.SprintIssueDTO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,40 +22,55 @@ public class SprintServiceImpl implements SprintService {
     public List<SprintIssueDTO> findSprintIssue(int projectNo) {
         return sprintMapper.selectSprintIssue(projectNo);
     }
+
+
     @Override
     public List<SprintDTO> findAllSprints(Map<String, Object> sprintCnt) {
-
         return sprintMapper.selectAllSprints(sprintCnt);
     }
 
     @Override
+    @Transactional
     public Object insertSprint(SprintDTO sprintNew) {
 
         int result = sprintMapper.insertSprint(sprintNew);
-
+        for(SprintIssueDTO sprintIssueDTO: sprintNew.getSprintIssue())
+        {sprintMapper.insertSprintIssue(sprintIssueDTO);
+        }
 
         return (result > 0) ? "등록 성공" : "등록 실패";
     }
 
     @Override
+    @Transactional
     public Object updateSprint(SprintDTO sprintUpd) {
 
         int result = sprintMapper.updateSprint(sprintUpd);
 
-        return (result > 0) ? "전체 수정 성공" : "전체 수정 실패";
+        return (result > 0) ? "스프린트 수정 성공" : "스프린트 수정 실패";
     }
 
 
+//    @Override
+//    public Object patchSprint(SprintDTO sprintPth) {
+//
+//        int result = sprintMapper.patchSprint(sprintPth);
+//
+//        return (result > 0) ? "수정 성공" : "수정 실패";
+//    }
+
+
     @Override
-    public Object patchSprint(SprintDTO sprintPth) {
+    @Transactional
+    public BoardDTO selectBoard(int boardCnt) {
 
-        int result = sprintMapper.patchSprint(sprintPth);
+       return sprintMapper.selectBoard(boardCnt);
 
-        return (result > 0) ? "수정 성공" : "수정 실패";
     }
 
     @Override
-    public Object deleteSprint(SprintDTO sprintDel) {
+    @Transactional
+    public Object deleteSprint(int sprintDel) {
 
         int result = sprintMapper.deleteSprint(sprintDel);
 
@@ -63,6 +81,5 @@ public class SprintServiceImpl implements SprintService {
     public int findSprintTotalCount(Map<String, Object> sprintMap) {
         return sprintMapper.selectSprintTotalCount(sprintMap);
     }
-
 
 }
