@@ -1,6 +1,9 @@
 package com.warmmingup.buildup.login.controller;
 
 import com.warmmingup.buildup.common.ResponseDTO;
+import com.warmmingup.buildup.login.dto.EmployeeDTO;
+import com.warmmingup.buildup.login.dto.MemberDTO;
+//import com.warmmingup.buildup.login.service.EmployeeService;
 import com.warmmingup.buildup.login.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +26,12 @@ public class EmployeeController {
     public ResponseEntity<ResponseDTO> selectMyEmployeeInfo (@PathVariable String employeeNo) {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", memberService.selectMyEmployeeInfo(employeeNo)));
+    }
+
+    @PutMapping ("/changepassword/{employeeNo}")
+
+        public ResponseEntity<ResponseDTO> modifyEmployeePassword(@RequestBody EmployeeDTO employeeDTO) {
+
+       return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.modifyEmployeePassword(employeeDTO)));
     }
 }

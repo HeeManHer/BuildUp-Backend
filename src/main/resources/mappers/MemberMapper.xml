@@ -11,9 +11,10 @@
         <result property="employeeRole" column="ROLE_NO"/>
 
     </resultMap>
+    
+    <select id="findByMemberId" resultMap="memberResultMap" parameterType="String">
+<!--                SELECT /* resources.mappers.MemberMapper.xml.findByMemberId */-->
 
-    <select id="findByMemberId" resultMap="memberResultMap">
-<!--                SELECT /* resources.mappers.LoginMapper.xml.findByMemberId */-->
 <!--                A.EMPLOYEE_NO-->
 <!--                , A.EMPLOYEE_PASSWORD-->
 <!--                , A.EMPLOYEE_NAME-->
@@ -30,7 +31,7 @@
 <!--                AND D.AUTHORITY_NO = E.AUTHORITY_NO-->
 <!--                AND A.EMPLOYEE_NO = #{employeeNo}-->
 
-        <!--        SELECT /* resources.mappers.LoginMapper.xml.findByMemberId */-->
+        <!--        SELECT /* resources.mappers.MemberMapper.xml.findByMemberId */-->
         <!--        A.EMPLOYEE_NO-->
         <!--        , A.EMPLOYEE_PASSWORD-->
         <!--        , A.EMPLOYEE_NAME-->
@@ -80,6 +81,8 @@
 
     </select>
     <select id="selectByMemberId" resultMap="memberResultMap" parameterType="String">
+
+
         SELECT
         A.EMPLOYEE_NO
         , A.EMPLOYEE_PASSWORD
@@ -92,5 +95,12 @@
         LEFT JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
         WHERE A.EMPLOYEE_NO = #{employeeNo}
     </select>
+
+    <update id="modifyEmployeePassword" parameterType="com.warmmingup.buildup.login.dto.EmployeeDTO">
+        UPDATE
+               EMPLOYEE
+           SET EMPLOYEE_PASSWORD = #{newPassword}
+         WHERE EMPLOYEE_NO = #{employeeNo}
+    </update>
 
 </mapper>
