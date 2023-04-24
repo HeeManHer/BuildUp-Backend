@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.warmmingup.buildup.comment.dao.CommentMapper">
 
-
+    <!-- 댓글 DTO 값으로 Mapper 설정    -->
     <resultMap id="CommentResultMap" type="com.warmmingup.buildup.comment.dto.CommentDTO">
         <id property="replyNo" column="REPLY_NO"/>
         <result property="issueNo" column="ISSUE_NO"/>
@@ -13,6 +13,7 @@
         <result property="replyDate" column="REPLY_DATE"/>
     </resultMap>
 
+    <!-- 댓글 조회 SQL 문 -->
     <select id="findAllComments" parameterType="_int" resultMap="CommentResultMap">
         SELECT
             A.REPLY_NO
@@ -25,11 +26,13 @@
         ORDER BY A.REPLY_DATE DESC
     </select>
 
+    <!-- 댓글 시퀀스 SQL 문 -->
     <select id="selectCommentNo" resultType="_int">
         SELECT SEQ_REPLY_NO.CURRVAL
           FROM DUAL
     </select>
 
+    <!-- 댓글 등록 SQL 문 -->
     <insert id="insertComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
         INSERT
         INTO REPLY
@@ -50,6 +53,7 @@
         )
     </insert>
 
+    <!-- 댓글 수정 SQL 문 -->
     <update id="updateComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
         UPDATE REPLY
         SET
@@ -60,22 +64,24 @@
         AND REPLY_NO = #{ replyNo}
     </update>
 
-    <update id="patchComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
-        UPDATE REPLY
-        <set>
-            <if test="employeeNo != null">
-                EMPLOYEE_NO = #{employeeNo},
-            </if>
-            <if test="replyContent != null">
-                REPLY_CONTENT = #{replyContent},
-            </if>
-            <if test="replyDate != null">
-                REPLY_DATE = #{replyDate}
-            </if>
-        </set>
-        WHERE ISSUE_NO = #{issueNo}
-    </update>
+    <!-- 댓글 부분 수정 SQL 문 사용안함-->
+<!--    <update id="patchComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">-->
+<!--        UPDATE REPLY-->
+<!--        <set>-->
+<!--            <if test="employeeNo != null">-->
+<!--                EMPLOYEE_NO = #{employeeNo},-->
+<!--            </if>-->
+<!--            <if test="replyContent != null">-->
+<!--                REPLY_CONTENT = #{replyContent},-->
+<!--            </if>-->
+<!--            <if test="replyDate != null">-->
+<!--                REPLY_DATE = #{replyDate}-->
+<!--            </if>-->
+<!--        </set>-->
+<!--        WHERE ISSUE_NO = #{issueNo}-->
+<!--    </update>-->
 
+    <!-- 댓글 삭제 SQL 문 -->
     <delete id="deleteComment" parameterType="_int">
 
         DELETE FROM REPLY

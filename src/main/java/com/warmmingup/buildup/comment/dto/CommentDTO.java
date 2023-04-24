@@ -1,13 +1,9 @@
 package com.warmmingup.buildup.comment.dto;
 
-
 import org.apache.ibatis.type.Alias;
-
-
-
 import java.util.Date;
 
-
+/* 댓글 DTO  */
 @Alias("CommentDTO")
 public class CommentDTO {
 
@@ -23,7 +19,7 @@ public class CommentDTO {
 
     public CommentDTO() {}
 
-
+    /* Comment 생성자*/
     public CommentDTO(int issueNo, int employeeNo, int replyNo, String replyContent, Date replyDate) {
         this.issueNo = issueNo;
         this.employeeNo = employeeNo;
@@ -32,6 +28,7 @@ public class CommentDTO {
         this.replyDate = replyDate;
     }
 
+    /* Comment getter와 setter */
     public int getIssueNo() {
         return issueNo;
     }
@@ -72,6 +69,7 @@ public class CommentDTO {
         this.replyDate = replyDate;
     }
 
+    /* Comment toString */
     @Override
     public String toString() {
         return "CommentDTO{" +
