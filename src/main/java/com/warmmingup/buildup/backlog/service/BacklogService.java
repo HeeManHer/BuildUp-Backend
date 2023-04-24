@@ -1,5 +1,6 @@
 package com.warmmingup.buildup.backlog.service;
 
+import com.warmmingup.buildup.backlog.dto.BacklogAuthorityDTO;
 import com.warmmingup.buildup.backlog.dto.BacklogDTO;
 
 import java.util.List;
@@ -18,4 +19,8 @@ public interface BacklogService {
     int selectBacklogTotal(Map<String, Object> backlogConnect);
 
     List<BacklogDTO> selectBacklogListWithPaging(Map<String, Object> selectCriteria);
+
+
+
+    List<BacklogAuthorityDTO>authority(Map<String, Object> authority);
 }
