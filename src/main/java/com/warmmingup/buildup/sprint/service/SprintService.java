@@ -17,7 +17,7 @@ public interface SprintService {
 
    Object insertSprint(SprintDTO sprintNew);
 
-   Object updateSprint(SprintDTO sprintUpd);
+   Object updateSprint(int sprintNo);
 
 //   Object patchSprint(SprintDTO sprintPth);
 

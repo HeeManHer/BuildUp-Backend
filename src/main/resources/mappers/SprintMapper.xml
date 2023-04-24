@@ -42,7 +42,7 @@
     <select id="selectAllSprints" parameterType="hashmap" resultMap="SprintResultMap">
         SELECT B.*
           FROM ( SELECT A.*
-                      , ROWNUM R
+        , DENSE_RANK() OVER(ORDER BY SPRINT_NO DESC) R
                    FROM ( SELECT
                                  I.ISSUE_NO
                                , I.ISSUE_NAME
@@ -53,7 +53,7 @@
                             LEFT JOIN ISSUE I ON(SI.ISSUE_NO=I.ISSUE_NO)
                             LEFT JOIN EMPLOYEE E ON(SI.EMPLOYEE_NO=E.EMPLOYEE_NO)
                            WHERE S.PROJECT_NO=#{projectNo}
-                           ORDER BY S.SPRINT_NO
+                           ORDER BY S.SPRINT_NO DESC
                         ) A
                ) B
          WHERE B.R BETWEEN #{pageInfo.startRow}
@@ -115,12 +115,11 @@
 
     </insert>
 
-    <update id="updateSprint" parameterType="com.warmmingup.buildup.sprint.dto.SprintDTO">
+    <update id="updateSprint" parameterType="_int">
         UPDATE SPRINT
         SET
-        SPRINT_NAME = #{sprintName},
-        SPRINT_STATE = #{sprintState},
-        SPRINT_ENDDAY = #{sprintEndday}
+        SPRINT_STATE = '완료',
+        SPRINT_ENDDAY = sysdate
         WHERE SPRINT_NO = #{sprintNo}
     </update>
 

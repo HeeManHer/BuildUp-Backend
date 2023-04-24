@@ -16,7 +16,7 @@ public interface SprintMapper {
 
     int insertSprint(SprintDTO sprintNew);
 
-    int updateSprint(SprintDTO sprintUpd);
+    int updateSprint(int sprintUpd);
 
 //    int patchSprint(SprintDTO sprintPth);
 

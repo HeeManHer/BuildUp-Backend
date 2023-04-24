@@ -43,9 +43,9 @@ public class SprintServiceImpl implements SprintService {
 
     @Override
     @Transactional
-    public Object updateSprint(SprintDTO sprintUpd) {
+    public Object updateSprint(int sprintNo) {
 
-        int result = sprintMapper.updateSprint(sprintUpd);
+        int result = sprintMapper.updateSprint(sprintNo);
 
         return (result > 0) ? "스프린트 수정 성공" : "스프린트 수정 실패";
     }
