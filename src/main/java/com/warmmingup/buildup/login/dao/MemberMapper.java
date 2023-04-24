@@ -11,13 +11,11 @@ import java.util.Optional;
 public interface MemberMapper {
 
     //    MemberDTO findByMemberId(String employeeNo);
-    Optional<MemberDTO> findByMemberId (String memberId);
+    Optional<MemberDTO> findByMemberId(String memberId);
 
-    MemberDTO selectByMemberId (String employeeNo);
+    MemberDTO selectByMemberId(String employeeNo);
 
-    int selectMember (MemberDTO email);
-
-    void modifyEmployeePassword (EmployeeDTO modifyPassword);
+    void modifyEmployeePassword(EmployeeDTO modifyPassword);
 
     MemberDTO findEmployeePassword(String employeePassword);
 

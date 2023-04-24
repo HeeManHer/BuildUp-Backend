@@ -14,36 +14,24 @@ public class EmployeeController {
     private final MemberService memberService;
 
 
-    public EmployeeController (MemberService memberService) {
+    public EmployeeController(MemberService memberService) {
         this.memberService = memberService;
     }
 
     @GetMapping("/auth/login/{employeeNo}")
-    public ResponseEntity<ResponseDTO> selectMyEmployeeInfo (@PathVariable String employeeNo) {
+    public ResponseEntity<ResponseDTO> selectMyEmployeeInfo(@PathVariable String employeeNo) {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", memberService.selectMyEmployeeInfo(employeeNo)));
     }
 
     @PutMapping("/changepassword/{employeeNo}")
-    public ResponseEntity<ResponseDTO> modifyEmployeePassword (@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<ResponseDTO> modifyEmployeePassword(@RequestBody EmployeeDTO employeeDTO) {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.modifyEmployeePassword(employeeDTO)));
     }
 
     @PutMapping("/password")
-    public ResponseEntity<ResponseDTO> resetEmployeePassword (@RequestBody EmployeeDTO employeeDTO) {
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.resetEmployeePassword(employeeDTO)));
-    }
-
-    @GetMapping("/member")
-    public ResponseEntity<ResponseDTO> selectEmployee (@RequestBody MemberDTO member) {
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, memberService.findEmployee(member), member.getEmployeeNo()));
-    }
-
-    @PutMapping("/password")
-    public ResponseEntity<ResponseDTO> resetEmployeePassword (@RequestBody EmployeeDTO employeeDTO) {
+    public ResponseEntity<ResponseDTO> resetEmployeePassword(@RequestBody EmployeeDTO employeeDTO) {
 
         System.out.println(employeeDTO);
 
@@ -51,7 +39,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/member")
-    public ResponseEntity<ResponseDTO> selectEmployee (@RequestBody MemberDTO member) {
+    public ResponseEntity<ResponseDTO> selectEmployee(@RequestBody MemberDTO member) {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, memberService.findEmployee(member), member.getEmployeeNo()));
     }

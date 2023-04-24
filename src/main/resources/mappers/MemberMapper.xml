@@ -9,7 +9,7 @@
         <result property="employeeEmail" column="EMPLOYEE_EMAIL"/>
         <result property="employeeName" column="EMPLOYEE_NAME"/>
         <result property="employeeRole" column="ROLE_NO"/>
-<result property="roleName" column="ROLE_NAME"/>
+        <result property="roleName" column="ROLE_NAME"/>
     </resultMap>
     
     <select id="findByMemberId" resultMap="memberResultMap" parameterType="String">

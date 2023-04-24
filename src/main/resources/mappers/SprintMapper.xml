@@ -22,6 +22,7 @@
     <resultMap id="sprintDetailResultMap" type="com.warmmingup.buildup.sprint.dto.BoardDTO">
         <id property="sprintNo" column="SPRINT_NO"/>
         <result property="sprintName" column="SPRINT_NAME"/>
+        <result property="state" column="SPRINT_STATE"/>
         <collection property="boardIssue" ofType="com.warmmingup.buildup.sprint.dto.IssueBoardDTO">
             <id property="issueState" column="ISSUE_STATUS"/>
             <collection property="sprintIssue" ofType="com.warmmingup.buildup.sprint.dto.SprintIssueDTO">
@@ -68,6 +69,7 @@
          , E.EMPLOYEE_NAME
          , S.SPRINT_NO
          , S.SPRINT_NAME
+         , S.SPRINT_STATE
       FROM SPRINT_ISSUE SI
       LEFT JOIN SPRINT S ON ( S.SPRINT_NO = SI.SPRINT_NO )
       LEFT JOIN ISSUE I ON ( SI.ISSUE_NO = I.ISSUE_NO)

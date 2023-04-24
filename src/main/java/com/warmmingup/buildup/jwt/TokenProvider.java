@@ -42,18 +42,18 @@ public class TokenProvider {
 
     private final Key key;
 
-    public TokenProvider (@Value("appleasdasdasdaskjdhkjsahfkjhaljkhaslkdjalkshfljkahslkdfhasdasdasdasdasdasdasddajkshdkjahsdkjahsdjhasdkjhakjsdh") String secretKey, UserDetailsService userDetailsService) {
+    public TokenProvider(@Value("appleasdasdasdaskjdhkjsahfkjhaljkhaslkdjalkshfljkahslkdfhasdasdasdasdasdasdasddajkshdkjahsdkjahsdjhasdkjhakjsdh") String secretKey, UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public TokenDTO generateTokenDto (MemberDTO member) {
+    public TokenDTO generateTokenDto(MemberDTO member) {
         log.info("[TokenProvider] generateTokenDto Start ===================================");
         log.info("[TokenProvider] {}", member.getEmployeeRole());
-        
+
         // 권한들 가져오기
-        List<String> roles = Collections.singletonList(member.getRoleName());
+        List<String> roles = Collections.singletonList(member.getEmployeeRole());
 
         Claims claims = Jwts.claims().setSubject(member.getEmployeeNo());
         //.setSubject(String.valueOf(member.getMemberCode()));
@@ -68,7 +68,7 @@ public class TokenProvider {
         return new TokenDTO(BEARER_TYPE, member.getEmployeeName(), accessToken, accessTokenExpiresIn.getTime());
     }
 
-    public TokenDTO generateTokenDto (AdminLoginDTO admin) {
+    public TokenDTO generateTokenDto(AdminLoginDTO admin) {
         log.info("[TokenProvider] generateTokenDto Start ===================================");
         log.info("[TokenProvider] {}", "ROLE_ADMIN");
 
@@ -88,11 +88,11 @@ public class TokenProvider {
         return new TokenDTO(BEARER_TYPE, "관리자", accessToken, accessTokenExpiresIn.getTime());
     }
 
-    public String getUserId (String accessToken) {
+    public String getUserId(String accessToken) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getSubject();
     }
 
-    public Authentication getAuthentication (String accessToken) {
+    public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
@@ -109,7 +109,7 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public boolean validateToken (String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
@@ -129,7 +129,7 @@ public class TokenProvider {
 
     }
 
-    private Claims parseClaims (String accessToken) {
+    private Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {

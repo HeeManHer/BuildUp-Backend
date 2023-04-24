@@ -7,14 +7,16 @@ public class BoardDTO {
 
     private int sprintNo;
     private String sprintName;
+    private String state;
     List<IssueBoardDTO> boardIssue;
 
     public BoardDTO() {
     }
 
-    public BoardDTO(int sprintNo, String sprintName, List<IssueBoardDTO> boardIssue) {
+    public BoardDTO(int sprintNo, String sprintName, String state, List<IssueBoardDTO> boardIssue) {
         this.sprintNo = sprintNo;
         this.sprintName = sprintName;
+        this.state = state;
         this.boardIssue = boardIssue;
     }
 
@@ -34,6 +36,14 @@ public class BoardDTO {
         this.sprintName = sprintName;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public List<IssueBoardDTO> getBoardIssue() {
         return boardIssue;
     }
@@ -42,11 +52,13 @@ public class BoardDTO {
         this.boardIssue = boardIssue;
     }
 
+
     @Override
     public String toString() {
         return "BoardDTO{" +
                 "sprintNo=" + sprintNo +
                 ", sprintName='" + sprintName + '\'' +
+                ", state='" + state + '\'' +
                 ", boardIssue=" + boardIssue +
                 '}';
     }

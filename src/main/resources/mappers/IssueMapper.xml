@@ -48,6 +48,7 @@
                                     OR ISSUE_PRIORITY LIKE #{search}
                                     OR ISSUE_STATUS LIKE #{search})
                                 </if>
+                                ORDER BY ISSUE_NO
                     ) a
         ) b
         WHERE
