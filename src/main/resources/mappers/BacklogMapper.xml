@@ -15,6 +15,16 @@
 
     </resultMap>
 
+    <resultMap id="BacklogAuthority" type="com.warmmingup.buildup.backlog.dto.BacklogAuthorityDTO">
+        <result property="projectNo" column="PROJECT_NO"/>
+        <result property="employeeName" column="EMPLOYEE_NAME"/>
+        <result property="roleNo" column="ROLE_NO"/>
+        <result property="authorityState" column="AUTHORITY_STATE"/>
+        <result property="employeeNo" column="EMPLOYEE_NO"/>
+
+
+    </resultMap>
+
     <select id="selectBacklogListWithPaging" parameterType="hashmap" resultMap="BacklogResultMap">
         SELECT
                 b.BACKLOG_NO
@@ -133,6 +143,18 @@
         WHERE
             BACKLOG_NO = #{backlogNo}
     </delete>
+
+    <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority">
+        SELECT pe.PROJECT_NO, e.sdfasdfasdfasdfsdfsdfsdfd, r.ROLE_NO,t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO
+            FROM PROJECT_EMPLOYEE pe
+              JOIN EMPLOYEE e ON (pe.EMPLOYEE_NO = e.EMPLOYEE_NO)
+              JOIN ROLE_AUTHORITY_TYPE r ON (pe.ROLE_NO = r.ROLE_NO)
+              JOIN AUTHORITY a ON (r.AUTHORITY_NO = a.AUTHORITY_NO)
+              JOIN AUTHORITY_TYPE t ON (a.TYPE_NO=t.TYPE_NO)
+                   WHERE pe.PROJECT_NO = #{projectNo}
+                   AND e.EMPLOYEE_NO=#{employeeNo}
+    </select>
+
 
 
 </mapper>
