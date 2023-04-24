@@ -53,11 +53,10 @@ public class SprintController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 등록 성공", sprintService.insertSprint(sprintNew)));
     }
 
-
-    @PutMapping("/sprints")
-    public ResponseEntity<ResponseDTO> updateSprint (@RequestBody SprintDTO sprintUpd) {
-
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 전체 수정 성공", sprintService.updateSprint(sprintUpd)));
+    @PutMapping("/sprints/{sprintNo}")
+    public ResponseEntity<ResponseDTO> updateSprint(@PathVariable int  sprintNo) {
+        System.out.println(1);
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 수정 성공", sprintService.updateSprint(sprintNo)));
     }
 
     //    @PatchMapping("/sprints")
