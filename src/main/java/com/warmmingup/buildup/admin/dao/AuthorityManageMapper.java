@@ -30,18 +30,4 @@ public interface AuthorityManageMapper {
     void deleteAuthority (int roleNo);
 
     int selectAuthorityTotalCount ();
-
-    void insertNewType (AuthTypeDTO type);
-
-    void insertNewAuthorityState (AuthTypeDTO type);
-
-    void insertNewAuthority (AuthTypeDTO type);
-
-    void deleteType (int typeNo);
-
-    void deleteAuthorityType (int typeNo);
-
-    void deleteRoleAuthorityType (int typeNo);
-
-    int selectTypeNo (String typeName);
 }
