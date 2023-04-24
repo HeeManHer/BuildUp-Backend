@@ -3,7 +3,6 @@ package com.warmmingup.buildup.login.controller;
 import com.warmmingup.buildup.common.ResponseDTO;
 import com.warmmingup.buildup.login.dto.EmployeeDTO;
 import com.warmmingup.buildup.login.dto.MemberDTO;
-//import com.warmmingup.buildup.login.service.EmployeeService;
 import com.warmmingup.buildup.login.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +25,34 @@ public class EmployeeController {
     }
 
     @PutMapping("/changepassword/{employeeNo}")
+    public ResponseEntity<ResponseDTO> modifyEmployeePassword (@RequestBody EmployeeDTO employeeDTO) {
 
-        public ResponseEntity<ResponseDTO> modifyEmployeePassword(@RequestBody EmployeeDTO employeeDTO) {
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.modifyEmployeePassword(employeeDTO)));
+    }
 
-       return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.modifyEmployeePassword(employeeDTO)));
+    @PutMapping("/password")
+    public ResponseEntity<ResponseDTO> resetEmployeePassword (@RequestBody EmployeeDTO employeeDTO) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.resetEmployeePassword(employeeDTO)));
+    }
+
+    @GetMapping("/member")
+    public ResponseEntity<ResponseDTO> selectEmployee (@RequestBody MemberDTO member) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, memberService.findEmployee(member), member.getEmployeeNo()));
+    }
+
+    @PutMapping("/password")
+    public ResponseEntity<ResponseDTO> resetEmployeePassword (@RequestBody EmployeeDTO employeeDTO) {
+
+        System.out.println(employeeDTO);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.resetEmployeePassword(employeeDTO)));
+    }
+
+    @PostMapping("/member")
+    public ResponseEntity<ResponseDTO> selectEmployee (@RequestBody MemberDTO member) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, memberService.findEmployee(member), member.getEmployeeNo()));
     }
 }
