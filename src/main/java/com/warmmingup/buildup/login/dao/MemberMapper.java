@@ -1,5 +1,6 @@
 package com.warmmingup.buildup.login.dao;
 
+import com.warmmingup.buildup.login.dto.EmployeeDTO;
 import com.warmmingup.buildup.login.dto.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,6 +16,9 @@ public interface MemberMapper {
     MemberDTO selectByMemberId(String  employeeNo);
 
     MemberDTO selectByEmail(String email);
+
+    void modifyEmployeePassword(EmployeeDTO modifyPassword);
+
 
 
 }
