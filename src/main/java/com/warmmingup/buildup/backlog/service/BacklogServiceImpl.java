@@ -1,6 +1,7 @@
 package com.warmmingup.buildup.backlog.service;
 
 import com.warmmingup.buildup.backlog.dao.BacklogMapper;
+import com.warmmingup.buildup.backlog.dto.BacklogAuthorityDTO;
 import com.warmmingup.buildup.backlog.dto.BacklogDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,13 @@ public class BacklogServiceImpl implements  BacklogService {
     public List<BacklogDTO> selectBacklogListWithPaging(Map<String, Object> backlogConnect) {
         return backlogMapper.selectBacklogListWithPaging(backlogConnect);
     }
+
+    @Override
+    public List<BacklogAuthorityDTO> authority(Map<String, Object> authority) {
+        return backlogMapper.authority(authority);
+    }
+
+
 
 
 }

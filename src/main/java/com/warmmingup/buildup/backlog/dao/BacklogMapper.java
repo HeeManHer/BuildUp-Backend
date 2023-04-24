@@ -1,5 +1,6 @@
 package com.warmmingup.buildup.backlog.dao;
 
+import com.warmmingup.buildup.backlog.dto.BacklogAuthorityDTO;
 import com.warmmingup.buildup.backlog.dto.BacklogDTO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -25,4 +26,6 @@ public interface BacklogMapper {
 
 
 
+
+    List <BacklogAuthorityDTO>authority(Map<String, Object> authority);
 }
