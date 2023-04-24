@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 
 @Service
-public class CustomUserDetailsService  implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
     private final MemberMapper mapper;
@@ -26,11 +26,11 @@ public class CustomUserDetailsService  implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String employeeNo) throws UsernameNotFoundException {
         log.info("[CustomUserDetailsService] ===================================");
-        log.info("[CustomUserDetailsService] loadUserByUsername {}",  employeeNo);
+        log.info("[CustomUserDetailsService] loadUserByUsername {}", employeeNo);
 
-        return mapper.findByMemberId( employeeNo)
+        return mapper.findByMemberId(employeeNo)
                 .map(user -> addAuthorities(user))
-                .orElseThrow(() -> new UserNotFoundException( employeeNo + "> 찾을 수 없습니다."));
+                .orElseThrow(() -> new UserNotFoundException(employeeNo + "> 찾을 수 없습니다."));
 
 
     }
