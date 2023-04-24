@@ -34,9 +34,9 @@ public class SprintServiceImpl implements SprintService {
     public Object insertSprint(SprintDTO sprintNew) {
 
         int result = sprintMapper.insertSprint(sprintNew);
+//        sprintMapper.insertBoard(sprintNew);
         for(SprintIssueDTO sprintIssueDTO: sprintNew.getSprintIssue())
-        {sprintMapper.insertSprintIssue(sprintIssueDTO);
-        }
+        {sprintMapper.insertSprintIssue(sprintIssueDTO);}
 
         return (result > 0) ? "등록 성공" : "등록 실패";
     }
@@ -73,8 +73,9 @@ public class SprintServiceImpl implements SprintService {
     public Object deleteSprint(int sprintDel) {
 
         int result = sprintMapper.deleteSprint(sprintDel);
+         result *= sprintMapper.deleteBoard(sprintDel);
 
-        return (result > 0) ? "삭제 성공" : "삭제 실패";
+        return (result > 0) ? "스프린트 삭제 성공" : "스프린트 삭제 실패";
     }
 
     @Override

@@ -26,4 +26,5 @@ public interface SprintService {
     List<SprintIssueDTO> findSprintIssue(int projectNo);
 
     BoardDTO selectBoard(int boardCnt);
+
 }
