@@ -9,7 +9,7 @@
         <result property="employeeEmail" column="EMPLOYEE_EMAIL"/>
         <result property="employeeName" column="EMPLOYEE_NAME"/>
         <result property="employeeRole" column="ROLE_NO"/>
-
+<result property="roleName" column="ROLE_NAME"/>
     </resultMap>
     
     <select id="findByMemberId" resultMap="memberResultMap" parameterType="String">
@@ -105,10 +105,10 @@
 
     <select id="selectMember" parameterType="com.warmmingup.buildup.login.dto.MemberDTO" resultType="_int">
         SELECT COUNT(*)
-        FROM EMPLOYEE
-        WHERE EMPLOYEE_NO = #{employeeNo}
-        AND EMPLOYEE_NAME  = #{employeeName}
-        AND EMPLOYEE_EMAIL = #{employeeEmail}
+          FROM EMPLOYEE
+         WHERE EMPLOYEE_NO = #{employeeNo}
+           AND EMPLOYEE_NAME  = #{employeeName}
+           AND EMPLOYEE_EMAIL = #{employeeEmail}
     </select>
 
 </mapper>
