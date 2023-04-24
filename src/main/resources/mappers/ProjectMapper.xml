@@ -34,18 +34,23 @@
         <result property="projectNo" column="PROJECT_NO"/>
     </resultMap>
 
-    <select id="findAllProjects" resultMap="ProjectResultMap">
-        SELECT
-               P.PROJECT_NO
-             , P.PROJECT_TITLE
-             , E.EMPLOYEE_NAME
-             , R.ROLE_NAME
-          FROM PROJECT P
-          JOIN PROJECT_EMPLOYEE O ON(O.PROJECT_NO = P.PROJECT_NO)
-          JOIN EMPLOYEE E ON(E.EMPLOYEE_NO = O.EMPLOYEE_NO)
-          JOIN ROLE R ON(R.ROLE_NO = O.ROLE_NO)
-         WHERE R.ROLE_NO = 1
-         ORDER BY P.PROJECT_NO
+    <select id="findAllProjects" resultMap="ProjectResultMap" parameterType="hashmap">
+        SELECT P.PROJECT_NO,
+        P.PROJECT_TITLE,
+        E.EMPLOYEE_NAME,
+        R.ROLE_NAME
+        FROM PROJECT P
+        JOIN PROJECT_EMPLOYEE PE ON ( P.PROJECT_NO = PE.PROJECT_NO )
+        JOIN EMPLOYEE         E ON ( PE.EMPLOYEE_NO = E.EMPLOYEE_NO )
+        JOIN ROLE             R ON ( PE.ROLE_NO = R.ROLE_NO )
+        WHERE P.PROJECT_NO IN ( SELECT PP.PROJECT_NO
+        FROM PROJECT PP
+        JOIN PROJECT_EMPLOYEE PEPE ON ( PP.PROJECT_NO = PEPE.PROJECT_NO )
+        JOIN EMPLOYEE         EE ON ( PEPE.EMPLOYEE_NO = EE.EMPLOYEE_NO )
+        WHERE PEPE.EMPLOYEE_NO = #{employeeNo}
+        )
+        AND R.ROLE_NO = 1
+        ORDER BY P.PROJECT_NO
     </select>
 
     <select id="findProjectsByNo" parameterType="com.warmmingup.buildup.project.dto.BringProjectDTO" resultType="_int">
