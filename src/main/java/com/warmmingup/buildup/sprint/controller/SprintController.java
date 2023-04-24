@@ -5,6 +5,7 @@ import com.warmmingup.buildup.common.paging.Pagenation;
 import com.warmmingup.buildup.common.paging.ResponseDtoWithPaging;
 import com.warmmingup.buildup.common.paging.SelectCriteria;
 import com.warmmingup.buildup.sprint.dto.BoardDTO;
+import com.warmmingup.buildup.sprint.dto.IssueBoardDTO;
 import com.warmmingup.buildup.sprint.dto.SprintDTO;
 import com.warmmingup.buildup.sprint.service.SprintService;
 import org.springframework.http.HttpStatus;
@@ -43,7 +44,7 @@ public class SprintController {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", responseDtoWithPaging));
     }
 
-        @GetMapping("/sprints/{sprintNo}/sprintOne")
+        @GetMapping("sprints/{sprintNo}")
         public ResponseEntity<ResponseDTO> selectBoard(@PathVariable int sprintNo) {
 
             return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "보드 조회 성공", sprintService.selectBoard(sprintNo)));
@@ -72,8 +73,6 @@ public class SprintController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 삭제 성공", sprintService.deleteSprint(sprintNo)));
     }
-
-
 
 
 }

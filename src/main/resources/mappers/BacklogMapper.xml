@@ -145,7 +145,7 @@
     </delete>
 
     <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority">
-        SELECT pe.PROJECT_NO, e.sdfasdfasdfasdfsdfsdfsdfd, r.ROLE_NO,t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO
+        SELECT pe.PROJECT_NO, e.EMPLOYEE_NAME, r.ROLE_NO,t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO
             FROM PROJECT_EMPLOYEE pe
               JOIN EMPLOYEE e ON (pe.EMPLOYEE_NO = e.EMPLOYEE_NO)
               JOIN ROLE_AUTHORITY_TYPE r ON (pe.ROLE_NO = r.ROLE_NO)
