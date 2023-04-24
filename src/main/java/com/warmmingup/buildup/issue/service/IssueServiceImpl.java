@@ -79,9 +79,15 @@ public class IssueServiceImpl implements IssueService {
     }
 
     @Override
-    public int selectIssueTotal(int projectNo) {
-        return issueMapper.selectIssueTotalCount(projectNo);
+    public int selectIssueTotal(Map<String, Object> issueConnect) {
+        return issueMapper.selectIssueTotalCount(issueConnect);
     }
+
+
+//    @Override
+//    public int selectIssueTotal(Map<String, Object> projectNo) {
+//        return issueMapper.selectIssueTotalCount(projectNo);
+//    }
 
 
 }

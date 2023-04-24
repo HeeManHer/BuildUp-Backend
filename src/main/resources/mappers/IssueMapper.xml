@@ -55,13 +55,20 @@
     </select>
 
 
-    <select id="selectIssueTotalCount" parameterType="_int" resultType="_int">
+    <select id="selectIssueTotalCount" parameterType="hashmap" resultType="_int">
         SELECT
                 COUNT(*)
         FROM
                 ISSUE
         WHERE
                 PROJECT_NO = #{projectNo}
+        <if test="search != null">
+            AND (ISSUE_NAME LIKE #{search}
+            OR ISSUE_NO LIKE #{search}
+            OR ISSUE_CONTENT LIKE  #{search}
+            OR ISSUE_PRIORITY LIKE #{search}
+            OR ISSUE_STATUS LIKE #{search})
+        </if>
     </select>
 
     <select id="findIssuesByNo" resultType="_int">

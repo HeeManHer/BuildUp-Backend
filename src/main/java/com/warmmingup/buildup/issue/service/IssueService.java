@@ -20,7 +20,7 @@ public interface IssueService {
 
     List<IssueDTO> searchIssues(Map<String, Object> searchissue);
 
-    List<IssueDTO> findAllIssues(Map<String, Object> issueConnect);
+    List<IssueDTO> findAllIssues(Map<String, Object> selectCriteria);
 
-    int selectIssueTotal(int projectNo);
+    int selectIssueTotal(Map<String, Object> issueConnect);
 }
