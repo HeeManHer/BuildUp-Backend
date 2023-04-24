@@ -21,6 +21,7 @@
         <result property="roleNo" column="ROLE_NO"/>
         <result property="authorityState" column="AUTHORITY_STATE"/>
         <result property="employeeNo" column="EMPLOYEE_NO"/>
+        <result property="typeNo" column="TYPE_NO"/>
 
 
     </resultMap>
@@ -144,8 +145,8 @@
             BACKLOG_NO = #{backlogNo}
     </delete>
 
-    <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority">
-        SELECT pe.PROJECT_NO, e.EMPLOYEE_NAME, r.ROLE_NO,t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO
+    <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority
+        SELECT pe.PROJECT_NO, e.EMPLOYEE_NAME, r.ROLE_NO, t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO,a.TYPE_NO
             FROM PROJECT_EMPLOYEE pe
               JOIN EMPLOYEE e ON (pe.EMPLOYEE_NO = e.EMPLOYEE_NO)
               JOIN ROLE_AUTHORITY_TYPE r ON (pe.ROLE_NO = r.ROLE_NO)

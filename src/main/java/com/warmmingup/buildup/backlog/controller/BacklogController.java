@@ -91,8 +91,8 @@ public class BacklogController {
 
 
     @GetMapping("/backlogs/authority")
-    public  ResponseEntity<ResponseDTO> authority(@RequestParam int projectNo,
-                                                  @RequestParam int  employeeNo){
+    public  ResponseEntity<ResponseDTO> authority(@RequestParam(name="projectNo") int projectNo,
+                                                  @RequestParam(name="employeeNo") int employeeNo){
         Map<String, Object> authority = new HashMap<>();
         authority.put("projectNo",projectNo);
         authority.put("employeeNo", employeeNo);
