@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.lang.reflect.Member;
+
 
 @Service
 public class MemberService {
@@ -35,7 +37,6 @@ public class MemberService {
 
         return member;
     }
-
 
     public String modifyEmployeePassword (EmployeeDTO modifyPassword) {
 

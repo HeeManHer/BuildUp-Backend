@@ -148,7 +148,6 @@
 
         <!--권한 조회 -->
     <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority">
-
         SELECT pe.PROJECT_NO, e.EMPLOYEE_NAME, r.ROLE_NO, t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO,a.TYPE_NO
             FROM PROJECT_EMPLOYEE pe
               JOIN EMPLOYEE e ON (pe.EMPLOYEE_NO = e.EMPLOYEE_NO)

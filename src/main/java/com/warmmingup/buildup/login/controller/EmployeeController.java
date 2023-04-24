@@ -41,4 +41,18 @@ public class EmployeeController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, memberService.findEmployee(member), member.getEmployeeNo()));
     }
+
+    @PutMapping("/password")
+    public ResponseEntity<ResponseDTO> resetEmployeePassword (@RequestBody EmployeeDTO employeeDTO) {
+
+        System.out.println(employeeDTO);
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "변경 성공!!", memberService.resetEmployeePassword(employeeDTO)));
+    }
+
+    @PostMapping("/member")
+    public ResponseEntity<ResponseDTO> selectEmployee (@RequestBody MemberDTO member) {
+
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, memberService.findEmployee(member), member.getEmployeeNo()));
+    }
 }

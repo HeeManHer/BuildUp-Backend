@@ -19,5 +19,7 @@ public interface MemberMapper {
 
     void modifyEmployeePassword (EmployeeDTO modifyPassword);
 
+    MemberDTO findEmployeePassword(String employeePassword);
 
+    int selectMember(MemberDTO member);
 }
