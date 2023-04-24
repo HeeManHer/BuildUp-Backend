@@ -56,13 +56,11 @@ public class UserManageService {
     public void deleteUser (int userNo) {
 
         userManageMapper.deleteUser(userNo);
-        userManageMapper.deleteAuthority(userNo);
     }
 
 
     @Transactional
     public void updateUser (Map<String, Object> modifyUser) {
-
         userManageMapper.updateUser(modifyUser);
 
         userManageMapper.deleteAuthority((int) modifyUser.get("oldNo"));
