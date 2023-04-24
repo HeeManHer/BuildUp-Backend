@@ -12,15 +12,18 @@ public class BacklogAuthorityDTO {
 
     private int employeeNo;
 
+    private  int typeNo;
+
 
   public  BacklogAuthorityDTO() {}
 
-    public BacklogAuthorityDTO(int projectNo, String employeeName, int rollNo, String authorityState, int employeeNo) {
+    public BacklogAuthorityDTO(int projectNo, String employeeName, int roleNo, String authorityState, int employeeNo, int typeNo) {
         this.projectNo = projectNo;
         this.employeeName = employeeName;
-        this.roleNo = rollNo;
+        this.roleNo = roleNo;
         this.authorityState = authorityState;
         this.employeeNo = employeeNo;
+        this.typeNo = typeNo;
     }
 
     public int getProjectNo() {
@@ -63,14 +66,23 @@ public class BacklogAuthorityDTO {
         this.employeeNo = employeeNo;
     }
 
+    public int getTypeNo() {
+        return typeNo;
+    }
+
+    public void setTypeNo(int typeNo) {
+        this.typeNo = typeNo;
+    }
+
     @Override
     public String toString() {
         return "BacklogAuthorityDTO{" +
                 "projectNo=" + projectNo +
                 ", employeeName='" + employeeName + '\'' +
-                ", rollNo=" + roleNo +
+                ", roleNo=" + roleNo +
                 ", authorityState='" + authorityState + '\'' +
                 ", employeeNo=" + employeeNo +
+                ", typeNo=" + typeNo +
                 '}';
     }
 }
