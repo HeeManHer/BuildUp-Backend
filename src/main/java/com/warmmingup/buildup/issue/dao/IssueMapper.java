@@ -28,5 +28,5 @@ public interface IssueMapper {
     List<ISSUEBDTO> selectbackloglist(int projectNo);
 
 
-    int selectIssueTotalCount(int projectNo);
+    int selectIssueTotalCount(Map<String, Object> issueConnect);
 }

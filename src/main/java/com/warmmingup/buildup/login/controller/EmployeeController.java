@@ -24,7 +24,4 @@ public class EmployeeController {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", memberService.selectMyEmployeeInfo(employeeNo)));
     }
-
-    //    @GetMapping()
-
 }

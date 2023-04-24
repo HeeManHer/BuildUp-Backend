@@ -90,6 +90,20 @@ public class BacklogController {
     }
 
 
+    @GetMapping("/backlogs/authority")
+    public  ResponseEntity<ResponseDTO> authority(@RequestParam int projectNo,
+                                                  @RequestParam int  employeeNo){
+        Map<String, Object> authority = new HashMap<>();
+        authority.put("projectNo",projectNo);
+        authority.put("employeeNo", employeeNo);
+    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "권한 찾기 성공", backlogService.authority(authority)));
+
+
+    }
+
+
+
+
 
 
 }
