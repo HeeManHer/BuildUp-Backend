@@ -34,20 +34,22 @@ public class IssueController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(
                 new MediaType("application", "json", Charset.forName("UTF-8")));
-        int totalCount = issueService.selectIssueTotal(projectNo);
-        int limit = 10;
-        int buttonAmount = 5;
-
-        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(offset, totalCount, limit,buttonAmount);
 
         Map<String, Object> IssueConnect = new HashMap<>();
-        IssueConnect.put("projectNo",projectNo);
-        IssueConnect.put("PageInfo", selectCriteria);
 
-        System.out.println(IssueConnect.get("projectNo"));
+        IssueConnect.put("projectNo",projectNo);
+
         if (!"".equals( searchValue)) {
             IssueConnect.put("search",'%' + searchValue + '%');
         }
+
+        int totalCount = issueService.selectIssueTotal(IssueConnect);
+        int limit = 5;
+        int buttonAmount = 5;
+
+        SelectCriteria selectCriteria = Pagenation.getSelectCriteria(offset, totalCount, limit,buttonAmount);
+        IssueConnect.put("PageInfo", selectCriteria);
+
 
         ResponseDtoWithPaging responseDtoWithPaging = new ResponseDtoWithPaging();
         responseDtoWithPaging.setPageInfo(selectCriteria);
@@ -58,6 +60,8 @@ public class IssueController {
 
         return ResponseEntity.ok().headers(headers).body(new ResponseDTO(HttpStatus.OK,"조회 성공",responseDtoWithPaging));
     }
+
+
 
     @PostMapping("/issues")
     public ResponseEntity<?> registIssue(@RequestBody IssueDTO newIssue) {
@@ -113,4 +117,6 @@ public class IssueController {
 //
 //        return new ResponseEntity<>(responseDTO, headers, HttpStatus.OK);
 //    }
+
 }
+

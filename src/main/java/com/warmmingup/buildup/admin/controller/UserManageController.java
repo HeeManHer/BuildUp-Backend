@@ -24,12 +24,12 @@ public class UserManageController {
 
     private final UserManageService userManagerService;
 
-    public UserManageController (UserManageService userManagerService) {
+    public UserManageController(UserManageService userManagerService) {
         this.userManagerService = userManagerService;
     }
 
     @GetMapping("/manage-users")
-    public ResponseEntity<ResponseDTO> findAllUsers (@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "search", defaultValue = "") String search) {
+    public ResponseEntity<ResponseDTO> findAllUsers(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(name = "search", defaultValue = "") String search) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -56,7 +56,7 @@ public class UserManageController {
     }
 
     @GetMapping("/manage-users/{userNo}")
-    public ResponseEntity<ResponseDTO> findUserInfo (@PathVariable int userNo) {
+    public ResponseEntity<ResponseDTO> findUserInfo(@PathVariable int userNo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -65,17 +65,17 @@ public class UserManageController {
     }
 
     @PostMapping("/manage-users")
-    public ResponseEntity<?> insertUser (@RequestBody NewUserDTO newUser) {
+    public ResponseEntity<?> insertUser(@RequestBody NewUserDTO newUser) {
 
         newUser.setPwd(newUser.getNo() + "");
-
+        System.out.println(newUser);
         userManagerService.insertUser(newUser);
 
         return ResponseEntity.created(URI.create("/api/v1/manage-users/" + newUser.getNo())).build();
     }
 
     @PutMapping("/manage-users/{userNo}")
-    public ResponseEntity<?> updateUser (@RequestBody UserDTO modifyUser, @PathVariable int userNo) {
+    public ResponseEntity<?> updateUser(@RequestBody UserDTO modifyUser, @PathVariable int userNo) {
 
         Map<String, Object> modifyUserInfo = new HashMap<>();
         modifyUserInfo.put("oldNo", userNo);
@@ -90,7 +90,7 @@ public class UserManageController {
     }
 
     @DeleteMapping("/manage-users/{userNo}")
-    public ResponseEntity<?> deleteUser (@PathVariable int userNo) {
+    public ResponseEntity<?> deleteUser(@PathVariable int userNo) {
 
         userManagerService.deleteUser(userNo);
 

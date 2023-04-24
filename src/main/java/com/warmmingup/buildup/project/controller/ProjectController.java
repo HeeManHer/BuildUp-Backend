@@ -30,18 +30,19 @@ public class ProjectController {
     }
 
     /* 프로젝트 조회 페이지 전체 프로젝트 조회 */
-    @GetMapping("/projects")
-    public ResponseEntity<ResponseDTO> getProjects(@RequestParam(name = "offset", defaultValue = "1") int offset) {
+    @GetMapping("/{employeeNo}/projects")
+    public ResponseEntity<ResponseDTO> getProjects(@PathVariable int employeeNo) {
 
-        int limit = 10;
-
-        /* 페이징 처리 코드 */
-        int startProject = offset;
-        int endProject = startProject + limit;
+//        int limit = 10;
+//
+//        /* 페이징 처리 코드 */
+//        int startProject = offset;
+//        int endProject = startProject + limit;
 
         Map<String, Integer> projectCnt = new HashMap<>();
-        projectCnt.put("start", startProject);
-        projectCnt.put("end", endProject);
+//        projectCnt.put("start", startProject);
+//        projectCnt.put("end", endProject);
+        projectCnt.put("employeeNo", employeeNo);
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "조회 성공", projectService.findAllProjects(projectCnt)));
     }
@@ -75,7 +76,7 @@ public class ProjectController {
 //                .build();
 //    }
 
-    /* 프로젝트 조회 페이지 */
+    /* 프로젝트 상세 조회 페이지 */
     @GetMapping("/projects/{projectNo}")
     public ResponseEntity<ResponseDTO> getProjectMembers(@PathVariable int projectNo, @RequestParam(name = "offset", defaultValue = "0") int offset) {
 

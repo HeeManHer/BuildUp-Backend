@@ -11,9 +11,10 @@
         <result property="employeeRole" column="ROLE_NO"/>
 
     </resultMap>
-
+    
     <select id="findByMemberId" resultMap="memberResultMap" parameterType="String">
 <!--                SELECT /* resources.mappers.MemberMapper.xml.findByMemberId */-->
+
 <!--                A.EMPLOYEE_NO-->
 <!--                , A.EMPLOYEE_PASSWORD-->
 <!--                , A.EMPLOYEE_NAME-->
@@ -74,12 +75,14 @@
         , C.ROLE_NO
         , C.ROLE_NAME
         FROM EMPLOYEE A
-        JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)
-        JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
+        LEFT JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)
+        LEFT JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
         WHERE A.EMPLOYEE_NO = #{employeeNo}
 
     </select>
-    <select id="selectByMemberId" resultMap="memberResultMap">
+    <select id="selectByMemberId" resultMap="memberResultMap" parameterType="String">
+
+
         SELECT
         A.EMPLOYEE_NO
         , A.EMPLOYEE_PASSWORD
@@ -88,8 +91,8 @@
         , C.ROLE_NO
         , C.ROLE_NAME
         FROM EMPLOYEE A
-        JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)
-        JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
+        LEFT JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)
+        LEFT JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
         WHERE A.EMPLOYEE_NO = #{employeeNo}
     </select>
 

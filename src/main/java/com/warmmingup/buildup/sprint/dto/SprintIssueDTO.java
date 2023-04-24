@@ -3,14 +3,17 @@ package com.warmmingup.buildup.sprint.dto;
 public class SprintIssueDTO {
 
     private int issueNo;
-
     private String issueName;
-
+    private int employeeNo;
     private String employeeName;
 
-    public SprintIssueDTO(int issueNo, String issueName, String employeeName) {
+    public SprintIssueDTO() {
+    }
+
+    public SprintIssueDTO(int issueNo, String issueName, int employeeNo, String employeeName) {
         this.issueNo = issueNo;
         this.issueName = issueName;
+        this.employeeNo = employeeNo;
         this.employeeName = employeeName;
     }
 
@@ -30,6 +33,14 @@ public class SprintIssueDTO {
         this.issueName = issueName;
     }
 
+    public int getEmployeeNo() {
+        return employeeNo;
+    }
+
+    public void setEmployeeNo(int employeeNo) {
+        this.employeeNo = employeeNo;
+    }
+
     public String getEmployeeName() {
         return employeeName;
     }
@@ -43,7 +54,9 @@ public class SprintIssueDTO {
         return "SprintIssueDTO{" +
                 "issueNo=" + issueNo +
                 ", issueName='" + issueName + '\'' +
+                ", employeeNo=" + employeeNo +
                 ", employeeName='" + employeeName + '\'' +
                 '}';
     }
 }
+

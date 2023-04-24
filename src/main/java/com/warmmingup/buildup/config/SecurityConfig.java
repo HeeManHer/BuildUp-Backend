@@ -4,6 +4,7 @@ package com.warmmingup.buildup.config;
 //import com.ohgiraffers.springbootrestapi.jwt.JwtAccessDeniedHandler;
 //import com.ohgiraffers.springbootrestapi.jwt.JwtAuthenticationEntryPoint;
 //import com.ohgiraffers.springbootrestapi.jwt.TokenProvider;
+
 import com.warmmingup.buildup.jwt.JwtAccessDeniedHandler;
 import com.warmmingup.buildup.jwt.JwtAuthenticationEntryPoint;
 import com.warmmingup.buildup.jwt.TokenProvider;
@@ -26,13 +27,13 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    private final TokenProvider tokenProvider;
+    //    private final TokenProvider tokenProvider;
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     public SecurityConfig(TokenProvider tokenProvider, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint
-            , JwtAccessDeniedHandler jwtAccessDeniedHandler){
+            , JwtAccessDeniedHandler jwtAccessDeniedHandler) {
         this.tokenProvider = tokenProvider;
 
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
@@ -69,15 +70,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 시큐리티는 기본적으로 세션을 사용하지만 API 서버에선 세션을 사용하지 않기 때문에 세션 설정을 Stateless 로 설정
                 .and()
                 .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-                    // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
-                    .and()
-                    .authorizeRequests()
-                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 //                    .antMatchers("/api/v1/products/**").permitAll()
 //                    .antMatchers("/api/v1/reviews/**").permitAll()
-                    .antMatchers("/api/v1/auth/login/**").permitAll()
+                .antMatchers("/api/v1/auth/login/**").permitAll()
 
 //                    .antMatchers("/api/v1/auth/login/**").hasAnyRole("ROLE_NO", "ROLE_NAME")  // 나머지 API 는 전부 인증 필요
                 .and()
@@ -91,10 +92,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource(){
+    CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // 로컬 React에서 오는 요청은 CORS 허용해준다.
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000" ));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "PUT", "POST", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Content-Type", "Access-Control-Allow-Headers", "Authorization", "X-Requested-With"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
