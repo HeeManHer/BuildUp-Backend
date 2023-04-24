@@ -21,13 +21,13 @@ public class AdminLoginService {
     private final TokenProvider tokenProvider;
 
 
-    public AdminLoginService (AdminLoginMapper adminLoginMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
+    public AdminLoginService(AdminLoginMapper adminLoginMapper, PasswordEncoder passwordEncoder, TokenProvider tokenProvider) {
         this.adminLoginMapper = adminLoginMapper;
         this.passwordEncoder = passwordEncoder;
         this.tokenProvider = tokenProvider;
     }
 
-    public TokenDTO login (AdminLoginDTO adminInfo) {
+    public TokenDTO login(AdminLoginDTO adminInfo) {
 
         log.info("[AuthService] Login Start ===================================");
         log.info("[AuthService] {}", adminInfo);
@@ -53,7 +53,7 @@ public class AdminLoginService {
     }
 
     @Transactional
-    public void registAdmin (AdminLoginDTO adminInfo) {
+    public void registAdmin(AdminLoginDTO adminInfo) {
 
         adminInfo.setAdminPwd(passwordEncoder.encode(adminInfo.getAdminPwd()));
 
