@@ -30,8 +30,8 @@ public class BacklogController {
 
     @GetMapping("/{projectNo}/backlogs")
     public ResponseEntity<ResponseDTO> findAllBacklogs(@RequestParam(name = "offset", defaultValue = "1") int offSet
-                                                      ,@PathVariable(name = "projectNo") int projectNo
-                                                      ,@RequestParam(name = "search", defaultValue="" )String searchValue) {
+            ,@PathVariable(name = "projectNo") int projectNo
+            ,@RequestParam(name = "search", defaultValue="" )String searchValue) {
 
 
         HttpHeaders headers = new HttpHeaders();
@@ -65,7 +65,7 @@ public class BacklogController {
 
     @PostMapping("/project/{projectNo}/backlogs")
     public ResponseEntity<?> registBacklog(@RequestBody BacklogDTO newBacklog
-                                          ,@PathVariable(name = "projectNo") int projectNo) {
+            ,@PathVariable(name = "projectNo") int projectNo) {
         int backlogNo = backlogService.registBacklog(projectNo,newBacklog);
 
 
@@ -74,10 +74,10 @@ public class BacklogController {
 
 
     }
-    
+
     @PutMapping("/project/{projectNo}/backlogs")
     public ResponseEntity<ResponseDTO> updateBacklog(@RequestBody BacklogDTO updateBacklog
-                                                    ,@PathVariable(name = "projectNo") int projectNo) {
+            ,@PathVariable(name = "projectNo") int projectNo) {
         backlogService.updateBacklogs(projectNo,updateBacklog);
         return ResponseEntity.created(URI.create("/api/v1/backlgs/" + updateBacklog.getBacklogNo())).build();
 
@@ -96,7 +96,7 @@ public class BacklogController {
         Map<String, Object> authority = new HashMap<>();
         authority.put("projectNo",projectNo);
         authority.put("employeeNo", employeeNo);
-    return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "권한 찾기 성공", backlogService.authority(authority)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "권한 찾기 성공", backlogService.authority(authority)));
 
 
     }

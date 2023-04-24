@@ -26,6 +26,7 @@
 
     </resultMap>
 
+    <!--백로그 내용 페이징처리-->
     <select id="selectBacklogListWithPaging" parameterType="hashmap" resultMap="BacklogResultMap">
         SELECT
                 b.BACKLOG_NO
@@ -50,13 +51,13 @@
                         <if test="searchValue != null">
                             and(
                                 BACKLOG_NAME
-                            LIKE #{searchValue}
+                                LIKE #{searchValue}
                             OR BACKLOG_CONTENT
-                            LIKE #{searchValue}
+                                LIKE #{searchValue}
                             OR BACKLOG_PRIORITY
-                            LIKE #{searchValue}
+                                LIKE #{searchValue}
                             OR BACKLOG_STATUS
-                            LIKE #{searchValue}
+                                LIKE #{searchValue}
                             )
                         </if>
                 ) a
@@ -66,6 +67,7 @@
         ORDER BY BACKLOG_NO ASC
     </select>
 
+    <!--페이징 총페이지 계산-->
     <select id="selectBacklogTotal" resultType="_int" parameterType="hashmap">
 
         SELECT
@@ -77,22 +79,19 @@
         <if test="searchValue != null">
             and(
             BACKLOG_NAME
-            LIKE #{searchValue}
+                LIKE #{searchValue}
             OR BACKLOG_CONTENT
-            LIKE #{searchValue}
+                LIKE #{searchValue}
             OR BACKLOG_PRIORITY
-            LIKE #{searchValue}
+                LIKE #{searchValue}
             OR BACKLOG_STATUS
-            LIKE #{searchValue}
+                LIKE #{searchValue}
             )
         </if>
         ORDER BY BACKLOG_NO ASC
-
-
     </select>
 
-
-
+    <!--백로그 검색-->
     <select id="findBacklog" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
         SELECT
         BACKLOG_CONTENT FROM BACKLOG
@@ -101,12 +100,13 @@
         ORDER BY BACKLOG_NO ASC
     </select>
 
+    <!--시퀀스 백로그번호 찾기-->
     <select id="findBacklogsByNo" resultType="_int">
         SELECT SEQ_BACKLOG_NO.CURRVAL
         FROM DUAL
 
     </select>
-
+    <!--추가-->
     <insert id="addBacklogs" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
         INSERT INTO BACKLOG
         (
@@ -128,6 +128,7 @@
         )
 
     </insert>
+        <!--수정-->
     <update id="updateBacklogs" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
         UPDATE BACKLOG
         SET
@@ -138,14 +139,16 @@
         ,PROJECT_NO = #{projectNo}
         WHERE BACKLOG_NO = #{backlogNo}
     </update>
-
+    <!--삭제-->
     <delete id="deleteBacklog" parameterType="_int">
        DELETE FROM BACKLOG
         WHERE
             BACKLOG_NO = #{backlogNo}
     </delete>
 
-    <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority
+        <!--권한 조회 -->
+    <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority">
+
         SELECT pe.PROJECT_NO, e.EMPLOYEE_NAME, r.ROLE_NO, t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO,a.TYPE_NO
             FROM PROJECT_EMPLOYEE pe
               JOIN EMPLOYEE e ON (pe.EMPLOYEE_NO = e.EMPLOYEE_NO)
