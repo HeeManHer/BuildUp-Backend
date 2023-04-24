@@ -1,6 +1,5 @@
 package com.warmmingup.buildup.admin.controller;
 
-import com.warmmingup.buildup.admin.dto.AuthTypeDTO;
 import com.warmmingup.buildup.admin.dto.AuthorityDTO;
 import com.warmmingup.buildup.admin.service.AuthorityManageService;
 import com.warmmingup.buildup.common.ResponseDTO;
@@ -85,22 +84,6 @@ public class AuthorityManageController {
     @DeleteMapping("/manage-auths/{roleNo}")
     public ResponseEntity<?> deleteAuthority (@PathVariable int roleNo) {
         authorityManageService.deleteAuthority(roleNo);
-
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/manage-auths/types")
-    public ResponseEntity<?> addNewAuthType (@RequestBody AuthTypeDTO type) {
-
-        int typeNo = authorityManageService.addNewAuthType(type);
-
-        return ResponseEntity.created(URI.create("/api/v1/auths/" + typeNo)).build();
-    }
-
-    @DeleteMapping("/manage-auths/types/{typeName}")
-    public ResponseEntity<?> addNewAuthType (@PathVariable String typeName) {
-
-        authorityManageService.deleteAuthType(typeName);
 
         return ResponseEntity.noContent().build();
     }

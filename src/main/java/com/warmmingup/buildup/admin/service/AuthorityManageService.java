@@ -33,10 +33,8 @@ public class AuthorityManageService {
 
 
     public List<AuthorityDTO> findAuthorityDetail (int authNo) {
-        List<AuthorityDTO> temp = authorityManageMapper.selectAuthorityByNo(authNo);
-        System.out.println(temp);
 
-        return temp;
+        return authorityManageMapper.selectAuthorityByNo(authNo);
     }
 
 
@@ -82,35 +80,10 @@ public class AuthorityManageService {
         insertAuthorityType(auth);
     }
 
-
+    @Transactional
     public void deleteAuthority (int roleNo) {
         authorityManageMapper.deleteRole(roleNo);
-        authorityManageMapper.deleteAuthority(roleNo);
     }
 
 
-    @Transactional
-    public int addNewAuthType (AuthTypeDTO type) {
-
-        authorityManageMapper.insertNewType(type);
-
-        authorityManageMapper.insertNewAuthorityState(type);
-
-        authorityManageMapper.insertNewAuthority(type);
-
-        return authorityManageMapper.selectTypeNo(type.getTypeName());
-    }
-
-
-    @Transactional
-    public void deleteAuthType (String typeName) {
-
-        int typeNo = authorityManageMapper.selectTypeNo(typeName);
-
-        authorityManageMapper.deleteRoleAuthorityType(typeNo);
-
-        authorityManageMapper.deleteAuthorityType(typeNo);
-        
-        authorityManageMapper.deleteType(typeNo);
-    }
 }

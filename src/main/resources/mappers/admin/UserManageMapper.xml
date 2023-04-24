@@ -96,10 +96,10 @@
     <update id="updateUser" parameterType="hashmap">
         UPDATE EMPLOYEE
            SET
-                EMPLOYEE_NO = #{no}
-              , EMPLOYEE_NAME = #{name}
-              , EMPLOYEE_EMAIL = #{email}
-        WHERE EMPLOYEE_NO = #{oldNo}
+               EMPLOYEE_NO = #{no}
+             , EMPLOYEE_NAME = #{name}
+             , EMPLOYEE_EMAIL = #{email}
+         WHERE EMPLOYEE_NO = #{oldNo}
     </update>
 
     <delete id="deleteUser" parameterType="_int">

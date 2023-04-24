@@ -42,7 +42,7 @@
     <select id="selectAllSprints" parameterType="hashmap" resultMap="SprintResultMap">
         SELECT B.*
           FROM ( SELECT A.*
-                      , ROWNUM R
+                      , DENSE_RANK() OVER(ORDER BY SPRINT_NO) R
                    FROM ( SELECT
                                  I.ISSUE_NO
                                , I.ISSUE_NAME
