@@ -60,11 +60,11 @@
                                 LIKE #{searchValue}
                             )
                         </if>
+                            ORDER BY BACKLOG_NO ASC
                 ) a
         ) b
         WHERE
                 b.R BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
-        ORDER BY BACKLOG_NO ASC
     </select>
 
     <!--페이징 총페이지 계산-->

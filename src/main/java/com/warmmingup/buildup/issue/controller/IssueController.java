@@ -45,7 +45,7 @@ public class IssueController {
 
         int totalCount = issueService.selectIssueTotal(IssueConnect);
         int limit = 5;
-        int buttonAmount = 5;
+        int buttonAmount = 10;
 
         SelectCriteria selectCriteria = Pagenation.getSelectCriteria(offset, totalCount, limit,buttonAmount);
         IssueConnect.put("PageInfo", selectCriteria);
