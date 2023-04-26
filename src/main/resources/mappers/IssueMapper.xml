@@ -19,64 +19,57 @@
         <result property="backlogName" column="BACKLOG_NAME"/>
     </resultMap>
 
-    <select id="findAllIssues" resultMap="IssueResultMap" parameterType="hashmap">
-        SELECT
-            b.ISSUE_NO
-        , b.ISSUE_NAME
-        , b.ISSUE_CONTENT
-        , b.ISSUE_PRIORITY
-        , b.ISSUE_STATUS
-        , b.BACKLOG_NO
-        , b.PROJECT_NO
-        FROM
-            (
-                    SELECT
-                            a.*,
-                            ROWNUM R
-                    FROM
-                    (
-                                SELECT
-                                        *
-                                FROM
-                                        ISSUE
-                                WHERE
-                                        PROJECT_NO = #{projectNo}
-                                <if test="search != null">
-                                    AND (ISSUE_NAME LIKE #{search}
-                                    OR ISSUE_NO LIKE #{search}
-                                    OR ISSUE_CONTENT LIKE  #{search}
-                                    OR ISSUE_PRIORITY LIKE #{search}
-                                    OR ISSUE_STATUS LIKE #{search})
-                                </if>
-                                ORDER BY ISSUE_NO
-                    ) a
-        ) b
-        WHERE
-                b.R BETWEEN #{PageInfo.startRow} AND #{PageInfo.endRow}
-    </select>
-
-
     <select id="selectIssueTotalCount" parameterType="hashmap" resultType="_int">
-        SELECT
-                COUNT(*)
-        FROM
-                ISSUE
-        WHERE
-                PROJECT_NO = #{projectNo}
+        SELECT COUNT(*)
+        FROM ISSUE
+        WHERE PROJECT_NO = #{projectNo}
         <if test="search != null">
-            AND (ISSUE_NAME LIKE #{search}
+            AND ( ISSUE_NAME LIKE #{search}
             OR ISSUE_NO LIKE #{search}
             OR ISSUE_CONTENT LIKE  #{search}
             OR ISSUE_PRIORITY LIKE #{search}
-            OR ISSUE_STATUS LIKE #{search})
+            OR ISSUE_STATUS LIKE #{search}
+            )
         </if>
     </select>
 
-    <select id="findIssuesByNo" resultType="_int">
-        SELECT SEQ_ISSUE_NO.CURRVAL
-        FROM DUAL
+    <select id="selectAllIssues" resultMap="IssueResultMap" parameterType="hashmap">
+        SELECT
+               B.ISSUE_NO
+             , B.ISSUE_NAME
+             , B.ISSUE_CONTENT
+             , B.ISSUE_PRIORITY
+             , B.ISSUE_STATUS
+             , B.BACKLOG_NO
+             , B.PROJECT_NO
+          FROM ( SELECT A.*
+                      , ROWNUM R
+                   FROM ( SELECT *
+                            FROM ISSUE
+                           WHERE PROJECT_NO = #{projectNo}
+                                <if test="search != null">
+                                    AND ( ISSUE_NAME LIKE #{search}
+                                       OR ISSUE_NO LIKE #{search}
+                                       OR ISSUE_CONTENT LIKE  #{search}
+                                       OR ISSUE_PRIORITY LIKE #{search}
+                                       OR ISSUE_STATUS LIKE #{search}
+                                    )
+                                </if>
+                           ORDER BY ISSUE_NO
+                    ) A
+        ) B
+        WHERE
+                B.R BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
     </select>
-    <insert id="addIssues" parameterType="com.warmmingup.buildup.issue.dto.IssueDTO">
+
+    <select id="selectBacklogList" resultMap="BacklogResultMap" parameterType="_int">
+        SELECT BACKLOG_NO
+        , BACKLOG_NAME
+        FROM BACKLOG
+        WHERE PROJECT_NO = #{projectNo}
+    </select>
+
+    <insert id="insertIssues" parameterType="com.warmmingup.buildup.issue.dto.IssueDTO">
         INSERT INTO ISSUE
         (
             ISSUE_NO
@@ -97,8 +90,13 @@
             #{backlogNo},
             #{projectNo}
         )
-
     </insert>
+
+    <select id="selectIssuesNo" resultType="_int">
+        SELECT SEQ_ISSUE_NO.CURRVAL
+        FROM DUAL
+    </select>
+
     <update id="updateIssues" parameterType="com.warmmingup.buildup.issue.dto.IssueDTO">
         UPDATE ISSUE
         SET
@@ -117,23 +115,5 @@
         WHERE
             ISSUE_NO = #{issueNo}
     </delete>
-    <select id="selectbackloglist" resultMap="BacklogResultMap" parameterType="_int">
-        SELECT
-            BACKLOG_NO,
-            BACKLOG_NAME
-        FROM
-            BACKLOG
-        WHERE
-            PROJECT_NO = #{projectNo}
-    </select>
-<!--    <select id="searchIssue" parameterType="hashmap" resultMap="IssueResultMap">-->
-<!--        SELECT-->
-<!--                *-->
-<!--        FROM ISSUE-->
-<!--        WHERE ISSUE_NAME LIKE #{search}-->
-<!--        OR ISSUE_NO LIKE #{search}-->
-<!--        OR ISSUE_CONTENT LIKE #{search}-->
-
-<!--    </select>-->
 
 </mapper>

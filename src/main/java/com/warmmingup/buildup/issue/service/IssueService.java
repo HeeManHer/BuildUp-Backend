@@ -8,19 +8,15 @@ import java.util.Map;
 
 public interface IssueService {
 
-    int registIssue(IssueDTO newIssue);
+    int selectIssueTotalCount(Map<String, Object> issueConnect);
 
-//    List<IssueDTO> findAllIssues();
+    List<IssueDTO> findAllIssues(Map<String, Object> selectCriteria);
+
+    List<ISSUEBDTO> getBacklogByNo(int projectNo);
+
+    int registIssue(IssueDTO newIssue);
 
     void updateIssues(IssueDTO updateIssue);
 
     void removeIssues(int removeIssue);
-
-    List<ISSUEBDTO> getBacklogByNo(int projectNo);
-
-    List<IssueDTO> searchIssues(Map<String, Object> searchissue);
-
-    List<IssueDTO> findAllIssues(Map<String, Object> selectCriteria);
-
-    int selectIssueTotal(Map<String, Object> issueConnect);
 }

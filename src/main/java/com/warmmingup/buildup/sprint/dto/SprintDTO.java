@@ -15,17 +15,17 @@ public class SprintDTO {
     private Date sprintEndday;
     private String sprintState;
     private int projectNo;
-
     private List<SprintIssueDTO> sprintIssue;
 
 
-    public SprintDTO() {}
+    public SprintDTO() {
+    }
 
     public SprintDTO(int sprintNo, String sprintName, Date sprintStartday, Date sprintEndday, String sprintState, int projectNo, List<SprintIssueDTO> sprintIssue) {
-            this.sprintNo = sprintNo;
-            this.sprintName = sprintName;
-            this.sprintStartday = sprintStartday;
-            this.sprintEndday = sprintEndday;
+        this.sprintNo = sprintNo;
+        this.sprintName = sprintName;
+        this.sprintStartday = sprintStartday;
+        this.sprintEndday = sprintEndday;
         this.sprintState = sprintState;
         this.projectNo = projectNo;
         this.sprintIssue = sprintIssue;

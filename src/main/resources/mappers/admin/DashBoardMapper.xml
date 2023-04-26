@@ -37,17 +37,15 @@
 
     <resultMap id="projectResultMap" type="com.warmmingup.buildup.admin.dto.DashProjectDTO">
         <id property="name" column="PROJECT_TITLE"/>
-        <result property="startDate" column="CHANGE_TIME"/>
+        <result property="startDate" column="START_DAY"/>
     </resultMap>
 
     <select id="selectDashProject" resultMap="projectResultMap">
         SELECT *
           FROM ( SELECT A.PROJECT_TITLE
-                      , B.CHANGE_TIME
+                      , A.START_DAY
                    FROM PROJECT A
-                   LEFT JOIN PROJECT_RECORD B ON (A.PROJECT_NO = B.PROJECT_NO)
-<!--                  WHERE B.STATE = 'C'-->
-                  ORDER BY B.CHANGE_TIME DESC, A.PROJECT_NO DESC
+                  ORDER BY A.START_DAY DESC, A.PROJECT_NO DESC
                )
          WHERE ROWNUM &lt; 6
     </select>

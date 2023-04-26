@@ -12,16 +12,13 @@ import java.util.Map;
 @Mapper
 public interface ProjectMapper {
 
-    List<ProjectDTO> findAllProjects(Map<String, Integer> projectCnt);
+    List<ProjectDTO> selectAllProjects(int projectCnt);
+
     int findProjectsByNo(BringProjectDTO newProject);
 
     int insertProject(BringProjectDTO newProject);
 
     void insertProjectEmployee(projectEmployeeDTO newProject);
-
-    BringProjectDTO selectEmployeeNo(BringProjectDTO newProject);
-
-//    void modifyProjectTitle(ProjectDTO updateTitle);
 
     List<ProjectDTO> findAllProjectMembers(Map<String, Integer> projectMemberCnt);
 
@@ -38,9 +35,5 @@ public interface ProjectMapper {
     void modifyMemberAuthority(Map<String, Object> memberAuthorityMap);
 
     List<AuthorityDTO> findAuthority();
-
-    Object findAllProjectRecords(int projectNo);
-
-//    List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers);
 }
 

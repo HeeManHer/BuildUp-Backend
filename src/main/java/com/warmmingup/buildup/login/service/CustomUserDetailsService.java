@@ -1,7 +1,7 @@
 package com.warmmingup.buildup.login.service;
 
 import com.warmmingup.buildup.exception.UserNotFoundException;
-import com.warmmingup.buildup.login.dao.MemberMapper;
+import com.warmmingup.buildup.login.dao.LoginMapper;
 import com.warmmingup.buildup.login.dto.MemberDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +17,10 @@ import java.util.Arrays;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private static final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
-    private final MemberMapper mapper;
+    private final LoginMapper loginMapper;
 
-    public CustomUserDetailsService(MemberMapper mapper) {
-        this.mapper = mapper;
+    public CustomUserDetailsService(LoginMapper mapper) {
+        this.loginMapper = mapper;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         log.info("[CustomUserDetailsService] ===================================");
         log.info("[CustomUserDetailsService] loadUserByUsername {}", employeeNo);
 
-        return mapper.findByMemberId(employeeNo)
+        return loginMapper.findByMemberId(employeeNo)
                 .map(user -> addAuthorities(user))
                 .orElseThrow(() -> new UserNotFoundException(employeeNo + "> 찾을 수 없습니다."));
 

@@ -6,12 +6,12 @@ public class NewUserDTO {
     private String name;
     private String email;
     private String pwd;
-    private boolean authority;
+    private String authority;
 
     public NewUserDTO () {
     }
 
-    public NewUserDTO (int no, String name, String email, String pwd, boolean authority) {
+    public NewUserDTO (int no, String name, String email, String pwd, String authority) {
         this.no = no;
         this.name = name;
         this.email = email;
@@ -51,11 +51,11 @@ public class NewUserDTO {
         this.pwd = pwd;
     }
 
-    public boolean isAuthority () {
+    public String isAuthority () {
         return authority;
     }
 
-    public void setAuthority (boolean authority) {
+    public void setAuthority (String authority) {
         this.authority = authority;
     }
 

@@ -13,16 +13,16 @@
         <result property="replyDate" column="REPLY_DATE"/>
     </resultMap>
 
-    <select id="findAllComments" parameterType="_int" resultMap="CommentResultMap">
+    <select id="selectAllComments" parameterType="_int" resultMap="CommentResultMap">
         SELECT
-            A.REPLY_NO
-           , A.ISSUE_NO
-           , A.EMPLOYEE_NO
-           , A.REPLY_CONTENT
-           , A.REPLY_DATE
-        FROM REPLY A
-        WHERE A.ISSUE_NO=#{issueNo}
-        ORDER BY A.REPLY_DATE DESC
+               A.REPLY_NO
+             , A.ISSUE_NO
+             , A.EMPLOYEE_NO
+             , A.REPLY_CONTENT
+             , A.REPLY_DATE
+          FROM REPLY A
+         WHERE A.ISSUE_NO=#{issueNo}
+         ORDER BY A.REPLY_DATE DESC
     </select>
 
     <select id="selectCommentNo" resultType="_int">
@@ -52,34 +52,17 @@
 
     <update id="updateComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
         UPDATE REPLY
-        SET
-        EMPLOYEE_NO = #{ employeeNo },
-        REPLY_CONTENT = #{ replyContent },
-        REPLY_DATE = #{ replyDate }
-        WHERE ISSUE_NO = #{ issueNo }
-        AND REPLY_NO = #{ replyNo}
-    </update>
-
-    <update id="patchComment" parameterType="com.warmmingup.buildup.comment.dto.CommentDTO">
-        UPDATE REPLY
-        <set>
-            <if test="employeeNo != null">
-                EMPLOYEE_NO = #{employeeNo},
-            </if>
-            <if test="replyContent != null">
-                REPLY_CONTENT = #{replyContent},
-            </if>
-            <if test="replyDate != null">
-                REPLY_DATE = #{replyDate}
-            </if>
-        </set>
-        WHERE ISSUE_NO = #{issueNo}
+           SET
+               EMPLOYEE_NO = #{ employeeNo },
+               REPLY_CONTENT = #{ replyContent },
+               REPLY_DATE = #{ replyDate }
+         WHERE ISSUE_NO = #{ issueNo }
+           AND REPLY_NO = #{ replyNo}
     </update>
 
     <delete id="deleteComment" parameterType="_int">
-
         DELETE FROM REPLY
-        WHERE REPLY_NO = #{replyNo}
+         WHERE REPLY_NO = #{replyNo}
 
     </delete>
 

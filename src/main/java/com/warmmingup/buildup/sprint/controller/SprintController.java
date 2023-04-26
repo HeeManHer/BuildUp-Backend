@@ -18,12 +18,12 @@ import java.util.Map;
 public class SprintController {
     private final SprintService sprintService;
 
-    public SprintController (SprintService sprintService) {
+    public SprintController(SprintService sprintService) {
         this.sprintService = sprintService;
     }
 
     @GetMapping("/{projectNo}/sprints")
-    public ResponseEntity<ResponseDTO> getSprint (@PathVariable int projectNo, @RequestParam(name = "offset", defaultValue = "1") int offset) {
+    public ResponseEntity<ResponseDTO> getAllSprint(@PathVariable int projectNo, @RequestParam(name = "offset", defaultValue = "1") int offset) {
 
         Map<String, Object> sprintMap = new HashMap<>();
         sprintMap.put("projectNo", projectNo);
@@ -43,30 +43,24 @@ public class SprintController {
     }
 
     @GetMapping("sprints/{sprintNo}")
-    public ResponseEntity<ResponseDTO> selectBoard (@PathVariable int sprintNo) {
+    public ResponseEntity<ResponseDTO> getSprintDetail(@PathVariable int sprintNo) {
 
-        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "보드 조회 성공", sprintService.selectBoard(sprintNo)));
+        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "보드 조회 성공", sprintService.findSprintByNo(sprintNo)));
     }
 
     @PostMapping("/sprints")
-    public ResponseEntity<ResponseDTO> insertSprint (@RequestBody SprintDTO sprintNew) {
+    public ResponseEntity<ResponseDTO> insertSprint(@RequestBody SprintDTO sprintNew) {
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 등록 성공", sprintService.insertSprint(sprintNew)));
     }
 
     @PutMapping("/sprints/{sprintNo}")
-    public ResponseEntity<ResponseDTO> updateSprint(@PathVariable int  sprintNo) {
-        System.out.println(1);
+    public ResponseEntity<ResponseDTO> updateSprint(@PathVariable int sprintNo) {
+
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 수정 성공", sprintService.updateSprint(sprintNo)));
     }
 
-    //    @PatchMapping("/sprints")
-    //    public ResponseEntity<ResponseDTO> patchSprint(@RequestBody SprintDTO sprintPth) {
-    //
-    //        return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 수정 성공", sprintService.patchSprint(sprintPth)));
-    //    }
-
     @DeleteMapping("/sprints/{sprintNo}")
-    public ResponseEntity<ResponseDTO> deleteSprint (@PathVariable int sprintNo) {
+    public ResponseEntity<ResponseDTO> deleteSprint(@PathVariable int sprintNo) {
 
         return ResponseEntity.ok().body(new ResponseDTO(HttpStatus.OK, "스프린트 삭제 성공", sprintService.deleteSprint(sprintNo)));
     }

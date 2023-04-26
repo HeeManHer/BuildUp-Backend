@@ -8,19 +8,15 @@ import java.util.Map;
 
 public interface BacklogService {
 
+    int selectBacklogTotalCount(Map<String, Object> backlogConnect);
+
+    List<BacklogDTO> selectAllBacklogs(Map<String, Object> selectCriteria);
+
+    int insertBacklog(int projectNo, BacklogDTO newBacklog);
+
     void updateBacklogs(int projectNo, BacklogDTO updateBacklog);
-
-    int registBacklog(int projectNo, BacklogDTO newBacklog);
-
 
     void deleteBacklog(int backlogNo);
 
-
-    int selectBacklogTotal(Map<String, Object> backlogConnect);
-
-    List<BacklogDTO> selectBacklogListWithPaging(Map<String, Object> selectCriteria);
-
-
-
-    List<BacklogAuthorityDTO>authority(Map<String, Object> authority);
+    List<BacklogAuthorityDTO> authority(Map<String, Object> authority);
 }

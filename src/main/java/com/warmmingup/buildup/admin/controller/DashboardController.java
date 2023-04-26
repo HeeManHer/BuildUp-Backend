@@ -18,13 +18,13 @@ public class DashboardController {
 
     private final DashboardService dashboardService;
 
-    public DashboardController (DashboardService dashboardService) {
+    public DashboardController(DashboardService dashboardService) {
         this.dashboardService = dashboardService;
     }
 
 
     @GetMapping("/dash-issue")
-    public ResponseEntity<ResponseDTO> findDashIssue () {
+    public ResponseEntity<ResponseDTO> getDashIssue() {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -33,7 +33,7 @@ public class DashboardController {
     }
 
     @GetMapping("/dash-backlog")
-    public ResponseEntity<ResponseDTO> findDashBacklog () {
+    public ResponseEntity<ResponseDTO> getDashBacklog() {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -42,7 +42,7 @@ public class DashboardController {
     }
 
     @GetMapping("/dash-sprint")
-    public ResponseEntity<ResponseDTO> findDashSprint () {
+    public ResponseEntity<ResponseDTO> getDashSprint() {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -51,7 +51,7 @@ public class DashboardController {
     }
 
     @GetMapping("/dash-project")
-    public ResponseEntity<ResponseDTO> findDashProject () {
+    public ResponseEntity<ResponseDTO> getDashProject() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 
@@ -59,7 +59,7 @@ public class DashboardController {
     }
 
     @GetMapping("/dash-auth")
-    public ResponseEntity<ResponseDTO> findChartAuth () {
+    public ResponseEntity<ResponseDTO> getChartAuth() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
 

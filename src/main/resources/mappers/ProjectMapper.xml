@@ -34,23 +34,24 @@
         <result property="projectNo" column="PROJECT_NO"/>
     </resultMap>
 
-    <select id="findAllProjects" resultMap="ProjectResultMap" parameterType="hashmap">
-        SELECT P.PROJECT_NO,
-        P.PROJECT_TITLE,
-        E.EMPLOYEE_NAME,
-        R.ROLE_NAME
-        FROM PROJECT P
-        JOIN PROJECT_EMPLOYEE PE ON ( P.PROJECT_NO = PE.PROJECT_NO )
-        JOIN EMPLOYEE         E ON ( PE.EMPLOYEE_NO = E.EMPLOYEE_NO )
-        JOIN ROLE             R ON ( PE.ROLE_NO = R.ROLE_NO )
-        WHERE P.PROJECT_NO IN ( SELECT PP.PROJECT_NO
-        FROM PROJECT PP
-        JOIN PROJECT_EMPLOYEE PEPE ON ( PP.PROJECT_NO = PEPE.PROJECT_NO )
-        JOIN EMPLOYEE         EE ON ( PEPE.EMPLOYEE_NO = EE.EMPLOYEE_NO )
-        WHERE PEPE.EMPLOYEE_NO = #{employeeNo}
-        )
-        AND R.ROLE_NO = 1
-        ORDER BY P.PROJECT_NO
+    <select id="selectAllProjects" resultMap="ProjectResultMap" parameterType="_int">
+        SELECT
+               P.PROJECT_NO
+             , P.PROJECT_TITLE
+             , E.EMPLOYEE_NAME
+             , R.ROLE_NAME
+          FROM PROJECT          P
+          JOIN PROJECT_EMPLOYEE PE ON ( P.PROJECT_NO = PE.PROJECT_NO )
+          JOIN EMPLOYEE         E  ON ( PE.EMPLOYEE_NO = E.EMPLOYEE_NO )
+          JOIN ROLE             R  ON ( PE.ROLE_NO = R.ROLE_NO )
+         WHERE P.PROJECT_NO IN ( SELECT PP.PROJECT_NO
+                                   FROM PROJECT          PP
+                                   JOIN PROJECT_EMPLOYEE PEPE ON ( PP.PROJECT_NO = PEPE.PROJECT_NO )
+                                   JOIN EMPLOYEE         EE   ON ( PEPE.EMPLOYEE_NO = EE.EMPLOYEE_NO )
+                                  WHERE PEPE.EMPLOYEE_NO = #{employeeNo}
+                               )
+           AND R.ROLE_NO = 1
+         ORDER BY P.PROJECT_NO
     </select>
 
     <select id="findProjectsByNo" parameterType="com.warmmingup.buildup.project.dto.BringProjectDTO" resultType="_int">
@@ -61,13 +62,13 @@
     <insert id="insertProject" parameterType="com.warmmingup.buildup.project.dto.BringProjectDTO">
         INSERT INTO PROJECT
         (
-        PROJECT_NO,
-        PROJECT_TITLE
+          PROJECT_NO
+        , PROJECT_TITLE
         )
         VALUES
         (
-        SEQ_PROJECT_NO.NEXTVAL,
-        #{projectTitle}
+          SEQ_PROJECT_NO.NEXTVAL
+        , #{projectTitle}
         )
     </insert>
 
@@ -80,34 +81,17 @@
         </selectKey>
         INSERT INTO PROJECT_EMPLOYEE
         (
-        PROJECT_NO,
-        ROLE_NO,
-        EMPLOYEE_NO
+          PROJECT_NO
+        , ROLE_NO
+        , EMPLOYEE_NO
         )
         VALUES
         (
-        SEQ_PROJECT_NO.CURRVAL
-        ,#{roleNo}
-        ,#{employeeNo}
+          SEQ_PROJECT_NO.CURRVAL
+        , #{roleNo}
+        , #{employeeNo}
         )
-        <!-- EX) "projectTitle": "테스트23",
-        "employeeName" : [{"roleNo": "1", "employeeName" : "허희만" }, {"roleNo": "2", "employeeName" : "이준성" }] 이렇게 값 넘겨줘야함!! -->
     </insert>
-    <select id="selectEmployeeNo" parameterType="com.warmmingup.buildup.project.dto.projectEmployeeDTO" resultMap="ProjectEmployeeMap">
-        SELECT
-               A.EMPLOYEE_NO
-             , C.ROLE_NO
-          FROM EMPLOYEE A
-          LEFT JOIN CREATED_PROJECT C ON(A.EMPLOYEE_NO = C.EMPLOYEE_NO)
-         WHERE A.EMPLOYEE_NAME = #{employeeName}
-    </select>
-
-<!--    <update id="modifyProjectTitle" parameterType="com.warmmingup.buildup.project.dto.ProjectDTO">-->
-<!--        UPDATE-->
-<!--               PROJECT-->
-<!--           SET PROJECT_TITLE = #{projectTitle}-->
-<!--         WHERE PROJECT_NO = #{projectNo}-->
-<!--    </update>-->
 
     <select id="findAllProjectMembers" parameterType="hashmap" resultMap="ProjectResultMap">
         SELECT
@@ -147,31 +131,22 @@
     </delete>
 
     <insert id="inviteTeamMember" parameterType="com.warmmingup.buildup.project.dto.BringProjectDTO">
-        INSERT INTO PROJECT_EMPLOYEE (
+        INSERT INTO PROJECT_EMPLOYEE
+        (
           PROJECT_NO
         , ROLE_NO
         , EMPLOYEE_NO
         )
         (
-        SELECT #{projectNo} PROJECT_NO
-        , 2 ROLE_NO
-        , EMPLOYEE_NO
-        FROM EMPLOYEE
-        WHERE EMPLOYEE_NAME IN
-        <foreach collection="employeeName" item="employee" open="(" separator=", " close=")">
-            #{ employee.employeeName }
-        </foreach>
+          SELECT #{projectNo} PROJECT_NO
+                            , 2 ROLE_NO
+                            , EMPLOYEE_NO
+                         FROM EMPLOYEE
+                        WHERE EMPLOYEE_NAME IN
+                        <foreach collection="employeeName" item="employee" open="(" separator=", " close=")">
+                            #{ employee.employeeName }
+                        </foreach>
         )
-        <!--"projectNo" : 165,
-    "employeeName" : [{
-        "employeeName" : "허희만" ,
-        "roleNo" : 2
-    },
-    {
-        "employeeName" : "최명건",
-        "roleNo" : 2
-    }
-    ]-->
     </insert>
 
     <delete id="removeTeamMember" parameterType="hashmap">
@@ -182,7 +157,6 @@
         <foreach collection="employeeNo" item="employeeNo" open="(" separator=", " close=")">
             #{ employeeNo }
         </foreach>
-        <!--employeeNo 배열로 보내기 [20230208, 20230604]-->
     </delete>
 
 
@@ -200,31 +174,6 @@
              , ROLE_NAME
           FROM ROLE
     </select>
-
-    <select id="findAllProjectRecords" resultMap="ProjectRecordMap">
-        SELECT
-               EDITOR
-             , STATE
-             , CHANGE_TIME
-             , PROJECT_NO
-             , RECORD_NO
-          FROM PROJECT_RECORD
-    </select>
-
-
-
-
-
-<!--    <select id="searchMembers" parameterType="hashmap" resultMap="ProjectEmployeeMap">-->
-<!--        SELECT-->
-<!--               EMPLOYEE_NAME-->
-<!--             , EMPLOYEE_EMAIL-->
-<!--          FROM EMPLOYEE-->
-<!--         WHERE EMPLOYEE_NAME LIKE #{search}-->
-<!--            OR EMPLOYEE_EMAIL LIKE #{search}-->
-<!--         ORDER BY EMPLOYEE_NAME ASC-->
-<!--    </select>-->
-
 
 </mapper>
 

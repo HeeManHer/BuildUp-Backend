@@ -2,103 +2,29 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.warmmingup.buildup.login.dao.MemberMapper">
+<mapper namespace="com.warmmingup.buildup.member.dao.MemberMapper">
+
     <resultMap id="memberResultMap" type="com.warmmingup.buildup.login.dto.MemberDTO">
         <id property="employeeNo" column="EMPLOYEE_NO"/>
         <result property="employeePassword" column="EMPLOYEE_PASSWORD"/>
         <result property="employeeEmail" column="EMPLOYEE_EMAIL"/>
         <result property="employeeName" column="EMPLOYEE_NAME"/>
-        <result property="employeeRole" column="ROLE_NO"/>
-        <result property="roleName" column="ROLE_NAME"/>
+        <result property="employeeRole" column="EMPLOYEE_ROLE"/>
     </resultMap>
-    
-    <select id="findByMemberId" resultMap="memberResultMap" parameterType="String">
-<!--                SELECT /* resources.mappers.MemberMapper.xml.findByMemberId */-->
 
-<!--                A.EMPLOYEE_NO-->
-<!--                , A.EMPLOYEE_PASSWORD-->
-<!--                , A.EMPLOYEE_NAME-->
-<!--                , E.AUTHORITY_NO-->
-<!--                , C.ROLE_NO-->
-<!--                FROM EMPLOYEE A-->
-<!--                , CREATED_PROJECT B-->
-<!--                , ROLE C-->
-<!--                , ROLE_AUTHORITY_TYPE D-->
-<!--                , AUTHORITY E-->
-<!--                WHERE A.EMPLOYEE_NO = B.EMPLOYEE_NO-->
-<!--                AND B.ROLE_NO = C.ROLE_NO-->
-<!--                AND C.ROLE_NO = D.ROLE_NO-->
-<!--                AND D.AUTHORITY_NO = E.AUTHORITY_NO-->
-<!--                AND A.EMPLOYEE_NO = #{employeeNo}-->
-
-        <!--        SELECT /* resources.mappers.MemberMapper.xml.findByMemberId */-->
-        <!--        A.EMPLOYEE_NO-->
-        <!--        , A.EMPLOYEE_PASSWORD-->
-        <!--        , A.EMPLOYEE_NAME-->
-
-        <!--        , C.ROLE_NO-->
-        <!--        FROM EMPLOYEE A-->
-        <!--        , CREATED_PROJECT B-->
-        <!--        , ROLE C-->
-
-
-        <!--        WHERE A.EMPLOYEE_NO = B.EMPLOYEE_NO-->
-        <!--        AND B.ROLE_NO = C.ROLE_NO-->
-
-
-        <!--        AND A.EMPLOYEE_NO = #{employeeNo}-->
-<!--        SELECT-->
-<!--        A.EMPLOYEE_NO-->
-<!--        , A.EMPLOYEE_PASSWORD-->
-<!--        , A.EMPLOYEE_EMAIL-->
-<!--        , A.EMPLOYEE_NAME-->
-<!--        FROM EMPLOYEE A-->
-<!--        WHERE A.EMPLOYEE_NO = #{employeeNo}-->
-<!--        SELECT-->
-<!--              A.EMPLOYEE_NO-->
-<!--            , A.EMPLOYEE_PASSWORD-->
-<!--            , A.EMPLOYEE_EMAIL-->
-<!--            , A.EMPLOYEE_NAME-->
-<!--            , C.ROLE_NO-->
-<!--            , C.ROLE_NAME-->
-<!--         FROM EMPLOYEE A-->
-<!--           , CREATED_PROJECT B-->
-<!--           , ROLE C-->
-<!--         WHERE A.EMPLOYEE_NO = B.EMPLOYEE_NO-->
-<!--           AND B.ROLE_NO = C.ROLE_NO-->
-<!--           AND A.EMPLOYEE_NO = #{employeeNo}-->
-        SELECT
-        A.EMPLOYEE_NO
-        , A.EMPLOYEE_PASSWORD
-        , A.EMPLOYEE_EMAIL
-        , A.EMPLOYEE_NAME
-        , C.ROLE_NO
-        , C.ROLE_NAME
-        FROM EMPLOYEE A
-        LEFT JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)
-        LEFT JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
-        WHERE A.EMPLOYEE_NO = #{employeeNo}
-
-    </select>
     <select id="selectByMemberId" resultMap="memberResultMap" parameterType="String">
-
-
         SELECT
-        A.EMPLOYEE_NO
-        , A.EMPLOYEE_PASSWORD
-        , A.EMPLOYEE_EMAIL
-        , A.EMPLOYEE_NAME
-        , C.ROLE_NO
-        , C.ROLE_NAME
-        FROM EMPLOYEE A
-        LEFT JOIN CREATED_PROJECT B ON(A.EMPLOYEE_NO = B.EMPLOYEE_NO)
-        LEFT JOIN ROLE C ON (B.ROLE_NO = C.ROLE_NO)
-        WHERE A.EMPLOYEE_NO = #{employeeNo}
+               A.EMPLOYEE_NO
+             , A.EMPLOYEE_PASSWORD
+             , A.EMPLOYEE_EMAIL
+             , A.EMPLOYEE_NAME
+             , A.EMPLOYEE_ROLE
+          FROM EMPLOYEE A
+         WHERE A.EMPLOYEE_NO = #{employeeNo}
     </select>
 
-    <update id="modifyEmployeePassword" parameterType="com.warmmingup.buildup.login.dto.EmployeeDTO">
-        UPDATE
-               EMPLOYEE
+    <update id="modifyEmployeePassword" parameterType="com.warmmingup.buildup.member.dto.EmployeeDTO">
+        UPDATE EMPLOYEE
            SET EMPLOYEE_PASSWORD = #{newPassword}
          WHERE EMPLOYEE_NO = #{employeeNo}
     </update>

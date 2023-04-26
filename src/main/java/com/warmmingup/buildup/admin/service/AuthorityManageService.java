@@ -17,35 +17,35 @@ public class AuthorityManageService {
 
     private final AuthorityManageMapper authorityManageMapper;
 
-    public AuthorityManageService (AuthorityManageMapper authorityManageMapper) {
+    public AuthorityManageService(AuthorityManageMapper authorityManageMapper) {
         this.authorityManageMapper = authorityManageMapper;
     }
 
 
-    public int findAuthorityTotalCount () {
+    public int findAuthorityTotalCount() {
         return authorityManageMapper.selectAuthorityTotalCount();
     }
 
 
-    public List<AuthorityDTO> findAllAuthority (SelectCriteria selectCriteria) {
+    public List<AuthorityDTO> findAllAuthority(SelectCriteria selectCriteria) {
         return authorityManageMapper.selectAllAuthority(selectCriteria);
     }
 
 
-    public List<AuthorityDTO> findAuthorityDetail (int authNo) {
+    public List<AuthorityDTO> findAuthorityDetail(int authNo) {
 
         return authorityManageMapper.selectAuthorityByNo(authNo);
     }
 
 
-    public List<AuthTypeDTO> findAuthType () {
+    public List<AuthTypeDTO> findAuthType() {
 
         return authorityManageMapper.selectAllAuthTypes();
     }
 
 
     @Transactional
-    public int registAuthority (AuthorityDTO auth) {
+    public int insertAuthority(AuthorityDTO auth) {
         authorityManageMapper.insertNewRole(auth);
         auth.setRoleNo(authorityManageMapper.selectAuthNo());
 
@@ -55,7 +55,7 @@ public class AuthorityManageService {
     }
 
     @Transactional
-    public void insertAuthorityType (AuthorityDTO auth) {
+    public void insertAuthorityType(AuthorityDTO auth) {
         Map<String, Object> authority = new HashMap<>();
         authority.put("roleNo", auth.getRoleNo());
 
@@ -72,7 +72,7 @@ public class AuthorityManageService {
 
 
     @Transactional
-    public void updateAuthority (AuthorityDTO auth) {
+    public void updateAuthority(AuthorityDTO auth) {
 
         authorityManageMapper.updateRole(auth);
         authorityManageMapper.deleteAuthority(auth.getRoleNo());
@@ -81,7 +81,7 @@ public class AuthorityManageService {
     }
 
     @Transactional
-    public void deleteAuthority (int roleNo) {
+    public void deleteAuthority(int roleNo) {
         authorityManageMapper.deleteRole(roleNo);
     }
 

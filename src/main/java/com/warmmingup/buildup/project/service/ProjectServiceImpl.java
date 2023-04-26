@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +23,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectDTO> findAllProjects(Map<String, Integer> projectCnt) {
+    public List<ProjectDTO> findAllProjects(int projectCnt) {
 
-        return projectMapper.findAllProjects(projectCnt);
+        return projectMapper.selectAllProjects(projectCnt);
     }
 
     @Override
@@ -35,8 +33,8 @@ public class ProjectServiceImpl implements ProjectService {
     public int registProject(BringProjectDTO newProject) {
 
         projectMapper.insertProject(newProject);
-        for(projectEmployeeDTO employee : newProject.getEmployeeName()) {
-            if(employee == null) {
+        for (projectEmployeeDTO employee : newProject.getEmployeeName()) {
+            if (employee == null) {
                 continue;
 
             }
@@ -45,12 +43,6 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.findProjectsByNo(newProject);
     }
 
-//    @Override
-//    public void modifyProjectTitle(ProjectDTO updateTitle) {
-//
-//        projectMapper.modifyProjectTitle(updateTitle);
-//    }
-
     @Override
     public List<ProjectDTO> findAllProjectMembers(Map<String, Integer> projectMemberCnt) {
 
@@ -58,7 +50,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Object selectProjectTitle(int projectNo) {
+    public Object findProjectTitle(int projectNo) {
 
         return projectMapper.selectProjectTitle(projectNo);
     }
@@ -77,14 +69,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public void inviteTeamMember(BringProjectDTO inviteMember) {
+    public void inviteProjectMember(BringProjectDTO inviteMember) {
 
         projectMapper.inviteTeamMember(inviteMember);
 
     }
 
     @Override
-    public void removeTeamMember(Map<String, Object> removeMember) {
+    public void removeProjectMember(Map<String, Object> removeMember) {
 
         projectMapper.removeTeamMember(removeMember);
     }
@@ -100,19 +92,6 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectMapper.findAuthority();
     }
-
-    @Override
-    public Object findAllProjectRecords(int projectNo) {
-
-        return projectMapper.findAllProjectRecords(projectNo);
-    }
-
-
-//    @Override
-//    public List<projectEmployeeDTO> searchMembers(Map<String, Object> searchMembers) {
-//
-//        return projectMapper.searchMembers(searchMembers);
-//    }
 
 
 }

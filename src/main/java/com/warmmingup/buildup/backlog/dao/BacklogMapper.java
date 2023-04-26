@@ -10,14 +10,13 @@ import java.util.Map;
 @Mapper
 public interface BacklogMapper {
 
-    int selectBacklogTotal(Map<String, Object> backlogConnect);
+    int selectBacklogTotalCount(Map<String, Object> backlogConnect);
 
-    List<BacklogDTO> selectBacklogListWithPaging(Map<String, Object> backlogConnect);
+    List<BacklogDTO> selectAllBacklogs(Map<String, Object> backlogConnect);
+    
+    int insertBacklog(BacklogDTO newBacklog);
 
-
-    int addBacklogs(BacklogDTO newBacklog);
-
-    int findBacklogsByNo(BacklogDTO newBacklog);
+    int selectBacklogsNo(BacklogDTO newBacklog);
 
     void updateBacklogs(BacklogDTO updateBacklog);
 
@@ -25,7 +24,5 @@ public interface BacklogMapper {
     void deleteBacklog(int removeBacklog);
 
 
-
-
-    List <BacklogAuthorityDTO>authority(Map<String, Object> authority);
+    List<BacklogAuthorityDTO> authority(Map<String, Object> authority);
 }

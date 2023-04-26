@@ -6,21 +6,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 @Service("commentService")
 public class CommentServiceImpl implements CommentService {
 
     private static CommentMapper commentMapper;
 
-    public CommentServiceImpl(CommentMapper commentMapper) {this.commentMapper = commentMapper;}
+    public CommentServiceImpl(CommentMapper commentMapper) {
+        this.commentMapper = commentMapper;
+    }
 
     @Override
     public List<CommentDTO> findAllComments(int commentConnect) {
-        List<CommentDTO> reply = commentMapper.findAllComments(commentConnect);
-        System.out.println(reply);
 
-        return reply;
+        return commentMapper.selectAllComments(commentConnect);
     }
 
     @Override
@@ -36,22 +35,13 @@ public class CommentServiceImpl implements CommentService {
     public void updateComment(CommentDTO newComment) {
 
         commentMapper.updateComment(newComment);
-
-    }
-
-    @Override
-    public Object patchComment(CommentDTO newComment) {
-
-        int result = commentMapper.patchComment(newComment);
-
-        return (result > 0) ? "수정 성공" : "수정 실패";
     }
 
     @Override
     @Transactional
     public void deleteComment(int replyNo) {
-        commentMapper.deleteComment(replyNo);
 
+        commentMapper.deleteComment(replyNo);
     }
 
 

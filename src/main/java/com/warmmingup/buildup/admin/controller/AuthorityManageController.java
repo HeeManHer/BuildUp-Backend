@@ -23,12 +23,12 @@ public class AuthorityManageController {
 
     private final AuthorityManageService authorityManageService;
 
-    public AuthorityManageController (AuthorityManageService authorityManageService) {
+    public AuthorityManageController(AuthorityManageService authorityManageService) {
         this.authorityManageService = authorityManageService;
     }
 
     @GetMapping("/manage-auths")
-    public ResponseEntity<ResponseDTO> getAllAuthority (@RequestParam(name = "page", defaultValue = "1") int page) {
+    public ResponseEntity<ResponseDTO> getAllAuthority(@RequestParam(name = "page", defaultValue = "1") int page) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -49,7 +49,7 @@ public class AuthorityManageController {
     }
 
     @GetMapping("/manage-auths/{authNo}")
-    public ResponseEntity<ResponseDTO> getAuthorityDetail (@PathVariable int authNo) {
+    public ResponseEntity<ResponseDTO> getAuthorityDetail(@PathVariable int authNo) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -58,7 +58,7 @@ public class AuthorityManageController {
     }
 
     @GetMapping("/manage-auths/types")
-    public ResponseEntity<ResponseDTO> getAuthType () {
+    public ResponseEntity<ResponseDTO> getAuthType() {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -67,22 +67,22 @@ public class AuthorityManageController {
     }
 
     @PostMapping("/manage-auths")
-    public ResponseEntity<?> registAuthority (@RequestBody AuthorityDTO auth) {
+    public ResponseEntity<?> insertAuthority(@RequestBody AuthorityDTO auth) {
 
-        int authNo = authorityManageService.registAuthority(auth);
+        int authNo = authorityManageService.insertAuthority(auth);
 
         return ResponseEntity.created(URI.create("/api/v1/auths/" + authNo)).build();
     }
 
     @PutMapping("/manage-auths")
-    public ResponseEntity<?> updateAuthority (@RequestBody AuthorityDTO auth) {
+    public ResponseEntity<?> updateAuthority(@RequestBody AuthorityDTO auth) {
         authorityManageService.updateAuthority(auth);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/manage-auths/{roleNo}")
-    public ResponseEntity<?> deleteAuthority (@PathVariable int roleNo) {
+    public ResponseEntity<?> deleteAuthority(@PathVariable int roleNo) {
         authorityManageService.deleteAuthority(roleNo);
 
         return ResponseEntity.noContent().build();

@@ -12,7 +12,6 @@
         <result property="backlogStatus" column="BACKLOG_STATUS"/>
         <result property="backlogPriority" column="BACKLOG_PRIORITY"/>
         <result property="projectNo" column="PROJECT_NO"/>
-
     </resultMap>
 
     <resultMap id="BacklogAuthority" type="com.warmmingup.buildup.backlog.dto.BacklogAuthorityDTO">
@@ -22,140 +21,111 @@
         <result property="authorityState" column="AUTHORITY_STATE"/>
         <result property="employeeNo" column="EMPLOYEE_NO"/>
         <result property="typeNo" column="TYPE_NO"/>
-
-
     </resultMap>
 
     <!--백로그 내용 페이징처리-->
-    <select id="selectBacklogListWithPaging" parameterType="hashmap" resultMap="BacklogResultMap">
+    <select id="selectAllBacklogs" parameterType="hashmap" resultMap="BacklogResultMap">
         SELECT
-                b.BACKLOG_NO
-                , b.BACKLOG_NAME
-                , b.BACKLOG_CONTENT
-                , b.BACKLOG_PRIORITY
-                , b.BACKLOG_STATUS
-                , b.PROJECT_NO
-        FROM
-        (
-                SELECT
-                        a.*,
-                        ROWNUM R
-                FROM
-                (
-                        SELECT
-                                *
-                          FROM
-                                BACKLOG
-                         WHERE
-                                PROJECT_NO = #{projectNo}
+               B.BACKLOG_NO
+             , B.BACKLOG_NAME
+             , B.BACKLOG_CONTENT
+             , B.BACKLOG_PRIORITY
+             , B.BACKLOG_STATUS
+             , B.PROJECT_NO
+          FROM ( SELECT A.*
+                      , ROWNUM R
+                   FROM ( SELECT *
+                            FROM BACKLOG
+                           WHERE PROJECT_NO = #{projectNo}
                         <if test="searchValue != null">
-                            and(
-                                BACKLOG_NAME
-                                LIKE #{searchValue}
-                            OR BACKLOG_CONTENT
-                                LIKE #{searchValue}
-                            OR BACKLOG_PRIORITY
-                                LIKE #{searchValue}
-                            OR BACKLOG_STATUS
-                                LIKE #{searchValue}
+                            AND ( BACKLOG_NAME LIKE #{searchValue}
+                               OR BACKLOG_CONTENT LIKE #{searchValue}
+                               OR BACKLOG_PRIORITY LIKE #{searchValue}
+                               OR BACKLOG_STATUS LIKE #{searchValue}
                             )
                         </if>
-                            ORDER BY BACKLOG_NO ASC
-                ) a
-        ) b
-        WHERE
-                b.R BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
+                           ORDER BY BACKLOG_NO ASC
+                ) A
+        ) B
+        WHERE B.R BETWEEN #{pageInfo.startRow} AND #{pageInfo.endRow}
     </select>
 
     <!--페이징 총페이지 계산-->
-    <select id="selectBacklogTotal" resultType="_int" parameterType="hashmap">
+    <select id="selectBacklogTotalCount" resultType="_int" parameterType="hashmap">
 
-        SELECT
-                COUNT(*)
-        FROM
-                BACKLOG
-        WHERE
-                PROJECT_NO = ${projectNo}
+        SELECT COUNT(*)
+          FROM BACKLOG
+         WHERE PROJECT_NO = ${projectNo}
         <if test="searchValue != null">
-            and(
-            BACKLOG_NAME
-                LIKE #{searchValue}
-            OR BACKLOG_CONTENT
-                LIKE #{searchValue}
-            OR BACKLOG_PRIORITY
-                LIKE #{searchValue}
-            OR BACKLOG_STATUS
-                LIKE #{searchValue}
+            AND ( BACKLOG_NAME LIKE #{searchValue}
+               OR BACKLOG_CONTENT LIKE #{searchValue}
+               OR BACKLOG_PRIORITY LIKE #{searchValue}
+               OR BACKLOG_STATUS LIKE #{searchValue}
             )
         </if>
-        ORDER BY BACKLOG_NO ASC
-    </select>
-
-    <!--백로그 검색-->
-    <select id="findBacklog" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
-        SELECT
-        BACKLOG_CONTENT FROM BACKLOG
-        WHERE
-        BACKLOG_CONTENT = #{backlogContent}
-        ORDER BY BACKLOG_NO ASC
+         ORDER BY BACKLOG_NO ASC
     </select>
 
     <!--시퀀스 백로그번호 찾기-->
-    <select id="findBacklogsByNo" resultType="_int">
+    <select id="selectBacklogsNo" resultType="_int">
         SELECT SEQ_BACKLOG_NO.CURRVAL
-        FROM DUAL
+          FROM DUAL
 
     </select>
     <!--추가-->
-    <insert id="addBacklogs" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
+    <insert id="insertBacklog" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
         INSERT INTO BACKLOG
         (
-        BACKLOG_NO
-       ,BACKLOG_NAME
-       ,BACKLOG_CONTENT
-       ,BACKLOG_STATUS
-       ,BACKLOG_PRIORITY
-       ,PROJECT_NO
+          BACKLOG_NO
+        , BACKLOG_NAME
+        , BACKLOG_CONTENT
+        , BACKLOG_STATUS
+        , BACKLOG_PRIORITY
+        , PROJECT_NO
         )
         VALUES
         (
-        SEQ_BACKLOG_NO.NEXTVAL,
-        #{backlogName},
-        #{backlogContent},
-        #{backlogStatus},
-        #{backlogPriority},
-        #{projectNo}
+          SEQ_BACKLOG_NO.NEXTVAL
+        , #{backlogName}
+        , #{backlogContent}
+        , #{backlogStatus}
+        , #{backlogPriority}
+        , #{projectNo}
         )
 
     </insert>
         <!--수정-->
     <update id="updateBacklogs" parameterType="com.warmmingup.buildup.backlog.dto.BacklogDTO">
         UPDATE BACKLOG
-        SET
-        BACKLOG_NAME = #{backlogName}
-        ,BACKLOG_CONTENT = #{backlogContent}
-        ,BACKLOG_STATUS = #{backlogStatus}
-       , BACKLOG_PRIORITY = #{backlogPriority}
-        ,PROJECT_NO = #{projectNo}
-        WHERE BACKLOG_NO = #{backlogNo}
+           SET
+               BACKLOG_NAME = #{backlogName}
+             , BACKLOG_CONTENT = #{backlogContent}
+             , BACKLOG_STATUS = #{backlogStatus}
+             , BACKLOG_PRIORITY = #{backlogPriority}
+             , PROJECT_NO = #{projectNo}
+         WHERE BACKLOG_NO = #{backlogNo}
     </update>
     <!--삭제-->
     <delete id="deleteBacklog" parameterType="_int">
        DELETE FROM BACKLOG
-        WHERE
-            BACKLOG_NO = #{backlogNo}
+        WHERE BACKLOG_NO = #{backlogNo}
     </delete>
 
         <!--권한 조회 -->
     <select id="authority" parameterType="hashmap" resultMap="BacklogAuthority">
-        SELECT pe.PROJECT_NO, e.EMPLOYEE_NAME, r.ROLE_NO, t.TYPE_NAME, a.AUTHORITY_STATE,e.EMPLOYEE_NO,a.TYPE_NO
-            FROM PROJECT_EMPLOYEE pe
-              JOIN EMPLOYEE e ON (pe.EMPLOYEE_NO = e.EMPLOYEE_NO)
-              JOIN ROLE_AUTHORITY_TYPE r ON (pe.ROLE_NO = r.ROLE_NO)
-              JOIN AUTHORITY a ON (r.AUTHORITY_NO = a.AUTHORITY_NO)
-              JOIN AUTHORITY_TYPE t ON (a.TYPE_NO=t.TYPE_NO)
-                   WHERE pe.PROJECT_NO = #{projectNo}
-                   AND e.EMPLOYEE_NO=#{employeeNo}
+        SELECT PE.PROJECT_NO
+             , E.EMPLOYEE_NAME
+             , R.ROLE_NO
+             , T.TYPE_NAME
+             , A.AUTHORITY_STATE
+             , E.EMPLOYEE_NO,A.TYPE_NO
+          FROM PROJECT_EMPLOYEE PE
+          JOIN EMPLOYEE E ON (pe.EMPLOYEE_NO = e.EMPLOYEE_NO)
+          JOIN ROLE_AUTHORITY_TYPE R ON (PE.ROLE_NO = R.ROLE_NO)
+          JOIN AUTHORITY A ON (R.AUTHORITY_NO = A.AUTHORITY_NO)
+          JOIN AUTHORITY_TYPE T ON (A.TYPE_NO=T.TYPE_NO)
+         WHERE PE.PROJECT_NO = #{projectNo}
+           AND E.EMPLOYEE_NO=#{employeeNo}
     </select>
 
 

@@ -16,57 +16,47 @@ public class UserManageService {
     private final UserManageMapper userManageMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserManageService (UserManageMapper userManageMapper, PasswordEncoder passwordEncoder) {
+    public UserManageService(UserManageMapper userManageMapper, PasswordEncoder passwordEncoder) {
         this.userManageMapper = userManageMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
 
-    public int findUserTotalCount (Map<String, Object> userManage) {
+    public int findUserTotalCount(Map<String, Object> userManage) {
         return userManageMapper.selectUserTotalCount(userManage);
     }
 
 
-    public List<UserDTO> findAllUsers (Map<String, Object> userCnt) {
+    public List<UserDTO> findAllUsers(Map<String, Object> userCnt) {
 
         return userManageMapper.selectAllUsers(userCnt);
     }
 
 
-    public List<UserDTO> findUserInfo (int userNo) {
+    public List<UserDTO> findUserInfo(int userNo) {
 
         return userManageMapper.selectUserByNo(userNo);
     }
 
 
     @Transactional
-    public void insertUser (NewUserDTO newUser) {
+    public void insertUser(NewUserDTO newUser) {
 
         newUser.setPwd(passwordEncoder.encode(newUser.getPwd()));
 
         userManageMapper.insertNewUser(newUser);
-
-        if (newUser.isAuthority()) {
-            userManageMapper.insertNewCreatedProject(newUser.getNo());
-        }
     }
 
 
     @Transactional
-    public void deleteUser (int userNo) {
+    public void deleteUser(int userNo) {
 
         userManageMapper.deleteUser(userNo);
     }
 
 
     @Transactional
-    public void updateUser (Map<String, Object> modifyUser) {
+    public void updateUser(Map<String, Object> modifyUser) {
         userManageMapper.updateUser(modifyUser);
-
-        userManageMapper.deleteAuthority((int) modifyUser.get("oldNo"));
-
-        if ("PM".equals(modifyUser.get("authority"))) {
-            userManageMapper.insertNewCreatedProject((int) modifyUser.get("no"));
-        }
     }
 }

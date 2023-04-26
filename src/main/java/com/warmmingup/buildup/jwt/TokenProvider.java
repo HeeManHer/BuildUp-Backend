@@ -8,7 +8,6 @@ package com.warmmingup.buildup.jwt;
 //import io.jsonwebtoken.io.Decoders;
 //import io.jsonwebtoken.security.Keys;
 
-import com.warmmingup.buildup.admin.dto.AdminLoginDTO;
 import com.warmmingup.buildup.exception.TokenException;
 import com.warmmingup.buildup.login.dto.MemberDTO;
 import com.warmmingup.buildup.login.dto.TokenDTO;
@@ -66,26 +65,6 @@ public class TokenProvider {
         String accessToken = Jwts.builder().setClaims(claims).claim(AUTHORITIES_KEY, roles).setExpiration(accessTokenExpiresIn).signWith(key, SignatureAlgorithm.HS512).compact();
 
         return new TokenDTO(BEARER_TYPE, member.getEmployeeName(), accessToken, accessTokenExpiresIn.getTime());
-    }
-
-    public TokenDTO generateTokenDto(AdminLoginDTO admin) {
-        log.info("[TokenProvider] generateTokenDto Start ===================================");
-        log.info("[TokenProvider] {}", "ROLE_ADMIN");
-
-        // 권한들 가져오기
-        List<String> roles = Collections.singletonList("ROLE_ADMIN");
-
-        Claims claims = Jwts.claims().setSubject(admin.getAdminId());
-        //.setSubject(String.valueOf(member.getMemberCode()));
-        claims.put(AUTHORITIES_KEY, roles);
-
-        long now = (new Date()).getTime();
-
-        // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
-        String accessToken = Jwts.builder().setClaims(claims).claim(AUTHORITIES_KEY, roles).setExpiration(accessTokenExpiresIn).signWith(key, SignatureAlgorithm.HS512).compact();
-
-        return new TokenDTO(BEARER_TYPE, "관리자", accessToken, accessTokenExpiresIn.getTime());
     }
 
     public String getUserId(String accessToken) {
